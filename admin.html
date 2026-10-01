@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم الأدمن — القرآن الكريم</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#1a5f2a;--primary-dark:#0e3b1a;--primary-light:#2d8a3e;--gold:#c9a227;--bg:#f0f2f5;--card:#fff;--text:#1a1a1a;--muted:#888;--border:#e0e0e0;--radius:12px;--success:#2e7d32;--warning:#e65100;--danger:#c62828;--info:#1565c0}
+*{box-sizing:border-box;font-family:'Tajawal',sans-serif}
+body{background:var(--bg);color:var(--text);margin:0;padding:0;min-height:100vh;padding-bottom:2rem}
+
+.admin-header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;padding:.8rem 1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 15px rgba(0,0,0,.15)}
+.admin-header h1{font-size:1.1rem;margin:0;display:flex;align-items:center;gap:.5rem}
+.admin-header h1 i{color:var(--gold)}
+
+.admin-container{max-width:1000px;margin:0 auto;padding:1rem}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem}
+@media (max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:#fff;border-radius:var(--radius);padding:.9rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);border-top:3px solid var(--primary)}
+.stat-card.warning{border-top-color:var(--warning)}
+.stat-card.info{border-top-color:var(--info)}
+.stat-card.success{border-top-color:var(--success)}
+.stat-card.danger{border-top-color:var(--danger)}
+.stat-card .value{font-size:1.5rem;font-weight:700;color:var(--primary)}
+.stat-card.warning .value{color:var(--warning)}
+.stat-card.info .value{color:var(--info)}
+.stat-card.success .value{color:var(--success)}
+.stat-card.danger .value{color:var(--danger)}
+.stat-card .label{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+
+.tabs{display:flex;gap:.3rem;background:#fff;border-radius:var(--radius);padding:.25rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{flex:1;padding:.6rem;border:none;background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;border-radius:10px;transition:all .2s;min-height:42px;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:.3rem;position:relative}
+.tab-btn.active{background:var(--primary);color:#fff}
+.tab-btn .tab-badge{background:var(--gold);color:#fff;font-size:.6rem;padding:.05rem .4rem;border-radius:10px;font-weight:700;min-width:18px;text-align:center}
+.tab-btn.active .tab-badge{background:#fff;color:var(--primary)}
+
+.panel{display:none}
+.panel.active{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.card{background:#fff;border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:1rem;margin-bottom:1rem}
+.card h2{font-size:1rem;margin:0 0 .8rem;display:flex;align-items:center;gap:.4rem}
+.card h2 i{color:var(--primary)}
+
+.form-group{margin-bottom:.8rem}
+.form-group label{display:block;font-size:.8rem;font-weight:500;margin-bottom:.3rem}
+.form-input{width:100%;padding:.65rem .8rem;border:1px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.85rem;outline:none;min-height:42px;background:#fff;color:var(--text)}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,95,42,.1)}
+
+.btn{padding:.6rem 1.2rem;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:active{transform:scale(.97)}
+.btn-gold{background:var(--gold);color:var(--primary-dark);font-weight:700}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.btn-info{background:var(--info);color:#fff}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-sm{padding:.35rem .7rem;font-size:.72rem;min-height:32px}
+
+.user-item{display:flex;align-items:center;justify-content:space-between;padding:.7rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+.user-item:hover{background:#f0f7f0}
+.user-item:last-child{border-bottom:none}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0;margin-left:.6rem;position:relative}
+.user-avatar.banned{background:var(--danger)}
+.user-avatar.banned::after{content:'🚫';position:absolute;bottom:-2px;left:-2px;font-size:.7rem}
+.user-info{flex:1;min-width:0}
+.user-info .username{font-weight:700;font-size:.88rem;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+.user-info .email{font-size:.7rem;color:var(--muted);margin-top:.1rem}
+
+.badge{padding:.12rem .45rem;border-radius:10px;font-size:.6rem;font-weight:700;display:inline-flex;align-items:center;gap:.2rem}
+.badge-danger{background:#ffebee;color:var(--danger)}
+.badge-warning{background:#fff3e0;color:var(--warning)}
+.badge-success{background:#e8f5e9;color:var(--success)}
+.badge-info{background:#e3f2fd;color:var(--info)}
+
+.notif-item{padding:.7rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.notif-item:last-child{border-bottom:none}
+.notif-content{flex:1}
+.notif-title{font-weight:700;font-size:.85rem}
+.notif-body{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+.notif-meta{font-size:.65rem;color:var(--muted);margin-top:.2rem}
+
+.report-filters{display:flex;gap:.3rem;margin-bottom:.6rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:none}
+.report-filters::-webkit-scrollbar{display:none}
+.chip{padding:.35rem .75rem;border-radius:20px;border:1px solid var(--border);background:#fff;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:.7rem;cursor:pointer;white-space:nowrap;transition:all .2s;min-height:32px}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+.report-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.9rem;margin-bottom:.6rem;border-right:4px solid var(--warning)}
+.report-card.status-reviewed{border-right-color:var(--info)}
+.report-card.status-resolved{border-right-color:var(--success)}
+.report-header{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.5rem}
+.report-title-wrap{flex:1}
+.report-title{font-weight:700;font-size:.9rem;line-height:1.4;margin-bottom:.2rem}
+.report-body{font-size:.82rem;line-height:1.7;margin-bottom:.6rem;white-space:pre-wrap;word-wrap:break-word}
+.report-meta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem;margin-bottom:.5rem}
+.report-meta-item{display:flex;align-items:center;gap:.35rem;padding:.4rem .6rem;background:var(--bg);border-radius:8px;font-size:.72rem;overflow:hidden;text-overflow:ellipsis}
+.report-meta-item i{color:var(--primary);width:14px;text-align:center;flex-shrink:0}
+.report-tag{background:#e8f5e9;color:var(--primary);padding:.15rem .55rem;border-radius:10px;font-size:.65rem;font-weight:600;display:inline-block;margin:.15rem .15rem 0 0}
+.report-actions{display:flex;gap:.3rem;flex-wrap:wrap;padding-top:.5rem;border-top:1px solid var(--border)}
+
+.profile-section{background:var(--bg);border-radius:10px;padding:.8rem;margin-bottom:.7rem}
+.profile-section h4{font-size:.8rem;font-weight:700;color:var(--primary);margin:0 0 .6rem;display:flex;align-items:center;gap:.35rem}
+.profile-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px dashed var(--border);font-size:.8rem;gap:.5rem;flex-wrap:wrap}
+.profile-row:last-child{border-bottom:none}
+.profile-row .label{color:var(--muted);display:flex;align-items:center;gap:.35rem}
+.profile-row .value{font-weight:600;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+
+.pwd-wrap{display:inline-flex;align-items:center;gap:.3rem;background:#fff;border:1px solid var(--border);border-radius:8px;padding:.2rem .5rem;font-family:monospace;font-size:.75rem;direction:ltr}
+.pwd-wrap button{border:none;background:transparent;color:var(--primary);cursor:pointer;padding:.15rem;font-size:.75rem}
+
+.credits-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:.35rem 0;flex:1;min-width:120px}
+.credits-bar .fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:4px;transition:width .3s}
+
+.warning-item{background:#fff3e0;border-right:3px solid var(--warning);padding:.5rem .7rem;border-radius:8px;margin-bottom:.4rem;font-size:.75rem}
+.warning-item .w-meta{font-size:.65rem;color:var(--muted);margin-top:.2rem}
+
+.maintenance-toggle{display:flex;align-items:center;justify-content:space-between;padding:.7rem;background:#fff;border:2px solid var(--border);border-radius:10px;margin-bottom:.7rem;transition:all .3s}
+.maintenance-toggle.active{border-color:var(--warning);background:#fff3e0}
+.switch{position:relative;width:50px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:26px;transition:.3s}
+.switch .slider:before{content:'';position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.switch input:checked + .slider{background:var(--warning)}
+.switch input:checked + .slider:before{transform:translateX(24px)}
+
+.cost-row{display:flex;align-items:center;justify-content:space-between;padding:.5rem .7rem;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;font-size:.8rem}
+.cost-row input{width:70px;padding:.3rem .5rem;border:1px solid var(--border);border-radius:6px;font-family:'Tajawal',sans-serif;text-align:center;font-size:.8rem}
+
+.search-users{margin-bottom:.6rem;position:relative}
+.search-users input{width:100%;padding:.6rem .7rem .6rem 2.2rem;border:1px solid var(--border);border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.85rem;outline:none;min-height:42px}
+.search-users input:focus{border-color:var(--primary)}
+.search-users i{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--muted)}
+
+.toast-admin{position:fixed;bottom:1rem;left:1rem;right:1rem;background:var(--primary-dark);color:#fff;padding:.7rem 1rem;border-radius:var(--radius);font-size:.8rem;z-index:2000;text-align:center;transform:translateY(100px);opacity:0;transition:all .3s;pointer-events:none;max-width:400px;margin:0 auto}
+.toast-admin.show{transform:translateY(0);opacity:1}
+.toast-admin.error{background:var(--danger)}
+
+.empty{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+.empty i{font-size:2rem;opacity:.4;display:block;margin-bottom:.5rem}
+
+.loading{text-align:center;padding:2rem;color:var(--muted)}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto .5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.modal-content{border:none;border-radius:var(--radius);background:#fff;color:var(--text)}
+.modal-header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;border:none;border-radius:var(--radius) var(--radius) 0 0;padding:.75rem 1rem}
+.modal-title{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.45rem}
+.modal-body{overflow-y:auto;padding:1rem;max-height:75vh}
+.modal-footer{background:#f8f9fa;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<header class="admin-header">
+  <h1><i class="fas fa-shield-alt"></i> لوحة تحكم الأدمن</h1>
+  <button class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3);padding:.4rem .8rem;font-size:.75rem;" onclick="location.href='index.html'">
+    <i class="fas fa-arrow-right"></i> التطبيق
+  </button>
+</header>
+
+<div class="admin-container">
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="value" id="statUsers">-</div><div class="label">المستخدمون</div></div>
+    <div class="stat-card warning"><div class="value" id="statReportsPending">-</div><div class="label">بلاغات معلقة</div></div>
+    <div class="stat-card info"><div class="value" id="statNotifs">-</div><div class="label">إشعارات مُرسلة</div></div>
+    <div class="stat-card danger"><div class="value" id="statBanned">-</div><div class="label">محظورون</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="users"><i class="fas fa-users"></i> المستخدمون</button>
+    <button class="tab-btn" data-tab="reports"><i class="fas fa-flag"></i> البلاغات <span class="tab-badge" id="tabReportsBadge" style="display:none;">0</span></button>
+    <button class="tab-btn" data-tab="send"><i class="fas fa-paper-plane"></i> إشعار لمستخدم</button>
+    <button class="tab-btn" data-tab="all"><i class="fas fa-bullhorn"></i> إشعار للكل</button>
+    <button class="tab-btn" data-tab="sent"><i class="fas fa-list"></i> المُرسلة</button>
+    <button class="tab-btn" data-tab="global"><i class="fas fa-globe"></i> الإعدادات العامة</button>
+  </div>
+
+  <!-- المستخدمون -->
+  <div class="panel active" id="panel-users">
+    <div class="card">
+      <h2><i class="fas fa-users"></i> قائمة المستخدمين</h2>
+      <div class="search-users"><i class="fas fa-search"></i><input type="text" id="userSearchInput" placeholder="ابحث بالاسم أو البريد..."></div>
+      <div id="usersList"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div>
+    </div>
+  </div>
+
+  <!-- البلاغات -->
+  <div class="panel" id="panel-reports">
+    <div class="card">
+      <h2><i class="fas fa-flag"></i> البلاغات والاقتراحات</h2>
+      <div class="report-filters" id="reportStatusFilters">
+        <button class="chip active" data-rf-status="all">الكل</button>
+        <button class="chip" data-rf-status="pending">قيد المراجعة</button>
+        <button class="chip" data-rf-status="reviewed">تمت المراجعة</button>
+        <button class="chip" data-rf-status="resolved">تم الحل</button>
+      </div>
+      <div class="report-filters" id="reportTypeFilters">
+        <button class="chip active" data-rf-type="all">الجميع</button>
+        <button class="chip" data-rf-type="problem">مشاكل</button>
+        <button class="chip" data-rf-type="suggestion">اقتراحات</button>
+      </div>
+      <div id="reportsList"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div>
+    </div>
+  </div>
+
+  <!-- إشعار لمستخدم -->
+  <div class="panel" id="panel-send">
+    <div class="card">
+      <h2><i class="fas fa-paper-plane"></i> إرسال إشعار لمستخدم</h2>
+      <div class="form-group"><label>المستخدم</label><select class="form-input" id="sendUserSelect"><option value="">اختر</option></select></div>
+      <div class="form-group"><label>العنوان *</label><input type="text" class="form-input" id="sendTitle" placeholder="عنوان الإشعار"></div>
+      <div class="form-group"><label>النص *</label><textarea class="form-input" id="sendBody" rows="4" placeholder="نص الإشعار..."></textarea></div>
+      <div class="form-group"><label>هاشتاغات (اختياري)</label><input type="text" class="form-input" id="sendTags" placeholder="tag1, tag2"></div>
+      <button class="btn btn-primary" id="sendBtn"><i class="fas fa-paper-plane"></i> إرسال</button>
+    </div>
+  </div>
+
+  <!-- إشعار للكل -->
+  <div class="panel" id="panel-all">
+    <div class="card">
+      <h2><i class="fas fa-bullhorn"></i> إشعار جماعي</h2>
+      <div class="form-group"><label>العنوان *</label><input type="text" class="form-input" id="allTitle" placeholder="عنوان"></div>
+      <div class="form-group"><label>النص *</label><textarea class="form-input" id="allBody" rows="4" placeholder="نص..."></textarea></div>
+      <div class="form-group"><label>هاشتاغات (اختياري)</label><input type="text" class="form-input" id="allTags" placeholder="tag1, tag2"></div>
+      <button class="btn btn-gold" id="sendAllBtn"><i class="fas fa-bullhorn"></i> إرسال للجميع</button>
+    </div>
+  </div>
+
+  <!-- المُرسلة -->
+  <div class="panel" id="panel-sent">
+    <div class="card">
+      <h2><i class="fas fa-list"></i> المُرسلة</h2>
+      <div id="sentList"><div class="loading"><div class="spinner"></div>جاري التحميل...</div></div>
+    </div>
+  </div>
+
+  <!-- الإعدادات العامة -->
+  <div class="panel" id="panel-global">
+    <div class="card">
+      <h2><i class="fas fa-tools"></i> وضع الصيانة</h2>
+      <div class="maintenance-toggle" id="maintenanceToggleWrap">
+        <div>
+          <div style="font-weight:700;font-size:.85rem;">تفعيل وضع الصيانة</div>
+          <div style="font-size:.7rem;color:var(--muted);margin-top:.15rem;">سيظهر للمستخدمين شاشة صيانة مع تسبيح</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="maintenanceToggle"><span class="slider"></span></label>
+      </div>
+      <div class="form-group"><label>رسالة الصيانة</label><textarea class="form-input" id="maintenanceMessage" rows="3" placeholder="نعتذر عن الإزعاج..."></textarea></div>
+      <div class="form-group"><label>وقت الانتهاء (اختياري — يظهر عدّاد)</label><input type="datetime-local" class="form-input" id="maintenanceEndTime"></div>
+      <button class="btn btn-primary" id="saveMaintenanceBtn"><i class="fas fa-save"></i> حفظ</button>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-bolt"></i> الرصيد والتكاليف</h2>
+      <div class="form-group"><label>الحد الأقصى للرصيد اليومي (لكل المستخدمين)</label><input type="number" class="form-input" id="globalMaxCredits" min="10" max="9999" placeholder="400"></div>
+      <div style="margin-top:.6rem;">
+        <div style="font-size:.8rem;font-weight:700;margin-bottom:.4rem;">تكاليف المهام (رصيد)</div>
+        <div class="cost-row"><span><i class="fas fa-book-open" style="color:var(--primary);"></i> تفسير آية</span><input type="number" id="costTafsir" min="0" max="100"></div>
+        <div class="cost-row"><span><i class="fas fa-lightbulb" style="color:var(--primary);"></i> تدبر وتأمل</span><input type="number" id="costTadabbur" min="0" max="100"></div>
+        <div class="cost-row"><span><i class="fas fa-info-circle" style="color:var(--primary);"></i> معلومات سورة</span><input type="number" id="costSurahInfo" min="0" max="100"></div>
+        <div class="cost-row"><span><i class="fas fa-chart-bar" style="color:var(--primary);"></i> تحليل الاختبار</span><input type="number" id="costQuizAnalysis" min="0" max="100"></div>
+      </div>
+      <button class="btn btn-primary" id="saveCostsBtn" style="margin-top:.6rem;"><i class="fas fa-save"></i> حفظ</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal ملف المستخدم -->
+<div class="modal fade" id="userProfileModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-user-circle"></i> <span id="profileName">ملف المستخدم</span></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="userProfileBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-bs-dismiss="modal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal الرد على بلاغ -->
+<div class="modal fade" id="replyModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-reply"></i> الرد على البلاغ</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="replyReportInfo" style="margin-bottom:.8rem;padding:.6rem;background:var(--bg);border-radius:8px;font-size:.8rem;"></div>
+        <div class="form-group"><label>نص الرد</label><textarea class="form-input" id="replyText" rows="5"></textarea></div>
+        <div class="form-group"><label>الحالة</label><select class="form-input" id="replyStatus"><option value="reviewed">تمت المراجعة</option><option value="resolved">تم الحل</option></select></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-bs-dismiss="modal">إلغاء</button>
+        <button class="btn btn-primary" id="saveReplyBtn"><i class="fas fa-save"></i> حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-admin" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ============================================================
+   لوحة تحكم الأدمن — متوافقة تماماً مع index.html v8
+   Firebase Project: tgre-7abfb
+   ============================================================ */
+
+const FIREBASE_CONFIG = {
+  DB_URL: 'https://tgre-7abfb-default-rtdb.firebaseio.com',
+  API_KEY: 'AIzaSyCYgA-26dzv5OVUpekc1U0Pta9wDK-iJQA',
+  PROJECT_ID: 'tgre-7abfb'
+};
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+const DB = {
+  async get(path) {
+    try { const r = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json'); return r.ok ? r.json() : null; }
+    catch (e) { return null; }
+  },
+  async put(path, data) {
+    try {
+      const r = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+      });
+      return r.ok;
+    } catch (e) { return false; }
+  },
+  async patch(path, data) {
+    try {
+      const r = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+      });
+      return r.ok;
+    } catch (e) { return false; }
+  },
+  async del(path) {
+    try { const r = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json', { method: 'DELETE' }); return r.ok; }
+    catch (e) { return false; }
+  }
+};
+
+function toast(msg, isErr) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast-admin' + (isErr ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+function timeAgo(ts) { const d = Date.now() - ts; const m = Math.floor(d / 60000); if (m < 1) return 'الآن'; if (m < 60) return m + ' د'; const h = Math.floor(m / 60); if (h < 24) return h + ' س'; return Math.floor(h / 24) + ' يوم'; }
+function decodePwd(p) { try { return decodeURIComponent(escape(atob(p))); } catch (e) { return ''; } }
+function encodeEmail(email) { try { return btoa(unescape(encodeURIComponent(email.toLowerCase()))).replace(/=/g, ''); } catch (e) { return email.replace(/[.@]/g, '_'); } }
+
+const SECTION_LABELS = {
+  quran: 'القرآن الكريم', tafsir: 'التفسير', azkar: 'الأذكار', ai: 'الذكاء الاصطناعي',
+  quiz: 'اختبار الحفظ', notifications: 'الإشعارات', account: 'الحساب',
+  ui: 'الواجهة', performance: 'الأداء', general: 'عام', other: 'أخرى'
+};
+const STATUS_LABELS = {
+  pending: { text: 'قيد المراجعة', icon: 'fa-clock', cls: 'warning' },
+  reviewed: { text: 'تمت المراجعة', icon: 'fa-eye', cls: 'info' },
+  resolved: { text: 'تم الحل', icon: 'fa-check-circle', cls: 'success' }
+};
+const TYPE_LABELS = {
+  problem: { text: 'مشكلة', icon: 'fa-bug', cls: 'danger' },
+  suggestion: { text: 'اقتراح', icon: 'fa-lightbulb', cls: 'success' }
+};
+
+let cachedUsers = [];
+let cachedReports = [];
+let currentFilterStatus = 'all';
+let currentFilterType = 'all';
+let currentReplyReportId = null;
+let globalSettings = {
+  maxAICredits: 400,
+  aiCosts: { tafsir: 8, tadabbur: 4, 'surah-info': 6, 'quiz-analysis': 4 },
+  maintenance: { enabled: false, message: '', endTime: null }
+};
+
+/* ===== المستخدمون ===== */
+async function loadUsers() {
+  const c = $('#usersList');
+  c.innerHTML = '<div class="loading"><div class="spinner"></div>جاري التحميل...</div>';
+  const data = await DB.get('users');
+  if (!data) {
+    cachedUsers = [];
+    $('#statUsers').textContent = '0';
+    $('#statBanned').textContent = '0';
+    c.innerHTML = '<div class="empty"><i class="fas fa-users"></i>لا يوجد مستخدمون</div>';
+    return;
+  }
+  cachedUsers = Object.values(data).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  $('#statUsers').textContent = cachedUsers.length;
+  const bannedCount = cachedUsers.filter(u => u.restrictions && u.restrictions.banned).length;
+  $('#statBanned').textContent = bannedCount;
+  renderUsers(cachedUsers);
+  const sel = $('#sendUserSelect');
+  sel.innerHTML = '<option value="">اختر</option>' + cachedUsers.map(u =>
+    '<option value="' + esc(u.username) + '">' + esc(u.username) + ' (' + esc(u.email) + ')</option>'
+  ).join('');
+}
+
+function renderUsers(list) {
+  const c = $('#usersList');
+  if (!list.length) { c.innerHTML = '<div class="empty"><i class="fas fa-users"></i>لا نتائج</div>'; return; }
+  c.innerHTML = list.map(u => {
+    const banned = u.restrictions && u.restrictions.banned;
+    const credits = u.aiCredits ? (u.aiCredits.remaining || 0) : 0;
+    return '<div class="user-item" data-username="' + esc(u.username) + '">' +
+      '<div style="display:flex;align-items:center;flex:1;min-width:0;">' +
+      '<div class="user-avatar ' + (banned ? 'banned' : '') + '">' + esc((u.username || '؟').charAt(0).toUpperCase()) + '</div>' +
+      '<div class="user-info">' +
+      '<div class="username">' + esc(u.username) +
+      (banned ? ' <span class="badge badge-danger"><i class="fas fa-ban"></i> محظور</span>' : '') +
+      '<span class="badge badge-success"><i class="fas fa-bolt"></i> ' + credits + '</span>' +
+      '</div>' +
+      '<div class="email">' + esc(u.email) + '</div>' +
+      '<div style="font-size:.65rem;color:var(--muted);margin-top:.1rem;"><i class="fas fa-calendar"></i> ' +
+      new Date(u.createdAt || Date.now()).toLocaleDateString('ar-EG') + '</div>' +
+      '</div></div>' +
+      '<button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> عرض</button>' +
+      '</div>';
+  }).join('');
+  c.querySelectorAll('.user-item').forEach(item => {
+    item.addEventListener('click', () => openUserProfile(item.dataset.username));
+  });
+}
+
+$('#userSearchInput').addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  if (!q) { renderUsers(cachedUsers); return; }
+  const filtered = cachedUsers.filter(u =>
+    (u.username || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q)
+  );
+  renderUsers(filtered);
+});
+
+/* ===== ملف المستخدم ===== */
+async function openUserProfile(username) {
+  if (!username) return;
+  const userData = cachedUsers.find(u => u.username === username);
+  if (!userData) { toast('المستخدم غير موجود', true); return; }
+
+  const restrictions = userData.restrictions || { banned: false, bannedUntil: null, permanent: false, reason: '' };
+  const credits = userData.aiCredits || { remaining: 0, lastReset: null };
+  const stats = userData.stats || {};
+  const warnings = userData.warnings || [];
+  const maxC = globalSettings.maxAICredits || 400;
+  const pwd = decodePwd(userData.password || '');
+
+  $('#profileName').textContent = userData.username;
+
+  $('#userProfileBody').innerHTML = `
+    <div class="profile-section">
+      <h4><i class="fas fa-user"></i> المعلومات الأساسية</h4>
+      <div class="profile-row"><span class="label"><i class="fas fa-user"></i> اسم المستخدم</span><span class="value">${esc(userData.username)}</span></div>
+      <div class="profile-row"><span class="label"><i class="fas fa-envelope"></i> البريد</span><span class="value" style="direction:ltr;word-break:break-all;">${esc(userData.email)}</span></div>
+      <div class="profile-row">
+        <span class="label"><i class="fas fa-lock"></i> كلمة المرور</span>
+        <span class="value">
+          <span class="pwd-wrap"><span id="pwdDisplay">••••••••</span><button id="togglePwdBtn" data-pwd="${esc(pwd)}"><i class="fas fa-eye"></i></button></span>
+        </span>
+      </div>
+      <div class="profile-row"><span class="label"><i class="fas fa-calendar"></i> تاريخ التسجيل</span><span class="value">${new Date(userData.createdAt || Date.now()).toLocaleString('ar-EG')}</span></div>
+    </div>
+
+    <div class="profile-section">
+      <h4><i class="fas fa-chart-line"></i> الإحصائيات</h4>
+      <div class="profile-row"><span class="label"><i class="fas fa-book"></i> آيات مقروءة</span><span class="value">${stats.ayahsRead || 0}</span></div>
+      <div class="profile-row"><span class="label"><i class="fas fa-fire"></i> أيام متتالية</span><span class="value">${stats.streak || 0}</span></div>
+      <div class="profile-row"><span class="label"><i class="fas fa-bookmark"></i> إشارات</span><span class="value">${(userData.bookmarks || []).length}</span></div>
+    </div>
+
+    <div class="profile-section">
+      <h4><i class="fas fa-bolt"></i> رصيد AI</h4>
+      <div class="profile-row">
+        <span class="label">الرصيد الحالي</span>
+        <span class="value"><strong style="color:var(--gold);font-size:1rem;">${credits.remaining || 0}</strong> / ${maxC}</span>
+      </div>
+      <div class="credits-bar"><div class="fill" style="width:${Math.min(100, ((credits.remaining || 0) / maxC) * 100)}%"></div></div>
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:.5rem;">آخر تجديد: ${credits.lastReset ? new Date(credits.lastReset).toLocaleDateString('ar-EG') : 'لم يُسجل'}</div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+        <input type="number" id="editCreditsInput" class="form-input" style="flex:1;min-width:80px;" placeholder="رصيد جديد" value="${credits.remaining || 0}">
+        <button class="btn btn-primary btn-sm" id="saveCreditsBtn"><i class="fas fa-save"></i> حفظ</button>
+        <button class="btn btn-warning btn-sm" id="resetCreditsBtn"><i class="fas fa-redo"></i> تجديد</button>
+      </div>
+    </div>
+
+    <div class="profile-section" style="background:${restrictions.banned ? '#ffebee' : 'var(--bg)'};">
+      <h4><i class="fas fa-ban"></i> القيود على AI</h4>
+      ${restrictions.banned ? `
+        <div class="profile-row"><span class="label" style="color:var(--danger);"><i class="fas fa-exclamation-triangle"></i> الحالة</span><span class="value"><span class="badge badge-danger">محظور</span></span></div>
+        <div class="profile-row"><span class="label">السبب</span><span class="value">${esc(restrictions.reason || '—')}</span></div>
+        <div class="profile-row"><span class="label">حتى</span><span class="value">${restrictions.permanent ? 'دائم' : new Date(restrictions.bannedUntil).toLocaleString('ar-EG')}</span></div>
+        <button class="btn btn-success btn-sm" id="unbanBtn" style="margin-top:.5rem;"><i class="fas fa-unlock"></i> فك الحظر</button>
+      ` : `
+        <div class="profile-row"><span class="label">الحالة</span><span class="value"><span class="badge badge-success">نشط</span></span></div>
+        <div class="form-group" style="margin-top:.5rem;"><label>مدة الحظر</label>
+          <select class="form-input" id="banDuration">
+            <option value="1">يوم واحد</option>
+            <option value="3">3 أيام</option>
+            <option value="7">أسبوع</option>
+            <option value="30">شهر</option>
+            <option value="0">دائم</option>
+          </select>
+        </div>
+        <div class="form-group"><label>سبب الحظر</label><input type="text" class="form-input" id="banReason" placeholder="مثال: إساءة استخدام"></div>
+        <button class="btn btn-danger btn-sm" id="banBtn"><i class="fas fa-ban"></i> تطبيق الحظر</button>
+      `}
+    </div>
+
+    <div class="profile-section">
+      <h4><i class="fas fa-exclamation-circle"></i> التحذيرات (${warnings.length})</h4>
+      ${warnings.length ? warnings.map(w => `
+        <div class="warning-item">
+          ${esc(w.reason)}
+          <div class="w-meta"><i class="fas fa-clock"></i> ${new Date(w.at).toLocaleString('ar-EG')}</div>
+        </div>
+      `).join('') : '<div style="font-size:.75rem;color:var(--muted);">لا توجد تحذيرات</div>'}
+      <div class="form-group" style="margin-top:.6rem;">
+        <input type="text" class="form-input" id="warningReason" placeholder="سبب التحذير">
+      </div>
+      <button class="btn btn-warning btn-sm" id="addWarningBtn"><i class="fas fa-plus"></i> إضافة تحذير</button>
+    </div>
+
+    <div class="profile-section">
+      <h4><i class="fas fa-tools"></i> إجراءات</h4>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+        <button class="btn btn-info btn-sm" id="notifyUserBtn"><i class="fas fa-bell"></i> إشعار مخصص</button>
+        <button class="btn btn-danger btn-sm" id="deleteUserBtn"><i class="fas fa-trash"></i> حذف المستخدم</button>
+      </div>
+    </div>
+  `;
+
+  bindProfileEvents(userData);
+  new bootstrap.Modal($('#userProfileModal')).show();
+}
+
+function bindProfileEvents(userData) {
+  const username = userData.username;
+  const key = encodeURIComponent(username);
+
+  $('#togglePwdBtn').addEventListener('click', () => {
+    const btn = $('#togglePwdBtn');
+    const disp = $('#pwdDisplay');
+    if (disp.textContent === '••••••••') {
+      disp.textContent = btn.dataset.pwd || '(فارغة)';
+      btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    } else {
+      disp.textContent = '••••••••';
+      btn.innerHTML = '<i class="fas fa-eye"></i>';
+    }
+  });
+
+  $('#saveCreditsBtn').addEventListener('click', async () => {
+    const newVal = parseInt($('#editCreditsInput').value);
+    if (isNaN(newVal) || newVal < 0) { toast('قيمة غير صالحة', true); return; }
+    const ok = await DB.patch('users/' + key + '/aiCredits', { remaining: newVal });
+    if (ok) {
+      toast('تم الحفظ ✅');
+      userData.aiCredits = Object.assign({}, userData.aiCredits, { remaining: newVal });
+      bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+      loadUsers();
+    } else toast('تعذر الحفظ', true);
+  });
+
+  $('#resetCreditsBtn').addEventListener('click', async () => {
+    const maxC = globalSettings.maxAICredits || 400;
+    const ok = await DB.put('users/' + key + '/aiCredits', {
+      remaining: maxC,
+      lastReset: new Date().toISOString().split('T')[0]
+    });
+    if (ok) {
+      toast('تم التجديد ✅');
+      bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+      loadUsers();
+    } else toast('تعذر', true);
+  });
+
+  const banBtn = $('#banBtn');
+  if (banBtn) {
+    banBtn.addEventListener('click', async () => {
+      const dur = parseInt($('#banDuration').value);
+      const reason = $('#banReason').value.trim() || 'مخالفة';
+      const permanent = dur === 0;
+      const bannedUntil = permanent ? null : Date.now() + dur * 86400000;
+      const ok = await DB.put('users/' + key + '/restrictions', { banned: true, bannedUntil, permanent, reason });
+      if (ok) {
+        toast('تم الحظر ✅');
+        // إشعار المستخدم
+        const nid = 'notif_' + Date.now();
+        await DB.put('notifications/' + nid, {
+          id: nid,
+          title: 'تم حظر استخدام AI',
+          body: 'تم تقييد وصولك لميزات الذكاء الاصطناعي. السبب: ' + reason,
+          tags: 'حظر,تنبيه',
+          target: 'user',
+          targetUser: username,
+          timestamp: Date.now()
+        });
+        bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+        loadUsers();
+        loadSent();
+      } else toast('تعذر', true);
+    });
+  }
+
+  const unbanBtn = $('#unbanBtn');
+  if (unbanBtn) {
+    unbanBtn.addEventListener('click', async () => {
+      const ok = await DB.put('users/' + key + '/restrictions', { banned: false, bannedUntil: null, permanent: false, reason: '' });
+      if (ok) {
+        toast('تم فك الحظر ✅');
+        const nid = 'notif_' + Date.now();
+        await DB.put('notifications/' + nid, {
+          id: nid,
+          title: 'تم رفع الحظر',
+          body: 'تم رفع الحظر عن حسابك. يمكنك استخدام AI مرة أخرى.',
+          tags: 'حظر,تنبيه',
+          target: 'user',
+          targetUser: username,
+          timestamp: Date.now()
+        });
+        bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+        loadUsers();
+        loadSent();
+      } else toast('تعذر', true);
+    });
+  }
+
+  $('#addWarningBtn').addEventListener('click', async () => {
+    const reason = $('#warningReason').value.trim();
+    if (!reason) { toast('أدخل سبب التحذير', true); return; }
+    const existing = userData.warnings || [];
+    existing.push({ reason, at: Date.now(), by: 'admin' });
+    const ok = await DB.put('users/' + key + '/warnings', existing);
+    if (ok) {
+      toast('تم إضافة التحذير ✅');
+      const nid = 'notif_' + Date.now();
+      await DB.put('notifications/' + nid, {
+        id: nid,
+        title: 'تحذير إداري',
+        body: reason,
+        tags: 'تحذير,تنبيه',
+        target: 'user',
+        targetUser: username,
+        timestamp: Date.now()
+      });
+      bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+      loadUsers();
+      loadSent();
+    } else toast('تعذر', true);
+  });
+
+  $('#notifyUserBtn').addEventListener('click', () => {
+    bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+    $$('.tab-btn').forEach(t => t.classList.remove('active'));
+    $$('.panel').forEach(p => p.classList.remove('active'));
+    $('.tab-btn[data-tab="send"]').classList.add('active');
+    $('#panel-send').classList.add('active');
+    $('#sendUserSelect').value = username;
+    setTimeout(() => $('#sendTitle').focus(), 200);
+  });
+
+  $('#deleteUserBtn').addEventListener('click', async () => {
+    if (!confirm('حذف المستخدم ' + username + ' نهائياً؟')) return;
+    const ok1 = await DB.del('users/' + key);
+    await DB.del('emails/' + encodeEmail(userData.email));
+    if (ok1) {
+      toast('تم الحذف');
+      bootstrap.Modal.getInstance($('#userProfileModal')).hide();
+      loadUsers();
+    } else toast('تعذر', true);
+  });
+}
+
+/* ===== الإشعارات المُرسلة ===== */
+async function loadSent() {
+  const c = $('#sentList');
+  c.innerHTML = '<div class="loading"><div class="spinner"></div>...</div>';
+  const data = await DB.get('notifications');
+  if (!data) {
+    c.innerHTML = '<div class="empty"><i class="fas fa-inbox"></i>لا توجد إشعارات</div>';
+    $('#statNotifs').textContent = '0';
+    return;
+  }
+  const all = Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  $('#statNotifs').textContent = all.length;
+  if (!all.length) { c.innerHTML = '<div class="empty"><i class="fas fa-inbox"></i>لا توجد</div>'; return; }
+  c.innerHTML = all.map(n => `
+    <div class="notif-item">
+      <div class="notif-content">
+        <div class="notif-title">${esc(n.title)}</div>
+        <div class="notif-body">${esc((n.body || '').substring(0, 80))}${(n.body || '').length > 80 ? '...' : ''}</div>
+        <div class="notif-meta">
+          <i class="fas fa-${n.target === 'all' ? 'bullhorn' : 'user'}"></i>
+          ${n.target === 'all' ? 'للجميع' : esc(n.targetUser || 'مستخدم')}
+          — ${new Date(n.timestamp).toLocaleString('ar-EG')}
+          ${n.tags ? '<br>#' + esc(n.tags.split(',').map(t => t.trim()).join(' #')) : ''}
+        </div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteNotif('${n.id}')"><i class="fas fa-trash"></i></button>
+    </div>
+  `).join('');
+}
+
+async function sendNotification(target, targetUser, title, body, tags) {
+  if (!title.trim() || !body.trim()) { toast('العنوان والنص مطلوبان', true); return false; }
+  const id = 'notif_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+  const notif = { id, title: title.trim(), body: body.trim(), tags: (tags || '').trim(), target, targetUser: targetUser || '', timestamp: Date.now() };
+  const ok = await DB.put('notifications/' + id, notif);
+  if (ok) { toast('تم الإرسال ✅'); loadSent(); return true; }
+  toast('تعذر', true);
+  return false;
+}
+
+async function deleteNotif(id) {
+  if (!confirm('حذف الإشعار؟')) return;
+  const ok = await DB.del('notifications/' + id);
+  if (ok) { toast('تم الحذف'); loadSent(); }
+  else toast('تعذر', true);
+}
+
+/* ===== البلاغات ===== */
+async function loadReports() {
+  const c = $('#reportsList');
+  c.innerHTML = '<div class="loading"><div class="spinner"></div>...</div>';
+  const data = await DB.get('reports');
+  if (!data) {
+    cachedReports = [];
+    $('#statReportsPending').textContent = '0';
+    renderReports();
+    updateReportsBadge();
+    return;
+  }
+  cachedReports = Object.keys(data)
+    .map(id => Object.assign({}, data[id], { id: data[id].id || id }))
+    .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  const pending = cachedReports.filter(r => (r.status || 'pending') === 'pending').length;
+  $('#statReportsPending').textContent = pending;
+  updateReportsBadge();
+  renderReports();
+}
+
+function updateReportsBadge() {
+  const pending = cachedReports.filter(r => (r.status || 'pending') === 'pending').length;
+  const b = $('#tabReportsBadge');
+  if (pending > 0) { b.textContent = pending; b.style.display = 'inline-block'; }
+  else b.style.display = 'none';
+}
+
+function renderReports() {
+  const c = $('#reportsList');
+  let filtered = cachedReports.slice();
+  if (currentFilterStatus !== 'all') filtered = filtered.filter(r => (r.status || 'pending') === currentFilterStatus);
+  if (currentFilterType !== 'all') filtered = filtered.filter(r => r.type === currentFilterType);
+  if (!filtered.length) { c.innerHTML = '<div class="empty"><i class="fas fa-flag"></i>لا بلاغات مطابقة</div>'; return; }
+
+  c.innerHTML = filtered.map(r => {
+    const type = TYPE_LABELS[r.type] || TYPE_LABELS.problem;
+    const status = STATUS_LABELS[r.status || 'pending'] || STATUS_LABELS.pending;
+    const section = SECTION_LABELS[r.category] || r.category || 'عام';
+    const tags = (r.tags || '').split(',').map(t => t.trim()).filter(t => t);
+
+    return `<div class="report-card status-${r.status || 'pending'}">
+      <div class="report-header">
+        <div class="report-title-wrap">
+          <span class="badge badge-${type.cls}"><i class="fas ${type.icon}"></i> ${type.text}</span>
+          <div class="report-title" style="margin-top:.3rem;">${esc(r.title)}</div>
+        </div>
+        <span class="badge badge-${status.cls}"><i class="fas ${status.icon}"></i> ${status.text}</span>
+      </div>
+      <div class="badge badge-info" style="margin-bottom:.4rem;"><i class="fas fa-tag"></i> ${esc(section)}</div>
+      <div class="report-body">${esc(r.body)}</div>
+      <div class="report-meta-grid">
+        <div class="report-meta-item"><i class="fas fa-user"></i><span style="overflow:hidden;text-overflow:ellipsis;">${esc(r.username || 'مجهول')}</span></div>
+        <div class="report-meta-item"><i class="fas fa-envelope"></i><span style="overflow:hidden;text-overflow:ellipsis;direction:ltr;">${esc(r.email || 'غير متوفر')}</span></div>
+      </div>
+      ${tags.length ? '<div style="margin-bottom:.5rem;">' + tags.map(t => '<span class="report-tag">#' + esc(t) + '</span>').join('') + '</div>' : ''}
+      ${r.adminReply ? '<div style="background:#f0f7f0;border-right:3px solid var(--primary);padding:.6rem;border-radius:8px;margin-bottom:.6rem;font-size:.75rem;"><strong>ردك:</strong><br>' + esc(r.adminReply) + '</div>' : ''}
+      <div class="report-actions">
+        ${(r.status || 'pending') !== 'reviewed' && (r.status || 'pending') !== 'resolved' ? '<button class="btn btn-primary btn-sm" onclick="quickStatus(\'' + r.id + '\', \'reviewed\')"><i class="fas fa-eye"></i> تمت المراجعة</button>' : ''}
+        ${(r.status || 'pending') !== 'resolved' ? '<button class="btn btn-success btn-sm" onclick="quickStatus(\'' + r.id + '\', \'resolved\')"><i class="fas fa-check"></i> تم الحل</button>' : ''}
+        <button class="btn btn-warning btn-sm" onclick="openReplyModal(\'' + r.id + '\')"><i class="fas fa-reply"></i> رد مخصص</button>
+        ${r.email ? '<a class="btn btn-outline btn-sm" href="mailto:' + esc(r.email) + '?subject=' + encodeURIComponent('رد على بلاغك: ' + (r.title || '')) + '" target="_blank"><i class="fas fa-envelope"></i> مراسلة</a>' : ''}
+        <button class="btn btn-danger btn-sm" onclick="deleteReport(\'' + r.id + '\')"><i class="fas fa-trash"></i> حذف</button>
+      </div>
+      <div style="font-size:.65rem;color:var(--muted);margin-top:.4rem;"><i class="fas fa-clock"></i> ${timeAgo(r.timestamp || Date.now())}</div>
+    </div>`;
+  }).join('');
+}
+
+async function quickStatus(reportId, newStatus) {
+  const report = cachedReports.find(r => r.id === reportId);
+  if (!report) return;
+  const ok = await DB.patch('reports/' + reportId, { status: newStatus, reviewedAt: Date.now() });
+  if (!ok) { toast('تعذر', true); return; }
+  report.status = newStatus;
+  if (report.username) {
+    const nid = 'notif_' + Date.now();
+    await DB.put('notifications/' + nid, {
+      id: nid,
+      title: 'تحديث بلاغك: ' + report.title,
+      body: 'حالة البلاغ الآن: ' + (STATUS_LABELS[newStatus] ? STATUS_LABELS[newStatus].text : newStatus),
+      tags: 'بلاغ,تحديث',
+      target: 'user',
+      targetUser: report.username,
+      timestamp: Date.now()
+    });
+  }
+  toast('تم التحديث ✅');
+  loadReports();
+  loadSent();
+}
+
+function openReplyModal(reportId) {
+  const r = cachedReports.find(x => x.id === reportId);
+  if (!r) return;
+  currentReplyReportId = reportId;
+  $('#replyReportInfo').innerHTML = '<strong>' + esc(r.title) + '</strong><br><span style="font-size:.75rem;color:var(--muted);">من: ' + esc(r.username || '') + '</span>';
+  $('#replyText').value = r.adminReply || '';
+  $('#replyStatus').value = r.status === 'resolved' ? 'resolved' : 'reviewed';
+  new bootstrap.Modal($('#replyModal')).show();
+}
+
+async function saveReply() {
+  if (!currentReplyReportId) return;
+  const reply = $('#replyText').value.trim();
+  const status = $('#replyStatus').value;
+  if (!reply) { toast('اكتب الرد', true); return; }
+  const r = cachedReports.find(x => x.id === currentReplyReportId);
+  if (!r) return;
+  const ok = await DB.patch('reports/' + currentReplyReportId, {
+    adminReply: reply,
+    repliedAt: Date.now(),
+    status: status,
+    reviewedAt: Date.now()
+  });
+  if (!ok) { toast('تعذر', true); return; }
+  if (r.username) {
+    const nid = 'notif_' + Date.now();
+    await DB.put('notifications/' + nid, {
+      id: nid,
+      title: 'رد على بلاغك: ' + r.title,
+      body: reply,
+      tags: 'بلاغ,رد',
+      target: 'user',
+      targetUser: r.username,
+      timestamp: Date.now()
+    });
+  }
+  toast('تم الحفظ ✅');
+  bootstrap.Modal.getInstance($('#replyModal')).hide();
+  loadReports();
+  loadSent();
+}
+
+async function deleteReport(id) {
+  if (!confirm('حذف البلاغ؟')) return;
+  const ok = await DB.del('reports/' + id);
+  if (ok) { toast('تم الحذف'); loadReports(); }
+  else toast('تعذر', true);
+}
+
+/* ===== الإعدادات العامة ===== */
+async function loadGlobalSettings() {
+  const s = await DB.get('settings/global');
+  if (s) globalSettings = Object.assign(globalSettings, s);
+  if (!globalSettings.maintenance) globalSettings.maintenance = { enabled: false, message: '', endTime: null };
+  if (!globalSettings.aiCosts) globalSettings.aiCosts = { tafsir: 8, tadabbur: 4, 'surah-info': 6, 'quiz-analysis': 4 };
+  if (!globalSettings.maxAICredits) globalSettings.maxAICredits = 400;
+
+  $('#maintenanceToggle').checked = !!globalSettings.maintenance.enabled;
+  $('#maintenanceToggleWrap').classList.toggle('active', !!globalSettings.maintenance.enabled);
+  $('#maintenanceMessage').value = globalSettings.maintenance.message || '';
+  if (globalSettings.maintenance.endTime) {
+    const d = new Date(globalSettings.maintenance.endTime);
+    const iso = d.toISOString().slice(0, 16);
+    $('#maintenanceEndTime').value = iso;
+  } else {
+    $('#maintenanceEndTime').value = '';
+  }
+  $('#globalMaxCredits').value = globalSettings.maxAICredits;
+  $('#costTafsir').value = globalSettings.aiCosts.tafsir;
+  $('#costTadabbur').value = globalSettings.aiCosts.tadabbur;
+  $('#costSurahInfo').value = globalSettings.aiCosts['surah-info'];
+  $('#costQuizAnalysis').value = globalSettings.aiCosts['quiz-analysis'];
+}
+
+$('#maintenanceToggle').addEventListener('change', (e) => {
+  $('#maintenanceToggleWrap').classList.toggle('active', e.target.checked);
+});
+
+$('#saveMaintenanceBtn').addEventListener('click', async () => {
+  const enabled = $('#maintenanceToggle').checked;
+  const message = $('#maintenanceMessage').value.trim();
+  const endTimeStr = $('#maintenanceEndTime').value;
+  const endTime = endTimeStr ? new Date(endTimeStr).getTime() : null;
+  const ok = await DB.patch('settings/global', { maintenance: { enabled, message, endTime } });
+  if (ok) {
+    globalSettings.maintenance = { enabled, message, endTime };
+    toast('تم الحفظ ✅');
+  } else toast('تعذر', true);
+});
+
+$('#saveCostsBtn').addEventListener('click', async () => {
+  const maxC = parseInt($('#globalMaxCredits').value) || 400;
+  const aiCosts = {
+    tafsir: parseInt($('#costTafsir').value) || 8,
+    tadabbur: parseInt($('#costTadabbur').value) || 4,
+    'surah-info': parseInt($('#costSurahInfo').value) || 6,
+    'quiz-analysis': parseInt($('#costQuizAnalysis').value) || 4
+  };
+  const ok = await DB.patch('settings/global', { maxAICredits: maxC, aiCosts });
+  if (ok) {
+    globalSettings.maxAICredits = maxC;
+    globalSettings.aiCosts = aiCosts;
+    toast('تم الحفظ ✅');
+  } else toast('تعذر', true);
+});
+
+/* ===== الأحداث ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  $$('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.tab-btn').forEach(t => t.classList.remove('active'));
+      $$('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      $('#panel-' + btn.dataset.tab).classList.add('active');
+      if (btn.dataset.tab === 'users' || btn.dataset.tab === 'send') loadUsers();
+      else if (btn.dataset.tab === 'reports') loadReports();
+      else if (btn.dataset.tab === 'sent') loadSent();
+      else if (btn.dataset.tab === 'global') loadGlobalSettings();
+    });
+  });
+
+  $$('#reportStatusFilters .chip').forEach(c => c.addEventListener('click', () => {
+    $$('#reportStatusFilters .chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    currentFilterStatus = c.dataset.rfStatus;
+    renderReports();
+  }));
+
+  $$('#reportTypeFilters .chip').forEach(c => c.addEventListener('click', () => {
+    $$('#reportTypeFilters .chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    currentFilterType = c.dataset.rfType;
+    renderReports();
+  }));
+
+  $('#sendBtn').addEventListener('click', async () => {
+    const u = $('#sendUserSelect').value;
+    if (!u) { toast('اختر مستخدماً', true); return; }
+    const btn = $('#sendBtn');
+    btn.disabled = true;
+    const ok = await sendNotification('user', u, $('#sendTitle').value, $('#sendBody').value, $('#sendTags').value);
+    if (ok) { $('#sendTitle').value = ''; $('#sendBody').value = ''; $('#sendTags').value = ''; }
+    btn.disabled = false;
+  });
+
+  $('#sendAllBtn').addEventListener('click', async () => {
+    const btn = $('#sendAllBtn');
+    btn.disabled = true;
+    const ok = await sendNotification('all', '', $('#allTitle').value, $('#allBody').value, $('#allTags').value);
+    if (ok) { $('#allTitle').value = ''; $('#allBody').value = ''; $('#allTags').value = ''; }
+    btn.disabled = false;
+  });
+
+  $('#saveReplyBtn').addEventListener('click', saveReply);
+
+  // تحميل أولي
+  loadUsers();
+  loadSent();
+  loadReports();
+  loadGlobalSettings();
+  setInterval(loadReports, 30000);
+});
+
+window.deleteNotif = deleteNotif;
+window.quickStatus = quickStatus;
+window.openReplyModal = openReplyModal;
+window.deleteReport = deleteReport;
+</script>
+</body>
+</html>

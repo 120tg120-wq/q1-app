@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0e3b1a">
+<title>القرآن الكريم — v8</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+:root{--primary:#1a5f2a;--primary-light:#2d8a3e;--primary-dark:#0e3b1a;--gold:#c9a227;--gold-light:#e8c84a;--bg-main:#fefcf5;--bg-card:#fff;--text-main:#1a1a1a;--text-muted:#888;--border-color:#e0e0e0;--shadow-sm:0 2px 8px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.1);--shadow-lg:0 10px 40px rgba(0,0,0,.15);--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;--font-quran:'Amiri','Scheherazade New','Noto Naskh Arabic',serif;--font-ui:'Tajawal',sans-serif;--header-height:56px;--bottom-nav-height:60px;--safe-bottom:env(safe-area-inset-bottom,0px);--safe-top:env(safe-area-inset-top,0px)}
+[data-theme="dark"]{--bg-main:#121212;--bg-card:#1e1e1e;--text-main:#e8e8e8;--text-muted:#999;--border-color:#333}
+[data-theme="sepia"]{--bg-main:#f4ecd8;--bg-card:#faf3e6;--text-main:#3e2c1c;--text-muted:#8a7a60;--border-color:#d9cdb8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-ui);background:var(--bg-main);color:var(--text-main);margin:0;padding:0;overflow-x:hidden;min-height:100vh;overscroll-behavior-y:contain;transition:background .3s,color .3s;padding-bottom:calc(var(--bottom-nav-height) + var(--safe-bottom))}
+.app-header{position:fixed;top:0;right:0;left:0;height:calc(var(--header-height) + var(--safe-top));padding-top:var(--safe-top);background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;display:flex;align-items:center;justify-content:space-between;padding-left:.8rem;padding-right:.8rem;z-index:1030;box-shadow:var(--shadow-md)}
+.header-brand{display:flex;align-items:center;gap:.5rem;font-size:1.05rem;font-weight:700}
+.header-brand i{color:var(--gold);font-size:1.15rem}
+.header-actions{display:flex;align-items:center;gap:.35rem}
+.header-btn{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.15);color:#fff;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.header-btn:active{background:rgba(255,255,255,.3)}
+.header-user{width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;cursor:pointer;border:2px solid rgba(255,255,255,.3)}
+.ai-credit-badge{display:none;align-items:center;gap:.25rem;background:rgba(255,255,255,.2);padding:.25rem .55rem;border-radius:12px;font-size:.65rem;font-weight:700;color:#fff;cursor:pointer;border:1px solid rgba(255,255,255,.15)}
+.ai-credit-badge i{color:var(--gold-light);font-size:.7rem}
+.main-content{padding-top:calc(var(--header-height) + var(--safe-top) + .5rem);min-height:100vh}
+.screen{display:none;animation:screenFadeIn .3s ease}
+.screen.active{display:block}
+@keyframes screenFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.bottom-nav{position:fixed;bottom:0;right:0;left:0;height:calc(var(--bottom-nav-height) + var(--safe-bottom));padding-bottom:var(--safe-bottom);background:var(--bg-card);border-top:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-around;z-index:1020;box-shadow:0 -2px 20px rgba(0,0,0,.08)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.3rem .4rem;border:none;background:transparent;color:var(--text-muted);font-family:var(--font-ui);font-size:.58rem;cursor:pointer;transition:color .2s;position:relative;min-width:42px;min-height:48px;justify-content:center}
+.nav-item i{font-size:1.15rem}
+.nav-item.active{color:var(--primary)}
+.nav-item.active::after{content:'';position:absolute;top:0;right:50%;transform:translateX(50%);width:18px;height:3px;background:var(--primary);border-radius:0 0 3px 3px}
+.nav-item .badge-count{position:absolute;top:0;left:.15rem;background:var(--gold);color:#fff;font-size:.5rem;padding:.1rem .25rem;border-radius:10px;font-weight:700;min-width:14px;text-align:center}
+.home-screen,.reading-screen,.bookmarks-screen,.stats-screen,.search-screen,.settings-screen,.auth-screen,.notifications-screen,.quiz-screen,.azkar-screen,.ai-screen{padding:.8rem 1rem;max-width:720px;margin:0 auto}
+.home-welcome{text-align:center;padding:.7rem 0 .4rem}
+.home-welcome h1{font-size:1.25rem;font-weight:700;color:var(--primary-dark);margin-bottom:.1rem}
+[data-theme="dark"] .home-welcome h1{color:var(--primary-light)}
+.home-welcome p{color:var(--text-muted);font-size:.78rem;margin:0}
+.date-display{display:flex;justify-content:center;gap:.5rem;margin:.5rem 0;flex-wrap:wrap}
+.date-chip{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.35rem .7rem;font-size:.7rem;display:flex;align-items:center;gap:.35rem}
+.date-chip i{color:var(--primary)}
+.date-chip .date-value{font-weight:700}
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin:.6rem 0}
+.quick-action{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.55rem .2rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;transition:all .2s;font-family:var(--font-ui);min-height:64px;justify-content:center}
+.quick-action:active{transform:scale(.95);background:#f0f7f0}
+[data-theme="dark"] .quick-action:active{background:#2a2a2a}
+.quick-action i{font-size:1.15rem;color:var(--primary)}
+.quick-action span{font-size:.58rem;color:var(--text-main);font-weight:500}
+.search-bar{position:relative;margin-bottom:.6rem}
+.search-bar input{width:100%;padding:.6rem .7rem .6rem 2.2rem;border:1px solid var(--border-color);border-radius:var(--radius-lg);background:var(--bg-card);color:var(--text-main);font-family:var(--font-ui);font-size:.82rem;outline:none;transition:border-color .3s,box-shadow .3s;min-height:42px}
+.search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,95,42,.12)}
+.search-bar .search-icon{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
+.surah-filters,.azkar-filters{display:flex;gap:.3rem;margin-bottom:.6rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.surah-filters::-webkit-scrollbar,.azkar-filters::-webkit-scrollbar{display:none}
+.filter-chip{padding:.35rem .75rem;border-radius:20px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-muted);font-family:var(--font-ui);font-size:.68rem;cursor:pointer;white-space:nowrap;transition:all .2s;min-height:32px}
+.filter-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.surah-list{display:flex;flex-direction:column;gap:.35rem}
+.surah-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.6rem .7rem;display:flex;align-items:center;gap:.6rem;cursor:pointer;transition:all .2s;min-height:52px}
+.surah-card:active{transform:scale(.98);background:#f0f7f0}
+[data-theme="dark"] .surah-card:active{background:#2a2a2a}
+.surah-card .surah-num{width:36px;height:36px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0}
+.surah-card .surah-info{flex:1;min-width:0}
+.surah-card .surah-name{font-weight:700;font-size:.88rem;color:var(--text-main)}
+.surah-card .surah-meta{display:flex;gap:.4rem;margin-top:.1rem;font-size:.62rem;color:var(--text-muted)}
+.surah-card .surah-meta .type-badge{padding:.05rem .3rem;border-radius:4px;font-size:.58rem}
+.type-meccan{background:#fff3e0;color:#e65100}
+.type-medinan{background:#e3f2fd;color:#1565c0}
+.surah-card .progress-ring{width:28px;height:28px;flex-shrink:0}
+.reading-header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;padding:.85rem;border-radius:var(--radius-lg);margin-bottom:.6rem;text-align:center;position:relative}
+.reading-header h1{font-size:1.05rem;font-weight:700;margin-bottom:.1rem}
+.reading-header .subtitle{font-size:.72rem;opacity:.9}
+.reading-header .header-badges{display:flex;justify-content:center;gap:.35rem;margin-top:.4rem;flex-wrap:wrap}
+.reading-header .header-badges span{background:rgba(255,255,255,.2);padding:.1rem .45rem;border-radius:12px;font-size:.6rem}
+.ai-float-btn{position:absolute;top:.6rem;left:.6rem;width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--primary-dark);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;box-shadow:0 2px 10px rgba(0,0,0,.2);transition:all .2s;z-index:5}
+.ai-float-btn:active{transform:scale(.9)}
+.reading-toolbar{display:flex;align-items:center;gap:.2rem;margin-bottom:.5rem;padding:.3rem;background:var(--bg-card);border-radius:var(--radius-md);border:1px solid var(--border-color);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.reading-toolbar::-webkit-scrollbar{display:none}
+.toolbar-btn{border:none;background:transparent;color:var(--text-muted);font-size:.9rem;padding:.4rem .45rem;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;flex-shrink:0;min-width:34px;min-height:34px;display:flex;align-items:center;justify-content:center}
+.toolbar-btn.active{background:var(--primary);color:#fff}
+.toolbar-btn:active{transform:scale(.9)}
+.bismillah{text-align:center;font-family:var(--font-quran);font-size:1.1rem;color:var(--primary-dark);padding:.6rem;margin-bottom:.6rem;background:linear-gradient(135deg,#f0f7f0,var(--bg-main));border-radius:var(--radius-md);border:1px solid var(--border-color)}
+[data-theme="dark"] .bismillah{color:var(--primary-light);background:linear-gradient(135deg,#1a2a1a,var(--bg-main))}
+.ayahs-container{font-family:var(--font-quran);font-size:1.4rem;line-height:2.5;color:var(--text-main);text-align:justify;text-justify:inter-word;padding:.4rem;word-wrap:break-word;overflow-wrap:break-word}
+.ayah-span{cursor:pointer;padding:.1rem .15rem;border-radius:6px;transition:background .2s;position:relative;display:inline}
+.ayah-span:active{background:#e8f5e9}
+[data-theme="dark"] .ayah-span:active{background:#2a3a2a}
+.ayah-span.selected{background:#fff8e1;box-shadow:0 0 0 2px var(--gold)}
+.ayah-number{display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;background:var(--primary-light);color:#fff;font-size:.58rem;font-family:var(--font-ui);font-weight:700;margin:0 .1rem;vertical-align:middle;position:relative;top:-2px}
+.memo-hidden{color:transparent!important;background:var(--border-color)!important;border-radius:4px;padding:.1rem .25rem;cursor:pointer;transition:all .2s}
+.memo-hidden.revealed{color:var(--text-main)!important;background:transparent!important}
+.azkar-categories{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin-bottom:.7rem}
+.azkar-cat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.8rem .6rem;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.azkar-cat-card:active{transform:scale(.97);background:#f0f7f0}
+[data-theme="dark"] .azkar-cat-card:active{background:#2a2a2a}
+.azkar-cat-card i{font-size:1.5rem;color:var(--primary)}
+.azkar-cat-card .cat-name{font-weight:700;font-size:.8rem;color:var(--text-main)}
+.azkar-cat-card .cat-count{font-size:.62rem;color:var(--text-muted)}
+.azkar-list{display:flex;flex-direction:column;gap:.5rem}
+.zekr-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.7rem;position:relative}
+.zekr-card .zekr-text{font-family:var(--font-quran);font-size:1.05rem;line-height:1.85;color:var(--text-main);margin-bottom:.4rem}
+.zekr-card .zekr-source{font-size:.65rem;color:var(--text-muted);font-style:italic;margin-bottom:.35rem}
+.zekr-card .zekr-footer{display:flex;align-items:center;justify-content:space-between;gap:.4rem;flex-wrap:wrap}
+.zekr-card .zekr-count-badge{background:#e8f5e9;color:var(--primary);padding:.12rem .5rem;border-radius:12px;font-size:.65rem;font-weight:700}
+[data-theme="dark"] .zekr-card .zekr-count-badge{background:#1a3a1a}
+.zekr-card .zekr-actions{display:flex;gap:.3rem}
+.zekr-action-btn{border:none;background:var(--bg-main);color:var(--text-muted);width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .2s}
+.zekr-action-btn:active{transform:scale(.9)}
+.zekr-action-btn.fav.active{color:var(--gold)}
+.zekr-counter{margin-top:.4rem;padding:.4rem;background:var(--bg-main);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.zekr-counter .counter-display{font-size:1.1rem;font-weight:700;color:var(--primary);min-width:45px;text-align:center}
+.zekr-counter .counter-btns{display:flex;gap:.25rem}
+.zekr-counter .counter-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--primary);color:#fff;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.zekr-counter .counter-btn:active{transform:scale(.9)}
+.zekr-counter .counter-btn.reset{background:var(--border-color);color:var(--text-main)}
+.zekr-counter .counter-btn.done{background:var(--gold)}
+.zekr-counter.completed .counter-display{color:var(--gold)}
+.azkar-cat-tabs{display:flex;gap:.3rem;overflow-x:auto;padding-bottom:.2rem;margin-bottom:.5rem;scrollbar-width:none}
+.azkar-cat-tabs::-webkit-scrollbar{display:none}
+.ai-header{background:linear-gradient(135deg,#0e3b1a,#1a5f2a,#c9a227);color:#fff;padding:1rem;border-radius:var(--radius-lg);margin-bottom:.7rem;position:relative;overflow:hidden}
+.ai-header::before{content:'';position:absolute;top:-50%;right:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(201,162,39,.2) 0%,transparent 60%)}
+.ai-header h2{font-size:1.05rem;font-weight:700;margin-bottom:.2rem;position:relative;display:flex;align-items:center;gap:.4rem}
+.ai-header .ai-credits{display:flex;align-items:center;gap:.5rem;font-size:.75rem;position:relative;margin-top:.4rem}
+.ai-credits-bar{flex:1;height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;max-width:150px}
+.ai-credits-bar .fill{height:100%;background:var(--gold-light);border-radius:3px;transition:width .4s ease}
+.ai-chat-manager{display:flex;align-items:center;gap:.4rem;margin-bottom:.6rem;flex-wrap:wrap}
+.ai-chat-session-btn{flex:1;min-width:140px;display:flex;align-items:center;gap:.4rem;padding:.5rem .7rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);font-family:var(--font-ui);font-size:.75rem;color:var(--text-main);cursor:pointer;transition:all .2s;min-height:40px}
+.ai-chat-session-btn:active{transform:scale(.98)}
+.ai-chat-session-btn i:first-child{color:var(--primary)}
+.ai-chat-session-btn .session-name{flex:1;text-align:right;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-chat-session-btn i:last-child{color:var(--text-muted);font-size:.7rem}
+.ai-chat-icon-btn{width:40px;height:40px;border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--primary);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.ai-chat-icon-btn:active{transform:scale(.9);background:var(--bg-main)}
+.ai-model-custom{position:relative;margin-bottom:.6rem}
+.ai-model-trigger{width:100%;display:flex;align-items:center;gap:.5rem;padding:.55rem .8rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);font-family:var(--font-ui);font-size:.78rem;color:var(--text-main);cursor:pointer;transition:all .2s;min-height:44px;text-align:right}
+.ai-model-trigger i.fa-microchip{color:var(--primary);font-size:.9rem}
+.ai-model-trigger .trigger-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;direction:ltr;text-align:left}
+.ai-model-trigger .trigger-text.placeholder{color:var(--text-muted);font-weight:500}
+.ai-model-trigger i.fa-chevron-down{color:var(--text-muted);font-size:.7rem;transition:transform .2s}
+.ai-model-custom.open .ai-model-trigger i.fa-chevron-down{transform:rotate(180deg)}
+.ai-model-menu{position:absolute;top:calc(100% + 4px);right:0;left:0;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);z-index:100;max-height:280px;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s;padding:.3rem}
+.ai-model-custom.open .ai-model-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.ai-model-option{padding:.6rem .7rem;border-radius:var(--radius-sm);cursor:pointer;transition:background .15s;font-size:.78rem;display:flex;align-items:center;gap:.5rem;color:var(--text-main)}
+.ai-model-option:hover,.ai-model-option:active{background:#f0f7f0}
+[data-theme="dark"] .ai-model-option:hover,[data-theme="dark"] .ai-model-option:active{background:#2a2a2a}
+.ai-model-option.selected{background:#e8f5e9;color:var(--primary);font-weight:700}
+[data-theme="dark"] .ai-model-option.selected{background:#1a3a1a}
+.ai-model-option i{font-size:.75rem;width:14px;text-align:center}
+.ai-model-option .opt-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:left}
+.ai-model-option .opt-check{color:var(--primary);font-size:.75rem;opacity:0}
+.ai-model-option.selected .opt-check{opacity:1}
+.ai-model-menu-empty{padding:1rem;text-align:center;color:var(--text-muted);font-size:.75rem}
+.ai-model-menu-loading{padding:1rem;text-align:center;color:var(--text-muted);font-size:.75rem;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.ai-model-menu-loading .mini-spin{width:14px;height:14px;border:2px solid var(--border-color);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+.sessions-list{display:flex;flex-direction:column;gap:.4rem}
+.session-item{display:flex;align-items:center;gap:.5rem;padding:.65rem .7rem;background:var(--bg-main);border:1px solid var(--border-color);border-radius:var(--radius-md);transition:all .2s}
+.session-item.active{border-color:var(--primary);background:#f0f7f0}
+[data-theme="dark"] .session-item.active{background:#1a2a1a}
+.session-item .s-info{flex:1;min-width:0}
+.session-item .s-name{font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.session-item .s-meta{font-size:.65rem;color:var(--text-muted);margin-top:.1rem}
+.session-item .s-actions{display:flex;gap:.25rem;flex-shrink:0}
+.s-action-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-muted);font-size:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.s-action-btn:active{transform:scale(.9)}
+.s-action-btn.active{color:var(--primary);border-color:var(--primary)}
+.s-action-btn.danger{color:#c62828}
+.ai-task-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin-bottom:.7rem}
+.ai-task-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.7rem .5rem;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.ai-task-card:active{transform:scale(.97);background:#f0f7f0}
+[data-theme="dark"] .ai-task-card:active{background:#2a2a2a}
+.ai-task-card:disabled{opacity:.5;cursor:not-allowed}
+.ai-task-card i{font-size:1.3rem;color:var(--primary)}
+.ai-task-card .task-name{font-weight:700;font-size:.75rem;color:var(--text-main)}
+.ai-task-card .task-cost{font-size:.6rem;color:var(--gold);font-weight:700}
+.ai-chat-container{display:flex;flex-direction:column;gap:.5rem;min-height:200px;max-height:55vh;overflow-y:auto;padding:.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:.5rem;-webkit-overflow-scrolling:touch}
+.ai-message{max-width:90%;padding:.6rem .8rem;border-radius:12px;font-size:.8rem;line-height:1.7;word-wrap:break-word}
+.ai-message.user{align-self:flex-start;background:var(--primary);color:#fff;border-bottom-right-radius:4px}
+.ai-message.assistant{align-self:flex-end;background:var(--bg-main);color:var(--text-main);border:1px solid var(--border-color);border-bottom-left-radius:4px}
+.ai-message.system{align-self:center;background:#fff8e1;color:#8a6d00;border:1px solid var(--gold);font-size:.7rem;text-align:center;max-width:100%}
+.ai-message.error{align-self:flex-end;background:#450a0a;color:#fca5a5;border:1px solid #991b1b;font-size:.72rem;width:100%;max-width:100%}
+[data-theme="dark"] .ai-message.system{background:#2a2200;color:var(--gold-light)}
+.ai-message .ai-message-text{white-space:pre-wrap;font-family:var(--font-ui)}
+.ai-error-details{background:#18181b;color:#ef4444;padding:.6rem;border-radius:8px;font-family:monospace;font-size:.7rem;margin-top:.5rem;direction:ltr;text-align:left;overflow-x:auto;max-height:150px;user-select:all;white-space:pre-wrap;word-break:break-all}
+.ai-copy-err-btn{margin-top:.4rem;padding:.3rem .7rem;background:#ef4444;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.68rem;font-weight:700;font-family:var(--font-ui)}
+.ai-typing{display:inline-flex;gap:.2rem;align-items:center}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:typingBounce 1.2s infinite}
+.ai-typing span:nth-child(2){animation-delay:.2s}
+.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+.ai-empty-state{text-align:center;padding:2rem 1rem;color:var(--text-muted)}
+.ai-empty-state i{font-size:2.5rem;color:var(--primary);opacity:.4;margin-bottom:.5rem}
+.ai-empty-state p{font-size:.8rem}
+.ai-info-grid{display:flex;flex-direction:column;gap:.5rem}
+.ai-info-item{display:flex;gap:.5rem;align-items:flex-start;padding:.6rem;background:var(--bg-main);border-radius:10px}
+.ai-info-item i{color:var(--primary);font-size:1rem;margin-top:.15rem}
+.ai-info-item .info-title{font-weight:700;font-size:.82rem;margin-bottom:.1rem}
+.ai-info-item .info-desc{font-size:.72rem;color:var(--text-muted);line-height:1.6}
+.ayah-popup{position:fixed;bottom:calc(var(--bottom-nav-height) + var(--safe-bottom) + .5rem);left:.5rem;right:.5rem;background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:.65rem;z-index:1050;transform:translateY(120%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);max-height:65vh;overflow-y:auto}
+.ayah-popup.show{transform:translateY(0)}
+.ayah-popup .popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}
+.ayah-popup .popup-ref{font-weight:700;color:var(--primary-dark);font-size:.82rem}
+[data-theme="dark"] .ayah-popup .popup-ref{color:var(--primary-light)}
+.ayah-popup .popup-close{border:none;background:#f5f5f5;width:28px;height:28px;border-radius:50%;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem}
+[data-theme="dark"] .ayah-popup .popup-close{background:#333}
+.ayah-popup .popup-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem}
+.popup-action{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.45rem .15rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-main);font-family:var(--font-ui);font-size:.6rem;cursor:pointer;transition:all .2s;min-height:50px;justify-content:center}
+.popup-action:active{background:#f0f7f0;transform:scale(.95)}
+[data-theme="dark"] .popup-action:active{background:#2a2a2a}
+.popup-action i{font-size:.95rem;color:var(--primary)}
+.popup-action.bookmarked i{color:var(--gold)}
+.btn-primary-custom{background:var(--primary);color:#fff;border:none;padding:.6rem 1.1rem;border-radius:var(--radius-md);font-family:var(--font-ui);font-size:.82rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;transition:all .2s;min-height:42px}
+.btn-primary-custom:active{transform:scale(.97);background:var(--primary-dark)}
+.btn-primary-custom:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline-custom{background:transparent;color:var(--primary);border:1px solid var(--primary);padding:.6rem 1.1rem;border-radius:var(--radius-md);font-family:var(--font-ui);font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;min-height:42px}
+.modal-content{border:none;border-radius:var(--radius-lg);background:var(--bg-card);color:var(--text-main);max-height:85vh;display:flex;flex-direction:column}
+.modal-header{background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;border:none;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:.75rem 1rem;flex-shrink:0}
+.modal-title{font-size:.92rem;font-weight:700;display:flex;align-items:center;gap:.45rem}
+.modal-body{overflow-y:auto;padding:1rem;flex:1;-webkit-overflow-scrolling:touch}
+.tafsir-item{display:flex;align-items:center;gap:.6rem;padding:.65rem;border-bottom:1px solid var(--border-color);cursor:pointer;transition:background .2s;min-height:52px}
+.tafsir-item:active{background:#f0f7f0}
+[data-theme="dark"] .tafsir-item:active{background:#2a2a2a}
+.tafsir-item .tafsir-icon{width:36px;height:36px;border-radius:var(--radius-sm);background:#e8f5e9;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+[data-theme="dark"] .tafsir-item .tafsir-icon{background:#1a3a1a}
+.tafsir-item .tafsir-name{font-weight:700;font-size:.82rem}
+.tafsir-item .tafsir-author{font-size:.68rem;color:var(--text-muted);margin-top:.08rem}
+.tafsir-text{line-height:1.9;font-size:.88rem}
+.tafsir-text .ayah-ref{background:#e8f5e9;padding:.45rem .65rem;border-radius:var(--radius-sm);margin-bottom:.6rem;font-family:var(--font-quran);font-size:.95rem;color:var(--primary-dark);border-right:4px solid var(--primary)}
+[data-theme="dark"] .tafsir-text .ayah-ref{background:#1a3a1a;color:var(--primary-light)}
+.tafsir-text p{margin-bottom:.6rem}
+.auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - var(--header-height) - var(--bottom-nav-height) - var(--safe-bottom) - var(--safe-top));padding:1rem}
+.auth-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.2rem 1rem;width:100%;max-width:400px;box-shadow:var(--shadow-md)}
+.auth-logo{text-align:center;margin-bottom:.9rem}
+.auth-logo i{font-size:2.6rem;color:var(--primary);margin-bottom:.35rem}
+.auth-logo h2{font-size:1.05rem;font-weight:700;color:var(--primary-dark);margin:0}
+[data-theme="dark"] .auth-logo h2{color:var(--primary-light)}
+.auth-tabs{display:flex;background:var(--bg-main);border-radius:var(--radius-md);padding:.2rem;margin-bottom:.9rem}
+.auth-tab{flex:1;padding:.5rem;border:none;background:transparent;color:var(--text-muted);font-family:var(--font-ui);font-size:.78rem;font-weight:500;cursor:pointer;border-radius:var(--radius-sm);transition:all .2s;min-height:36px}
+.auth-tab.active{background:var(--primary);color:#fff}
+.form-group{margin-bottom:.7rem}
+.form-group label{display:block;font-size:.72rem;font-weight:500;margin-bottom:.22rem;color:var(--text-main)}
+.form-input{width:100%;padding:.6rem .65rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-main);color:var(--text-main);font-family:var(--font-ui);font-size:.82rem;outline:none;transition:border-color .3s;min-height:42px}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(26,95,42,.1)}
+.form-error{color:#c62828;font-size:.68rem;margin-top:.22rem;display:none}
+.form-error.show{display:block}
+.auth-submit{width:100%;justify-content:center;margin-top:.35rem}
+.auth-switch{text-align:center;margin-top:.7rem;font-size:.72rem;color:var(--text-muted)}
+.auth-switch a{color:var(--primary);cursor:pointer;font-weight:500;text-decoration:none}
+.notification-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.65rem;margin-bottom:.35rem;cursor:pointer;transition:all .2s;position:relative}
+.notification-card.unread{border-right:4px solid var(--primary);background:#f0f7f0}
+[data-theme="dark"] .notification-card.unread{background:#1a2a1a}
+.notification-card:active{transform:scale(.98)}
+.notification-card .notif-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.2rem}
+.notification-card .notif-title{font-weight:700;font-size:.82rem;color:var(--text-main)}
+.notification-card .notif-time{font-size:.58rem;color:var(--text-muted)}
+.notification-card .notif-text{font-size:.72rem;color:var(--text-muted);line-height:1.5}
+.notification-card .notif-tags{display:flex;gap:.2rem;margin-top:.25rem;flex-wrap:wrap}
+.notification-card .notif-tag{background:#e8f5e9;color:var(--primary);padding:.08rem .35rem;border-radius:10px;font-size:.58rem}
+[data-theme="dark"] .notification-card .notif-tag{background:#1a3a1a}
+.quiz-header{text-align:center;margin-bottom:.7rem}
+.quiz-header h2{font-size:.95rem;font-weight:700;color:var(--primary-dark)}
+[data-theme="dark"] .quiz-header h2{color:var(--primary-light)}
+.quiz-controls{display:flex;gap:.35rem;margin-bottom:.7rem;flex-wrap:wrap;justify-content:center}
+.quiz-select{padding:.4rem .6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-main);font-family:var(--font-ui);font-size:.72rem;min-height:36px;min-width:110px}
+.quiz-question{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:.9rem;text-align:center;margin-bottom:.7rem}
+.quiz-question .question-text{font-family:var(--font-quran);font-size:1.15rem;line-height:1.9;margin-bottom:.7rem}
+.quiz-options{display:flex;flex-direction:column;gap:.35rem}
+.quiz-option{padding:.65rem .8rem;border:2px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-main);font-family:var(--font-quran);font-size:.95rem;cursor:pointer;transition:all .2s;text-align:center;min-height:44px}
+.quiz-option:active{transform:scale(.98)}
+.quiz-option.correct{border-color:#2e7d32;background:#e8f5e9;color:#1b5e20}
+[data-theme="dark"] .quiz-option.correct{background:#1a3a1a;color:#81c784}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee;color:#b71c1c}
+[data-theme="dark"] .quiz-option.wrong{background:#3a1a1a;color:#ef9a9a}
+.quiz-score{text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:.6rem}
+.quiz-progress{height:5px;background:var(--border-color);border-radius:3px;overflow:hidden;margin-bottom:.7rem}
+.quiz-progress .fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px;transition:width .3s}
+.quiz-ai-btn{margin-top:.7rem;padding:.5rem 1rem;background:linear-gradient(135deg,var(--primary-dark),var(--primary),var(--gold));color:#fff;border:none;border-radius:var(--radius-md);font-family:var(--font-ui);font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;min-height:40px}
+.quiz-ai-btn:active{transform:scale(.97)}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.45rem;margin-bottom:.7rem}
+.stat-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.7rem;text-align:center}
+.stat-box .stat-value{font-size:1.3rem;font-weight:700;color:var(--primary)}
+.stat-box .stat-label{font-size:.62rem;color:var(--text-muted);margin-top:.08rem}
+.progress-bar-custom{height:6px;background:var(--border-color);border-radius:4px;overflow:hidden;margin:.35rem 0}
+.progress-bar-custom .fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:4px;transition:width .5s ease}
+.bookmark-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:.6rem;margin-bottom:.35rem;cursor:pointer;transition:all .2s}
+.bookmark-card:active{transform:scale(.98)}
+.bookmark-card .bookmark-ref{font-weight:700;color:var(--primary);font-size:.72rem;margin-bottom:.18rem;display:flex;justify-content:space-between;align-items:center}
+.bookmark-card .bookmark-text{font-family:var(--font-quran);font-size:.88rem;line-height:1.55;color:var(--text-main)}
+.bookmark-card .bookmark-date{font-size:.58rem;color:var(--text-muted);margin-top:.18rem}
+.settings-group{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:.6rem;overflow:hidden}
+.settings-group-title{padding:.6rem .85rem;font-size:.68rem;font-weight:700;color:var(--primary);background:#f0f7f0;border-bottom:1px solid var(--border-color)}
+[data-theme="dark"] .settings-group-title{background:#1a2a1a}
+.settings-item{display:flex;align-items:center;justify-content:space-between;padding:.65rem .85rem;border-bottom:1px solid var(--border-color);min-height:46px}
+.settings-item:last-child{border-bottom:none}
+.settings-item .settings-label{display:flex;align-items:center;gap:.35rem;font-size:.78rem}
+.settings-item .settings-label i{color:var(--primary);width:15px;text-align:center}
+.settings-item .settings-label .info-icon{color:var(--text-muted);font-size:.68rem;cursor:pointer;margin-right:.15rem}
+.toggle-switch{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border-color);border-radius:22px;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle-switch input:checked + .toggle-slider{background:var(--primary)}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(18px)}
+.font-selector{display:flex;gap:.25rem}
+.font-option{padding:.28rem .55rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-card);cursor:pointer;font-size:.68rem;transition:all .2s;min-height:30px}
+.font-option.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.font-size-control{display:flex;align-items:center;gap:.45rem}
+.font-size-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-main);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ai-badge{padding:.15rem .45rem;border-radius:10px;font-size:.58rem;font-weight:700}
+.ai-badge.active{background:#e8f5e9;color:#1a5f2a}
+[data-theme="dark"] .ai-badge.active{background:#1a3a1a;color:var(--primary-light)}
+.ai-badge.locked{background:#fff3e0;color:#e65100}
+[data-theme="dark"] .ai-badge.locked{background:#2a1a00;color:#ffb74d}
+.loading-container{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;color:var(--text-muted)}
+.spinner{width:28px;height:28px;border:3px solid var(--border-color);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:2rem 1rem;color:var(--text-muted)}
+.empty-state i{font-size:2rem;opacity:.4;margin-bottom:.5rem}
+.empty-state p{font-size:.78rem}
+.toast-container{position:fixed;bottom:calc(var(--bottom-nav-height) + var(--safe-bottom) + .7rem);left:.7rem;right:.7rem;z-index:1100;pointer-events:none}
+.toast-custom{background:var(--primary-dark);color:#fff;padding:.55rem .85rem;border-radius:var(--radius-md);font-size:.72rem;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:.35rem;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:auto;margin-bottom:.3rem}
+.toast-custom.show{transform:translateY(0);opacity:1}
+.toast-custom.error{background:#c62828}
+.toast-custom.warning{background:#e65100}
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1060;opacity:0;pointer-events:none;transition:opacity .3s}
+.sheet-overlay.show{opacity:1;pointer-events:auto}
+.bottom-sheet{position:fixed;bottom:0;right:0;left:0;background:var(--bg-card);border-radius:var(--radius-xl) var(--radius-xl) 0 0;z-index:1070;transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);max-height:80vh;display:flex;flex-direction:column}
+.bottom-sheet.show{transform:translateY(0)}
+.bottom-sheet .sheet-handle{width:36px;height:4px;background:var(--border-color);border-radius:2px;margin:.6rem auto}
+.bottom-sheet .sheet-title{padding:0 1rem .65rem;font-weight:700;font-size:.92rem;border-bottom:1px solid var(--border-color)}
+.bottom-sheet .sheet-body{overflow-y:auto;padding:1rem;flex:1;-webkit-overflow-scrolling:touch}
+.report-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.7rem}
+.report-type-btn{padding:.7rem .5rem;border:2px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-main);font-family:var(--font-ui);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:.3rem;min-height:70px;justify-content:center}
+.report-type-btn:active{transform:scale(.97)}
+.report-type-btn i{font-size:1.3rem;color:var(--text-muted)}
+.report-type-btn.active{border-color:var(--primary);background:#f0f7f0}
+.report-type-btn.active i{color:var(--primary)}
+[data-theme="dark"] .report-type-btn.active{background:#1a2a1a}
+.report-type-btn.active[data-type="suggestion"]{border-color:#2e7d32;background:#e8f5e9}
+.report-type-btn.active[data-type="suggestion"] i{color:#2e7d32}
+.report-type-btn.active[data-type="problem"]{border-color:#c62828;background:#ffebee}
+.report-type-btn.active[data-type="problem"] i{color:#c62828}
+.report-tags-input{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.4rem;min-height:0}
+.report-tag-chip{display:inline-flex;align-items:center;gap:.25rem;background:#e8f5e9;color:var(--primary);padding:.2rem .6rem;border-radius:12px;font-size:.68rem;font-weight:700}
+.report-tag-chip button{border:none;background:transparent;color:var(--primary);cursor:pointer;font-size:.7rem;padding:0;display:flex;align-items:center}
+.report-counter{font-size:.65rem;color:var(--text-muted);margin-top:.25rem;text-align:left}
+.report-counter.warn{color:#e65100;font-weight:700}
+.offline-indicator{position:fixed;top:calc(var(--header-height) + var(--safe-top) + .3rem);left:50%;transform:translateX(-50%);background:#e65100;color:#fff;padding:.25rem .75rem;border-radius:12px;font-size:.65rem;font-weight:700;z-index:1025;display:none;align-items:center;gap:.3rem;box-shadow:var(--shadow-md)}
+.offline-indicator.show{display:flex}
+.cached-badge{display:inline-flex;align-items:center;gap:.15rem;background:#e8f5e9;color:var(--primary);padding:.05rem .4rem;border-radius:8px;font-size:.55rem;font-weight:700;margin-right:.3rem}
+[data-theme="dark"] .cached-badge{background:#1a3a1a}
+/* ===== Maintenance Screen ===== */
+.maintenance-overlay{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0e3b1a,#1a5f2a);color:#fff;z-index:2000;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+.maintenance-overlay.show{display:flex}
+.maintenance-card{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:24px;max-width:500px;width:100%;padding:1.5rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.maintenance-card .m-icon{font-size:4rem;color:var(--gold-light);margin-bottom:1rem;animation:rotateSlow 4s linear infinite}
+@keyframes rotateSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.maintenance-card h2{font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.maintenance-card .m-message{font-size:.85rem;line-height:1.7;opacity:.9;margin-bottom:1rem;background:rgba(255,255,255,.1);padding:.7rem;border-radius:12px}
+.maintenance-countdown{display:flex;justify-content:center;gap:.5rem;margin:1rem 0;flex-wrap:wrap}
+.countdown-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.6rem .9rem;min-width:64px;display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.countdown-box .num{font-size:1.6rem;font-weight:700;color:var(--gold-light);line-height:1}
+.countdown-box .unit{font-size:.65rem;opacity:.8}
+.tasbih-section{margin-top:1.2rem;padding:1rem;background:rgba(255,255,255,.1);border-radius:16px;border:1px solid rgba(255,255,255,.15)}
+.tasbih-section h3{font-size:.85rem;margin-bottom:.6rem;color:var(--gold-light)}
+.tasbih-display{font-size:3rem;font-weight:700;color:#fff;margin:.5rem 0;font-family:var(--font-quran)}
+.tasbih-buttons{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.5rem}
+.tasbih-btn{padding:.5rem .6rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;font-family:var(--font-ui);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.tasbih-btn:active,.tasbih-btn.active{background:var(--gold);color:var(--primary-dark);border-color:var(--gold)}
+.tasbih-plus{width:100%;padding:.7rem;background:var(--gold);color:var(--primary-dark);border:none;border-radius:12px;font-family:var(--font-ui);font-size:1rem;font-weight:700;cursor:pointer;margin-top:.4rem;transition:all .2s}
+.tasbih-plus:active{transform:scale(.97)}
+.tasbih-reset{background:transparent;border:none;color:rgba(255,255,255,.6);font-size:.7rem;cursor:pointer;margin-top:.4rem;text-decoration:underline}
+.maintenance-footer{font-size:.7rem;opacity:.6;margin-top:1rem}
+@media (min-width:768px){.ayahs-container{font-size:1.7rem}.azkar-categories{grid-template-columns:repeat(3,1fr)}.ai-task-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:360px){.quick-action span{font-size:.52rem}.ayahs-container{font-size:1.2rem;line-height:2.3}.surah-card .surah-name{font-size:.82rem}.popup-action{font-size:.55rem}.azkar-cat-card .cat-name{font-size:.72rem}}
+body.modal-open{overflow:hidden}
+button,a,.surah-card,.ayah-span,.notification-card,.azkar-cat-card,.zekr-card,.ai-task-card,.ai-message{touch-action:manipulation}
+</style>
+</head>
+<body>
+
+<div class="offline-indicator" id="offlineIndicator"><i class="fas fa-wifi"></i> وضع عدم الاتصال</div>
+
+<!-- Maintenance Overlay -->
+<div class="maintenance-overlay" id="maintenanceOverlay">
+  <div class="maintenance-card">
+    <i class="fas fa-tools m-icon"></i>
+    <h2>التطبيق قيد الصيانة</h2>
+    <div class="m-message" id="maintenanceMessage">نعتذر عن الإزعاج، جارٍ تحديث التطبيق حالياً.</div>
+    <div id="maintenanceCountdownWrap" style="display:none;">
+      <div style="font-size:.75rem;opacity:.8;margin-bottom:.4rem;">الوقت المتبقي:</div>
+      <div class="maintenance-countdown" id="maintenanceCountdown"></div>
+    </div>
+    <div class="tasbih-section">
+      <h3><i class="fas fa-hands-praying"></i> استغل الوقت بالتسبيح</h3>
+      <div class="tasbih-display" id="tasbihDisplay">0</div>
+      <div class="tasbih-buttons">
+        <button class="tasbih-btn active" data-dhikr="سبحان الله">سبحان الله</button>
+        <button class="tasbih-btn" data-dhikr="الحمد لله">الحمد لله</button>
+        <button class="tasbih-btn" data-dhikr="الله أكبر">الله أكبر</button>
+        <button class="tasbih-btn" data-dhikr="لا إله إلا الله">لا إله إلا الله</button>
+      </div>
+      <button class="tasbih-plus" id="tasbihPlus"><i class="fas fa-plus-circle"></i> <span id="tasbihLabel">سبحان الله</span></button>
+      <button class="tasbih-reset" id="tasbihReset">إعادة تعيين العداد</button>
+    </div>
+    <div class="maintenance-footer">سيتم إعادة المحاولة تلقائياً كل دقيقة</div>
+  </div>
+</div>
+
+<header class="app-header" id="appHeader">
+  <div class="header-brand"><i class="fas fa-book-quran"></i><span>القرآن الكريم</span></div>
+  <div class="header-actions">
+    <button class="ai-credit-badge" id="aiCreditBadge"><i class="fas fa-bolt"></i><span id="aiCreditValue">400</span></button>
+    <button class="header-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+    <button class="header-btn" id="headerSearchBtn"><i class="fas fa-search"></i></button>
+    <div class="header-user" id="headerUserBtn" style="display:none;">؟</div>
+  </div>
+</header>
+
+<main class="main-content" id="mainContent">
+
+<section class="screen active" id="screen-home">
+  <div class="home-screen">
+    <div class="home-welcome"><h1>القرآن الكريم</h1><p>اقرأ، احفظ، وتدبّر</p></div>
+    <div class="date-display">
+      <div class="date-chip"><i class="fas fa-calendar-alt"></i><span id="gregorianDate" class="date-value">جاري التحميل...</span></div>
+      <div class="date-chip"><i class="fas fa-moon"></i><span id="hijriDate" class="date-value">جاري التحميل...</span></div>
+    </div>
+    <div class="quick-actions">
+      <button class="quick-action" data-nav="last-read"><i class="fas fa-bookmark"></i><span>متابعة</span></button>
+      <button class="quick-action" data-nav="bookmarks"><i class="fas fa-star"></i><span>المفضلة</span></button>
+      <button class="quick-action" data-nav="stats"><i class="fas fa-chart-line"></i><span>إحصائياتي</span></button>
+      <button class="quick-action" data-nav="quiz"><i class="fas fa-brain"></i><span>اختبار الحفظ</span></button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.6rem;">
+      <button class="quick-action" data-nav="azkar" style="min-height:46px;flex-direction:row;gap:.4rem;border-color:var(--gold);"><i class="fas fa-hands-praying" style="color:var(--gold);"></i><span style="font-size:.72rem;font-weight:700;">الأذكار</span></button>
+      <button class="quick-action" data-nav="ai" style="min-height:46px;flex-direction:row;gap:.4rem;border-color:var(--primary);"><i class="fas fa-robot" style="color:var(--primary);"></i><span style="font-size:.72rem;font-weight:700;">مساعد AI</span></button>
+    </div>
+    <div class="search-bar"><i class="fas fa-search search-icon"></i><input type="text" id="surahSearchInput" placeholder="ابحث عن سورة..." autocomplete="off"></div>
+    <div class="surah-filters" id="surahFilters">
+      <button class="filter-chip active" data-filter="all">الكل</button>
+      <button class="filter-chip" data-filter="meccan">مكية</button>
+      <button class="filter-chip" data-filter="medinan">مدنية</button>
+    </div>
+    <div class="surah-list" id="surahListContainer"><div class="loading-container"><div class="spinner"></div><span style="margin-top:.55rem;font-size:.72rem;">جاري تحميل السور...</span></div></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-reading">
+  <div class="reading-screen">
+    <div class="reading-header" id="readingHeader">
+      <button class="ai-float-btn" id="readingAiBtn"><i class="fas fa-robot"></i></button>
+      <h1 id="readingSurahName">السورة</h1>
+      <div class="subtitle" id="readingSurahSubtitle"></div>
+      <div class="header-badges" id="readingSurahBadges"></div>
+    </div>
+    <div class="reading-toolbar" id="readingToolbar">
+      <button class="toolbar-btn" id="fontDecrease"><i class="fas fa-minus"></i></button>
+      <button class="toolbar-btn" id="fontIncrease"><i class="fas fa-plus"></i></button>
+      <button class="toolbar-btn" id="toggleMemorization"><i class="fas fa-brain"></i></button>
+      <button class="toolbar-btn" id="shareAyahBtn"><i class="fas fa-share-alt"></i></button>
+      <button class="toolbar-btn" id="goToQuizBtn"><i class="fas fa-question-circle"></i></button>
+    </div>
+    <div id="bismillahContainer"></div>
+    <div class="ayahs-container" id="ayahsContainer"></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-ai">
+  <div class="ai-screen">
+    <div class="ai-header">
+      <h2><i class="fas fa-robot"></i> مساعد القرآن الذكي</h2>
+      <p style="font-size:.72rem;opacity:.9;position:relative;margin:.15rem 0 0;">مدعوم بـ Groq API</p>
+      <div class="ai-credits">
+        <i class="fas fa-bolt"></i><span>الرصيد:</span>
+        <div class="ai-credits-bar"><div class="fill" id="aiCreditsFill" style="width:100%;"></div></div>
+        <span id="aiCreditsText">400 / 400</span>
+      </div>
+    </div>
+    <div class="ai-chat-manager">
+      <button class="ai-chat-session-btn" id="openSessionsBtn">
+        <i class="fas fa-comments"></i>
+        <span class="session-name" id="currentSessionName">محادثة جديدة</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <button class="ai-chat-icon-btn" id="newSessionBtn"><i class="fas fa-plus"></i></button>
+    </div>
+    <div class="ai-model-custom" id="aiModelCustom">
+      <button class="ai-model-trigger" id="aiModelTrigger" type="button">
+        <i class="fas fa-microchip"></i>
+        <span class="trigger-text placeholder" id="aiModelTriggerText">جاري جلب النماذج...</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="ai-model-menu" id="aiModelMenu">
+        <div class="ai-model-menu-loading"><div class="mini-spin"></div> جاري الجلب...</div>
+      </div>
+    </div>
+    <div class="ai-task-grid" id="aiTaskGrid">
+      <button class="ai-task-card" data-ai-task="tafsir"><i class="fas fa-book-open"></i><div class="task-name">تفسير آية</div><div class="task-cost" id="cost-tafsir">8 رصيد</div></button>
+      <button class="ai-task-card" data-ai-task="tadabbur"><i class="fas fa-lightbulb"></i><div class="task-name">تدبر وتأمل</div><div class="task-cost" id="cost-tadabbur">4 رصيد</div></button>
+      <button class="ai-task-card" data-ai-task="surah-info"><i class="fas fa-info-circle"></i><div class="task-name">معلومات سورة</div><div class="task-cost" id="cost-surah-info">6 رصيد</div></button>
+      <button class="ai-task-card" data-ai-task="quiz-analysis"><i class="fas fa-chart-bar"></i><div class="task-name">تحليل الاختبار</div><div class="task-cost" id="cost-quiz-analysis">4 رصيد</div></button>
+      <button class="ai-task-card" data-ai-task="clear"><i class="fas fa-eraser"></i><div class="task-name">تفريغ الحالية</div><div class="task-cost">مجاناً</div></button>
+      <button class="ai-task-card" data-ai-task="info"><i class="fas fa-question-circle"></i><div class="task-name">ماذا يفعل AI؟</div><div class="task-cost">دليل</div></button>
+    </div>
+    <div class="ai-chat-container" id="aiChatContainer">
+      <div class="ai-empty-state" id="aiEmptyState"><i class="fas fa-robot"></i><p>اضغط على آية في شاشة القراءة ثم "اسأل AI" — أو اختر مهمة من الأعلى</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="screen-azkar">
+  <div class="azkar-screen">
+    <h2 style="font-size:1rem;margin-bottom:.55rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> الأذكار والأدعية</h2>
+    <div class="azkar-cat-tabs" id="azkarMainTabs">
+      <button class="filter-chip active" data-azkar-tab="categories">التصنيفات</button>
+      <button class="filter-chip" data-azkar-tab="favorites">المفضلة</button>
+    </div>
+    <div class="search-bar"><i class="fas fa-search search-icon"></i><input type="text" id="azkarSearchInput" placeholder="ابحث عن ذكر..." autocomplete="off"></div>
+    <div id="azkarCategoriesView"><div class="azkar-categories" id="azkarCategoriesList"><div class="loading-container"><div class="spinner"></div><span style="margin-top:.55rem;font-size:.72rem;">جاري تحميل الأذكار...</span></div></div></div>
+    <div id="azkarListView" style="display:none;">
+      <button class="btn-outline-custom" id="backToAzkarCats" style="margin-bottom:.55rem;padding:.3rem .65rem;font-size:.7rem;"><i class="fas fa-arrow-right"></i> العودة للتصنيفات</button>
+      <h3 id="azkarListTitle" style="font-size:.9rem;margin-bottom:.45rem;"></h3>
+      <div class="azkar-list" id="azkarListContainer"></div>
+    </div>
+    <div id="azkarFavView" style="display:none;"><div class="azkar-list" id="azkarFavContainer"><div class="empty-state"><i class="fas fa-star"></i><p>لا توجد أذكار مفضلة بعد</p></div></div></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-quiz">
+  <div class="quiz-screen">
+    <div class="quiz-header"><h2><i class="fas fa-brain" style="color:var(--primary);"></i> اختبار الحفظ</h2><p style="font-size:.72rem;color:var(--text-muted);">اختبر حفظك للآيات</p></div>
+    <div class="quiz-controls">
+      <select class="quiz-select" id="quizSurahSelect"><option value="">اختر السورة</option></select>
+      <select class="quiz-select" id="quizModeSelect"><option value="complete">أكمل الآية</option><option value="next">الآية التالية</option></select>
+      <button class="btn-primary-custom" id="startQuizBtn" style="padding:.4rem .8rem;font-size:.75rem;"><i class="fas fa-play"></i> ابدأ</button>
+    </div>
+    <div class="quiz-progress" id="quizProgress" style="display:none;"><div class="fill" id="quizProgressFill" style="width:0%;"></div></div>
+    <div id="quizContent"><div class="empty-state"><i class="fas fa-brain"></i><p>اختر سورة ونوع الاختبار ثم اضغط ابدأ</p></div></div>
+    <div class="quiz-score" id="quizScore" style="display:none;">النتيجة: <span id="quizScoreValue">0</span> / <span id="quizTotalValue">0</span></div>
+    <div style="text-align:center;margin-top:.7rem;">
+      <button class="btn-primary-custom" id="nextQuestionBtn" style="display:none;padding:.4rem .8rem;font-size:.75rem;"><i class="fas fa-arrow-left"></i> السؤال التالي</button>
+      <button class="btn-outline-custom" id="restartQuizBtn" style="display:none;margin-right:.35rem;padding:.4rem .8rem;font-size:.75rem;"><i class="fas fa-redo"></i> إعادة</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="screen-bookmarks">
+  <div class="bookmarks-screen">
+    <h2 style="font-size:.95rem;margin-bottom:.6rem;"><i class="fas fa-star" style="color:var(--gold);"></i> المفضلة</h2>
+    <div id="bookmarksList"><div class="empty-state"><i class="fas fa-star"></i><p>لا توجد إشارات مرجعية بعد</p></div></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-notifications">
+  <div class="notifications-screen">
+    <h2 style="font-size:.95rem;margin-bottom:.6rem;"><i class="fas fa-bell" style="color:var(--primary);"></i> الإشعارات</h2>
+    <div id="notificationsList"><div class="empty-state"><i class="fas fa-bell-slash"></i><p>لا توجد إشعارات</p></div></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-stats">
+  <div class="stats-screen">
+    <h2 style="font-size:.95rem;margin-bottom:.6rem;"><i class="fas fa-chart-line" style="color:var(--primary);"></i> إحصائياتي</h2>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-value" id="statAyahsRead">0</div><div class="stat-label">آيات مقروءة</div></div>
+      <div class="stat-box"><div class="stat-value" id="statStreak">0</div><div class="stat-label">أيام متواصلة</div></div>
+      <div class="stat-box"><div class="stat-value" id="statSurahsRead">0</div><div class="stat-label">سور مقروءة</div></div>
+      <div class="stat-box"><div class="stat-value" id="statBookmarks">0</div><div class="stat-label">إشارات</div></div>
+    </div>
+    <h3 style="font-size:.82rem;margin-bottom:.25rem;">الهدف اليومي</h3>
+    <div class="progress-bar-custom"><div class="fill" id="dailyGoalFill" style="width:0%;"></div></div>
+    <p style="font-size:.68rem;color:var(--text-muted);" id="dailyGoalText">0 / 20 آية</p>
+  </div>
+</section>
+
+<section class="screen" id="screen-search">
+  <div class="search-screen">
+    <div class="search-bar"><i class="fas fa-search search-icon"></i><input type="text" id="advancedSearchInput" placeholder="ابحث في نص القرآن..." autocomplete="off"></div>
+    <div id="searchResults"><div class="empty-state"><i class="fas fa-search"></i><p>اكتب كلمة للبحث عنها في القرآن</p></div></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-settings">
+  <div class="settings-screen">
+    <h2 style="font-size:.95rem;margin-bottom:.6rem;"><i class="fas fa-cog" style="color:var(--primary);"></i> الإعدادات</h2>
+    <div class="settings-group">
+      <div class="settings-group-title">المظهر</div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-moon"></i> الوضع الليلي</div><label class="toggle-switch"><input type="checkbox" id="settingDarkMode"><span class="toggle-slider"></span></label></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-sun"></i> وضع السيبيا</div><label class="toggle-switch"><input type="checkbox" id="settingSepiaMode"><span class="toggle-slider"></span></label></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-text-height"></i> حجم الخط</div><div class="font-size-control"><button class="font-size-btn" id="settingFontDown">-</button><span id="settingFontSizeLabel">1.5</span><button class="font-size-btn" id="settingFontUp">+</button></div></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-font"></i> نوع الخط</div><div class="font-selector"><button class="font-option active" data-font="Amiri">أميري</button><button class="font-option" data-font="Scheherazade New">شهرزاد</button></div></div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-group-title">الهدف اليومي</div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-bullseye"></i> عدد الآيات</div><input type="number" id="settingDailyGoal" value="20" min="1" max="6236" style="width:65px;padding:.3rem;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-main);font-family:var(--font-ui);text-align:center;font-size:.82rem;"></div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-group-title">الذكاء الاصطناعي</div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-robot"></i> مساعد AI <i class="fas fa-question-circle info-icon" id="aiInfoBtn"></i></div><div style="display:flex;align-items:center;gap:.4rem;"><span class="ai-badge locked" id="aiStatusBadge">يحتاج دخول</span><label class="toggle-switch" id="aiToggleSwitchWrap"><input type="checkbox" id="aiFeatureToggle" disabled><span class="toggle-slider"></span></label></div></div>
+      <div class="settings-item" id="aiCreditsSettingsItem" style="display:none;"><div class="settings-label"><i class="fas fa-bolt"></i> رصيد AI اليومي</div><span id="aiCreditsSettingsText" style="font-size:.78rem;font-weight:700;color:var(--gold);">400 / 400</span></div>
+      <div class="settings-item"><div class="settings-label" style="color:var(--text-muted);font-size:.7rem;"><i class="fas fa-info-circle"></i><span id="aiSettingsHint">سجّل الدخول لتفعيل المساعد الذكي</span></div></div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-group-title">الحساب</div>
+      <div class="settings-item" id="accountSettingsItem"><div class="settings-label"><i class="fas fa-user"></i> <span id="accountLabel">تسجيل الدخول</span></div><button class="btn-outline-custom" style="padding:.3rem .65rem;font-size:.68rem;" id="accountActionBtn">دخول</button></div>
+      <div class="settings-item" id="logoutItem" style="display:none;"><div class="settings-label"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</div><button class="btn-outline-custom" style="padding:.3rem .65rem;font-size:.68rem;color:#c62828;border-color:#c62828;" id="logoutBtn">خروج</button></div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-group-title">البيانات والتخزين (Offline)</div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-database"></i> حجم البيانات</div><span id="dataSizeText" style="font-size:.75rem;font-weight:700;color:var(--primary);">— KB</span></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-hdd"></i> مساحة الكاش</div><span id="cacheSizeText" style="font-size:.75rem;font-weight:700;color:var(--primary);">— KB</span></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-download"></i> تحميل كل السور + الأيقونات</div><button class="btn-outline-custom" style="padding:.3rem .65rem;font-size:.68rem;" id="downloadAllBtn">تحميل</button></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-trash"></i> مسح البيانات المحلية</div><button class="btn-outline-custom" style="padding:.3rem .65rem;font-size:.68rem;color:#c62828;border-color:#c62828;" id="clearDataBtn">مسح</button></div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-broom"></i> مسح الكاش</div><button class="btn-outline-custom" style="padding:.3rem .65rem;font-size:.68rem;" id="clearCacheBtn">مسح</button></div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-group-title">الدعم والتواصل</div>
+      <div class="settings-item"><div class="settings-label"><i class="fas fa-flag"></i> الإبلاغ عن مشكلة أو اقتراح</div><button class="btn-outline-custom" style="padding:.3rem .65rem;font-size:.68rem;" id="openReportBtn">إرسال</button></div>
+    </div>
+    <div style="text-align:center;padding:.7rem;color:var(--text-muted);font-size:.62rem;"><p>القرآن الكريم — v8.0</p></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-auth">
+  <div class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo"><i class="fas fa-user-circle"></i><h2 id="authTitle">تسجيل الدخول</h2></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-auth-tab="login">دخول</button>
+        <button class="auth-tab" data-auth-tab="register">حساب جديد</button>
+      </div>
+      <div id="authFormContainer">
+        <div id="loginForm">
+          <div class="form-group"><label>البريد الإلكتروني</label><input type="email" class="form-input" id="loginEmail" placeholder="example@email.com" autocomplete="email"></div>
+          <div class="form-group"><label>كلمة المرور</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
+          <div class="form-error" id="loginError"></div>
+          <button class="btn-primary-custom auth-submit" id="loginSubmitBtn" style="justify-content:center;"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+        </div>
+        <div id="registerForm" style="display:none;">
+          <div class="form-group"><label>اسم المستخدم</label><input type="text" class="form-input" id="registerUsername" placeholder="اسم المستخدم" autocomplete="username"></div>
+          <div class="form-group"><label>البريد الإلكتروني</label><input type="email" class="form-input" id="registerEmail" placeholder="example@email.com" autocomplete="email"></div>
+          <div class="form-group"><label>كلمة المرور</label><input type="password" class="form-input" id="registerPassword" placeholder="••••••••" autocomplete="new-password"></div>
+          <div class="form-error" id="registerError"></div>
+          <button class="btn-primary-custom auth-submit" id="registerSubmitBtn" style="justify-content:center;"><i class="fas fa-user-plus"></i> إنشاء حساب</button>
+        </div>
+      </div>
+      <div class="auth-switch" id="authSwitchText">ليس لديك حساب؟ <a data-auth-switch="register">أنشئ حساباً جديداً</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-item active" data-screen="home"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+  <button class="nav-item" data-screen="azkar"><i class="fas fa-hands-praying"></i><span>الأذكار</span></button>
+  <button class="nav-item" data-screen="ai"><i class="fas fa-robot"></i><span>AI</span></button>
+  <button class="nav-item" data-screen="notifications"><i class="fas fa-bell"></i><span>الإشعارات</span><span class="badge-count" id="notifBadge" style="display:none;">0</span></button>
+  <button class="nav-item" data-screen="settings"><i class="fas fa-cog"></i><span>الإعدادات</span></button>
+</nav>
+
+<div class="ayah-popup" id="ayahPopup">
+  <div class="popup-header"><span class="popup-ref" id="popupRef"></span><button class="popup-close" id="popupCloseBtn"><i class="fas fa-times"></i></button></div>
+  <div class="popup-actions">
+    <button class="popup-action" id="popupCopyBtn"><i class="fas fa-copy"></i><span>نسخ</span></button>
+    <button class="popup-action" id="popupTafsirBtn"><i class="fas fa-book-open"></i><span>تفسير</span></button>
+    <button class="popup-action" id="popupAiBtn"><i class="fas fa-robot"></i><span>اسأل AI</span></button>
+    <button class="popup-action" id="popupBookmarkBtn"><i class="far fa-star"></i><span>حفظ</span></button>
+    <button class="popup-action" id="popupShareBtn"><i class="fas fa-share-alt"></i><span>مشاركة</span></button>
+    <button class="popup-action" id="popupWordBtn"><i class="fas fa-language"></i><span>إعراب</span></button>
+  </div>
+</div>
+
+<div class="modal fade" id="tafsirModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-book-open"></i> <span id="tafsirModalTitle">التفسير</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body" id="tafsirModalBody"></div></div></div></div>
+
+<div class="modal fade" id="wordModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-language"></i> إعراب الكلمات</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body" id="wordModalBody"></div></div></div></div>
+
+<div class="modal fade" id="shareModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-share-alt"></i> مشاركة الآية</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><div id="sharePreviewCard" style="background:linear-gradient(135deg,#0e3b1a,#1a5f2a);color:#fff;padding:1.2rem;border-radius:16px;text-align:center;margin-bottom:.7rem;"><div style="font-family:var(--font-quran);font-size:1.05rem;line-height:2;margin-bottom:.6rem;" id="shareAyahText"></div><div style="font-size:.72rem;opacity:.85;" id="shareAyahRef"></div></div><div style="display:flex;gap:.4rem;flex-wrap:wrap;"><button class="btn-primary-custom" id="downloadImageBtn" style="padding:.45rem .9rem;font-size:.75rem;"><i class="fas fa-download"></i> تحميل الصورة</button><button class="btn-outline-custom" id="nativeShareBtn" style="padding:.45rem .9rem;font-size:.75rem;"><i class="fas fa-share"></i> مشاركة</button></div></div></div></div></div>
+
+<div class="modal fade" id="notifDetailModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-bell"></i> <span id="notifDetailTitle"></span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><div id="notifDetailBody"></div></div></div></div></div>
+
+<div class="modal fade" id="aiInfoModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-robot"></i> ماذا يفعل مساعد AI؟</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><div style="text-align:center;margin-bottom:.8rem;"><i class="fas fa-robot" style="font-size:2.5rem;color:var(--primary);opacity:.8;"></i><h3 style="font-size:.95rem;margin-top:.4rem;color:var(--primary-dark);">مساعد القرآن الذكي</h3><p style="font-size:.75rem;color:var(--text-muted);">مدعوم بـ Groq API</p></div><div class="ai-info-grid"><div class="ai-info-item"><i class="fas fa-book-open"></i><div><div class="info-title">تفسير الآيات</div><div class="info-desc">شرح عميق مع الربط بالسياق. إذا فسّرت نفس الآية سابقاً، التكلفة تنخفض 50%.</div></div></div><div class="ai-info-item"><i class="fas fa-lightbulb"></i><div><div class="info-title">تدبر وتأمل</div><div class="info-desc">نقاط للتدبر والتأمل لتعميق الفهم.</div></div></div><div class="ai-info-item"><i class="fas fa-info-circle"></i><div><div class="info-title">معلومات السور</div><div class="info-desc">متى نزلت؟ لماذا نزلت؟ وما سياقها التاريخي؟</div></div></div><div class="ai-info-item"><i class="fas fa-chart-bar"></i><div><div class="info-title">تحليل اختبار الحفظ</div><div class="info-desc">تحليل نتائجك مع خطة مراجعة مخصصة.</div></div></div><div class="ai-info-item"><i class="fas fa-comments"></i><div><div class="info-title">محادثات متعددة</div><div class="info-desc">احفظ عدة محادثات، سمّها، وارجع إليها وقتما تشاء.</div></div></div><div class="ai-info-item"><i class="fas fa-microchip"></i><div><div class="info-title">اختيار النموذج</div><div class="info-desc">اختر النموذج المناسب من قائمة النماذج المتاحة.</div></div></div><div class="ai-info-item"><i class="fas fa-bolt"></i><div><div class="info-title">نظام الرصيد</div><div class="info-desc">رصيد يومي يتجدد تلقائياً. كل مهمة تستهلك رصيداً محدداً.</div></div></div></div></div></div></div></div>
+
+<div class="modal fade" id="sessionsModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-comments"></i> محادثاتي</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><button class="btn-primary-custom" id="newSessionFromModal" style="width:100%;justify-content:center;margin-bottom:.7rem;"><i class="fas fa-plus"></i> محادثة جديدة</button><div class="sessions-list" id="sessionsList"></div></div></div></div></div>
+
+<div class="modal fade" id="renameSessionModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-pen"></i> إعادة تسمية</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="form-group"><label>الاسم الجديد</label><input type="text" class="form-input" id="renameSessionInput" placeholder="اسم المحادثة" maxlength="60"></div><button class="btn-primary-custom" id="saveRenameBtn" style="width:100%;justify-content:center;"><i class="fas fa-save"></i> حفظ</button></div></div></div></div>
+
+<div class="modal fade" id="reportModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title"><i class="fas fa-flag"></i> الإبلاغ عن مشكلة / اقتراح</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body">
+  <div id="reportLoginWarning" style="display:none;padding:.7rem;background:#fff3e0;border:1px solid var(--gold);border-radius:8px;font-size:.78rem;color:#8a6d00;margin-bottom:.7rem;"><i class="fas fa-info-circle"></i> يجب تسجيل الدخول لإرسال البلاغ.</div>
+  <div class="form-group"><label>نوع البلاغ *</label><div class="report-type-grid"><button type="button" class="report-type-btn active" data-type="problem"><i class="fas fa-bug"></i> مشكلة</button><button type="button" class="report-type-btn" data-type="suggestion"><i class="fas fa-lightbulb"></i> اقتراح</button></div></div>
+  <div class="form-group"><label>القسم *</label><select class="form-input" id="reportCategory"><option value="quran">القرآن الكريم</option><option value="tafsir">التفسير</option><option value="azkar">الأذكار</option><option value="ai">الذكاء الاصطناعي</option><option value="quiz">اختبار الحفظ</option><option value="notifications">الإشعارات</option><option value="account">الحساب</option><option value="ui">الواجهة</option><option value="performance">الأداء</option><option value="general">عام</option><option value="other">أخرى</option></select></div>
+  <div class="form-group"><label>العنوان *</label><input type="text" class="form-input" id="reportTitle" placeholder="مثال: خطأ في عرض الآيات" maxlength="100"></div>
+  <div class="form-group"><label>الوصف *</label><textarea class="form-input" id="reportBody" rows="5" placeholder="اشرح بالتفصيل..." maxlength="1000"></textarea><div class="report-counter"><span id="reportBodyCount">0</span>/1000</div></div>
+  <div class="form-group"><label>هاشتاغات (حتى 5)</label><div style="display:flex;gap:.35rem;margin-bottom:.35rem;"><input type="text" class="form-input" id="reportTagInput" placeholder="أضف هاشتاغ" maxlength="30" style="flex:1;"><button type="button" class="btn-outline-custom" id="addTagBtn" style="padding:.5rem .7rem;font-size:.72rem;min-height:42px;"><i class="fas fa-plus"></i></button></div><div class="report-tags-input" id="reportTagsList"></div><div class="report-counter" id="reportTagsCounter">0/5 هاشتاغات</div></div>
+  <div class="form-error" id="reportError"></div>
+</div>
+<div style="padding:.7rem 1rem;border-top:1px solid var(--border-color);display:flex;gap:.4rem;justify-content:flex-end;background:var(--bg-main);">
+  <button class="btn-outline-custom" data-bs-dismiss="modal" style="padding:.4rem .9rem;font-size:.78rem;">إلغاء</button>
+  <button class="btn-primary-custom" id="submitReportBtn" style="padding:.4rem 1rem;font-size:.78rem;"><i class="fas fa-paper-plane"></i> إرسال البلاغ</button>
+</div>
+</div></div></div>
+
+<div class="sheet-overlay" id="sheetOverlay"></div>
+<div class="bottom-sheet" id="bottomSheet"><div class="sheet-handle"></div><div class="sheet-title" id="sheetTitle">العنوان</div><div class="sheet-body" id="sheetBody"></div></div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ============================================================
+   القرآن الكريم v8.0 — مع الصيانة + Service Worker محسّن
+   ============================================================ */
+
+const SOURCES = {
+  SURAH_INDEX: 'https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/en/index.json',
+  QURAN_TEXT: 'https://cdn.jsdelivr.net/npm/quran-cloud@1.0.0/dist/quran.json',
+  TAFSIR_EDITIONS: 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/editions.json',
+  TAFSIR_BASE: 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir',
+  SEARCH_API: 'https://api.alquran.cloud/v1/search',
+  WORD_API: 'https://api.quran.com/api/v4/verses/by_key',
+  AZKAR_DATA: 'https://cdn.jsdelivr.net/gh/osamayy/azkar-db@master/azkar.json'
+};
+
+const FIREBASE_CONFIG = {
+  DB_URL: 'https://tgre-7abfb-default-rtdb.firebaseio.com',
+  API_KEY: 'AIzaSyCYgA-26dzv5OVUpekc1U0Pta9wDK-iJQA',
+  PROJECT_ID: 'tgre-7abfb'
+};
+
+const GROQ_CONFIG = {
+  API_KEY: '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',
+  BASE_URL: 'https://api.groq.com/openai/v1',
+  DEFAULT_MODEL: 'llama-3.3-70b-versatile',
+  MAX_TOKENS: 2048,
+  TEMPERATURE: 0.3,
+  COSTS: { 'tafsir': 8, 'tadabbur': 4, 'surah-info': 6, 'quiz-analysis': 4 },
+  REPEAT_DISCOUNT: 0.5,
+  DAILY_CREDITS: 400
+};
+
+const AI_SYSTEM_PROMPT = 'أنت مساعد ذكي متخصص في القرآن الكريم والعلوم الإسلامية.\n\nدورك:\n- تفسير آيات القرآن الكريم بدقة معتمداً على التفاسير المعتمدة (ابن كثير، الطبري، السعدي، القرطبي، الجلالين، الميسر).\n- تقديم معلومات دقيقة عن السور: متى نزلت، لماذا نزلت، أسباب النزول.\n- مساعدة المستخدم في تدبر الآيات وفهم معانيها.\n- تحليل أداء المستخدم في اختبارات الحفظ.\n\nقواعد صارمة:\n1. التزم بالأمانة العلمية. لا تتخيل معلومات.\n2. إذا لم تكن متأكداً، قل: "الله أعلم".\n3. اذكر المصادر عندما يكون ذلك ممكناً.\n4. استخدم اللغة العربية الفصحى.\n5. عند التفسير، اذكر: المعنى الإجمالي، ثم التفصيلي، ثم الفوائد.\n6. اجعل ردودك مختصرة ومفيدة.';
+
+const State = {
+  surahs: [], currentSurah: null, currentAyah: null, selectedAyahEl: null,
+  tafsirs: [], quranText: null,
+  azkarData: [], azkarCategories: [], currentAzkarCategory: null,
+  azkarFavorites: [], azkarCounters: {},
+  settings: { theme: 'light', fontSize: 1.5, fontFamily: 'Amiri', memorization: 0, dailyGoal: 20, aiEnabled: false },
+  stats: { ayahsRead: 0, streak: 0, surahsRead: 0, lastReadDate: null, dailyAyahs: 0 },
+  bookmarks: [], notes: {}, progress: {}, lastRead: null,
+  user: null, notifications: [], unreadCount: 0,
+  quiz: { active: false, questions: [], currentIndex: 0, score: 0, surahId: null, mode: 'complete', lastResult: null },
+  aiCredits: { remaining: 400, lastReset: null },
+  aiChatHistory: [],
+  aiSessions: [], currentSessionId: null,
+  aiModels: [], selectedModel: GROQ_CONFIG.DEFAULT_MODEL, modelsLoaded: false,
+  interpretedAyahs: {},
+  reportDraft: { type: 'problem', tags: [] },
+  globalSettings: {
+    maxAICredits: 400,
+    aiCosts: { tafsir: 8, tadabbur: 4, 'surah-info': 6, 'quiz-analysis': 4 },
+    maintenance: { enabled: false, message: '', endTime: null }
+  },
+  restrictions: { banned: false, bannedUntil: null, permanent: false, reason: '' },
+  maintenanceTimer: null,
+  tasbih: { count: 0, dhikr: 'سبحان الله' }
+};
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+const Utils = {
+  async fetchJSON(url, useCache) {
+    if (useCache === undefined) useCache = true;
+    const cacheKey = 'api_' + url;
+    if (useCache) {
+      const cached = await CacheDB.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < 365 * 86400000) return cached.data;
+    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (useCache) await CacheDB.put(cacheKey, { data: data, timestamp: Date.now() });
+    return data;
+  },
+  formatNumber(n) { return n.toLocaleString('ar-EG'); },
+  today() { return new Date().toISOString().split('T')[0]; },
+  debounce(fn, d) { d = d || 300; let t; return function() { const a = arguments; clearTimeout(t); t = setTimeout(function() { fn.apply(null, a); }, d); }; },
+  escapeHTML(s) { const d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; },
+  highlight(text, q) {
+    if (!q) return this.escapeHTML(text);
+    const e = this.escapeHTML(text);
+    const r = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return e.replace(r, '<mark>$1</mark>');
+  },
+  timeAgo(ts) {
+    const diff = Date.now() - ts;
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return 'الآن';
+    if (m < 60) return m + ' دقيقة';
+    const h = Math.floor(m / 60);
+    if (h < 24) return h + ' ساعة';
+    return Math.floor(h / 24) + ' يوم';
+  },
+  encodeEmail(email) {
+    try { return btoa(unescape(encodeURIComponent(email))).replace(/=/g, ''); }
+    catch (e) { return email.replace(/[.@]/g, '_'); }
+  },
+  encodePassword(pass) {
+    try { return btoa(unescape(encodeURIComponent(pass))); }
+    catch (e) { return pass; }
+  },
+  decodePassword(p) {
+    try { return decodeURIComponent(escape(atob(p))); }
+    catch (e) { return ''; }
+  },
+  getHijriDate() {
+    try { return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(new Date()); }
+    catch (e) { return 'تعذر حساب التاريخ الهجري'; }
+  },
+  getGregorianDate() {
+    try { return new Intl.DateTimeFormat('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(new Date()); }
+    catch (e) { return new Date().toLocaleDateString('ar-EG'); }
+  }
+};
+
+const CacheDB = {
+  db: null,
+  async init() {
+    return new Promise((resolve) => {
+      try {
+        const req = indexedDB.open('quran_cache_v8', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('api')) db.createObjectStore('api', { keyPath: 'id' });
+          if (!db.objectStoreNames.contains('tafsirs')) db.createObjectStore('tafsirs', { keyPath: 'id' });
+        };
+        req.onsuccess = (e) => { this.db = e.target.result; resolve(); };
+        req.onerror = () => resolve();
+      } catch (e) { resolve(); }
+    });
+  },
+  async get(key) {
+    if (!this.db) return null;
+    return new Promise((resolve) => {
+      try {
+        const tx = this.db.transaction('api', 'readonly');
+        const req = tx.objectStore('api').get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      } catch (e) { resolve(null); }
+    });
+  },
+  async put(key, value) {
+    if (!this.db) return;
+    return new Promise((resolve) => {
+      try {
+        const tx = this.db.transaction('api', 'readwrite');
+        tx.objectStore('api').put(Object.assign({ id: key }, value));
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      } catch (e) { resolve(); }
+    });
+  },
+  async getTafsir(key) {
+    if (!this.db) return null;
+    return new Promise((resolve) => {
+      try {
+        const tx = this.db.transaction('tafsirs', 'readonly');
+        const req = tx.objectStore('tafsirs').get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      } catch (e) { resolve(null); }
+    });
+  },
+  async putTafsir(key, value) {
+    if (!this.db) return;
+    return new Promise((resolve) => {
+      try {
+        const tx = this.db.transaction('tafsirs', 'readwrite');
+        tx.objectStore('tafsirs').put(Object.assign({ id: key }, value, { timestamp: Date.now() }));
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      } catch (e) { resolve(); }
+    });
+  },
+  async clear() {
+    if (!this.db) return;
+    return new Promise((resolve) => {
+      try {
+        const tx = this.db.transaction(['api', 'tafsirs'], 'readwrite');
+        tx.objectStore('api').clear();
+        tx.objectStore('tafsirs').clear();
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      } catch (e) { resolve(); }
+    });
+  },
+  async getSize() {
+    if (!this.db) return 0;
+    return new Promise((resolve) => {
+      try {
+        const tx = this.db.transaction(['api', 'tafsirs'], 'readonly');
+        let total = 0, done = 0;
+        const check = () => { done++; if (done === 2) resolve(total); };
+        const r1 = tx.objectStore('api').getAll();
+        r1.onsuccess = () => { total += new Blob([JSON.stringify(r1.result || [])]).size; check(); };
+        r1.onerror = () => check();
+        const r2 = tx.objectStore('tafsirs').getAll();
+        r2.onsuccess = () => { total += new Blob([JSON.stringify(r2.result || [])]).size; check(); };
+        r2.onerror = () => check();
+      } catch (e) { resolve(0); }
+    });
+  },
+  async clearAllDB() {
+    try {
+      if (this.db) this.db.close();
+      await new Promise((resolve) => { const r = indexedDB.deleteDatabase('quran_cache_v8'); r.onsuccess = r.onerror = r.onblocked = () => resolve(); });
+      await this.init();
+    } catch (e) {}
+  }
+};
+
+const AssetCache = {
+  async getSize() {
+    if (!('caches' in window)) return 0;
+    try {
+      let total = 0;
+      const cacheNames = await caches.keys();
+      for (const name of cacheNames) {
+        const cache = await caches.open(name);
+        const keys = await cache.keys();
+        for (const req of keys) {
+          const res = await cache.match(req);
+          if (res) {
+            const blob = await res.clone().blob();
+            total += blob.size;
+          }
+        }
+      }
+      return total;
+    } catch (e) { return 0; }
+  },
+  async clear() {
+    if (!('caches' in window)) return;
+    try {
+      const names = await caches.keys();
+      await Promise.all(names.map(n => caches.delete(n)));
+    } catch (e) {}
+  },
+  async trigger() {
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      if (reg && reg.active) reg.active.postMessage({ type: 'CACHE_ASSETS' });
+    } catch (e) {}
+  }
+};
+
+const Storage = {
+  key: 'quran_app_v8',
+  save() {
+    try {
+      localStorage.setItem(this.key, JSON.stringify({
+        settings: State.settings, stats: State.stats,
+        bookmarks: State.bookmarks, notes: State.notes,
+        progress: State.progress, lastRead: State.lastRead,
+        user: State.user,
+        azkarFavorites: State.azkarFavorites, azkarCounters: State.azkarCounters,
+        aiCredits: State.aiCredits, selectedModel: State.selectedModel,
+        aiSessions: State.aiSessions, currentSessionId: State.currentSessionId,
+        interpretedAyahs: State.interpretedAyahs
+      }));
+    } catch (e) {}
+  },
+  load() {
+    try {
+      const raw = localStorage.getItem(this.key);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (d.settings) Object.assign(State.settings, d.settings);
+      if (d.stats) Object.assign(State.stats, d.stats);
+      if (d.bookmarks) State.bookmarks = d.bookmarks;
+      if (d.notes) State.notes = d.notes;
+      if (d.progress) State.progress = d.progress;
+      if (d.lastRead) State.lastRead = d.lastRead;
+      if (d.user) State.user = d.user;
+      if (d.azkarFavorites) State.azkarFavorites = d.azkarFavorites;
+      if (d.azkarCounters) State.azkarCounters = d.azkarCounters;
+      if (d.aiCredits) State.aiCredits = d.aiCredits;
+      if (d.selectedModel) State.selectedModel = d.selectedModel;
+      if (d.aiSessions) State.aiSessions = d.aiSessions;
+      if (d.currentSessionId) State.currentSessionId = d.currentSessionId;
+      if (d.interpretedAyahs) State.interpretedAyahs = d.interpretedAyahs;
+    } catch (e) {}
+  },
+  clear() { localStorage.removeItem(this.key); },
+  getSize() {
+    try { return new Blob([localStorage.getItem(this.key) || '']).size; }
+    catch (e) { return 0; }
+  }
+};
+
+const FirebaseDB = {
+  async get(path) {
+    try {
+      const res = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json');
+      if (!res.ok) return null;
+      return res.json();
+    } catch (e) { return null; }
+  },
+  async put(path, data) {
+    try {
+      const res = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      return res.ok;
+    } catch (e) { return false; }
+  },
+  async post(path, data) {
+    try {
+      const res = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      if (!res.ok) return null;
+      return res.json();
+    } catch (e) { return null; }
+  },
+  async patch(path, data) {
+    try {
+      const res = await fetch(FIREBASE_CONFIG.DB_URL + '/' + path + '.json', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      return res.ok;
+    } catch (e) { return false; }
+  }
+};
+
+/* ===== إدارة الصيانة ===== */
+const MaintenanceManager = {
+  async check() {
+    try {
+      const s = await FirebaseDB.get('settings/global');
+      if (s) {
+        if (s.maintenance) State.globalSettings.maintenance = Object.assign({}, State.globalSettings.maintenance, s.maintenance);
+        if (s.maxAICredits) State.globalSettings.maxAICredits = s.maxAICredits;
+        if (s.aiCosts) State.globalSettings.aiCosts = Object.assign({}, State.globalSettings.aiCosts, s.aiCosts);
+      }
+    } catch (e) {}
+    this.apply();
+  },
+  apply() {
+    const m = State.globalSettings.maintenance;
+    const overlay = $('#maintenanceOverlay');
+    if (!overlay) return;
+    // لا تظهر الصيانة للأدمن (اختياري)
+    if (m.enabled) {
+      $('#maintenanceMessage').textContent = m.message || 'نعتذر عن الإزعاج، جارٍ تحديث التطبيق.';
+      if (m.endTime && m.endTime > Date.now()) {
+        $('#maintenanceCountdownWrap').style.display = 'block';
+        this.startCountdown(m.endTime);
+      } else {
+        $('#maintenanceCountdownWrap').style.display = 'none';
+        if (State.maintenanceTimer) clearInterval(State.maintenanceTimer);
+      }
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    } else {
+      overlay.classList.remove('show');
+      document.body.style.overflow = '';
+      if (State.maintenanceTimer) clearInterval(State.maintenanceTimer);
+    }
+    // تحديث تكاليف AI في الواجهة
+    this.updateCostsUI();
+  },
+  updateCostsUI() {
+    const costs = State.globalSettings.aiCosts;
+    const c1 = $('#cost-tafsir'); if (c1) c1.textContent = costs.tafsir + ' رصيد';
+    const c2 = $('#cost-tadabbur'); if (c2) c2.textContent = costs.tadabbur + ' رصيد';
+    const c3 = $('#cost-surah-info'); if (c3) c3.textContent = costs['surah-info'] + ' رصيد';
+    const c4 = $('#cost-quiz-analysis'); if (c4) c4.textContent = costs['quiz-analysis'] + ' رصيد';
+    GROQ_CONFIG.COSTS = Object.assign({}, costs);
+    GROQ_CONFIG.DAILY_CREDITS = State.globalSettings.maxAICredits;
+  },
+  startCountdown(endTime) {
+    if (State.maintenanceTimer) clearInterval(State.maintenanceTimer);
+    const render = () => {
+      const diff = endTime - Date.now();
+      if (diff <= 0) {
+        $('#maintenanceCountdownWrap').style.display = 'none';
+        clearInterval(State.maintenanceTimer);
+        this.check();
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      $('#maintenanceCountdown').innerHTML =
+        (d > 0 ? '<div class="countdown-box"><div class="num">' + d + '</div><div class="unit">يوم</div></div>' : '') +
+        '<div class="countdown-box"><div class="num">' + h + '</div><div class="unit">ساعة</div></div>' +
+        '<div class="countdown-box"><div class="num">' + m + '</div><div class="unit">دقيقة</div></div>' +
+        '<div class="countdown-box"><div class="num">' + s + '</div><div class="unit">ثانية</div></div>';
+    };
+    render();
+    State.maintenanceTimer = setInterval(render, 1000);
+  },
+  bindTasbih() {
+    $$('.tasbih-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.tasbih-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        State.tasbih.dhikr = btn.dataset.dhikr;
+        $('#tasbihLabel').textContent = btn.dataset.dhikr;
+      });
+    });
+    $('#tasbihPlus').addEventListener('click', () => {
+      State.tasbih.count++;
+      $('#tasbihDisplay').textContent = State.tasbih.count;
+      if (navigator.vibrate) navigator.vibrate(30);
+    });
+    $('#tasbihReset').addEventListener('click', () => {
+      if (confirm('إعادة تعيين العداد؟')) {
+        State.tasbih.count = 0;
+        $('#tasbihDisplay').textContent = '0';
+      }
+    });
+  }
+};
+
+/* ===== Groq ===== */
+const GroqAPI = {
+  async fetchModels() {
+    try {
+      const res = await fetch(GROQ_CONFIG.BASE_URL + '/models', { headers: { 'Authorization': 'Bearer ' + GROQ_CONFIG.API_KEY } });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (data.data && Array.isArray(data.data)) return data.data.map(m => m.id);
+      return [];
+    } catch (e) { return []; }
+  },
+  async chat(messages, options) {
+    options = options || {};
+    const body = {
+      model: options.model || State.selectedModel || GROQ_CONFIG.DEFAULT_MODEL,
+      messages, max_tokens: options.maxTokens || GROQ_CONFIG.MAX_TOKENS,
+      temperature: options.temperature !== undefined ? options.temperature : GROQ_CONFIG.TEMPERATURE
+    };
+    const res = await fetch(GROQ_CONFIG.BASE_URL + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + GROQ_CONFIG.API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      const err = new Error((data && data.error && data.error.message) || 'HTTP ' + res.status);
+      err.details = JSON.stringify(data, null, 2);
+      throw err;
+    }
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      const err = new Error('استجابة غير متوقعة من AI');
+      err.details = JSON.stringify(data, null, 2);
+      throw err;
+    }
+    return data.choices[0].message.content;
+  }
+};
+
+const AICreditManager = {
+  async checkAndReset() {
+    const today = Utils.today();
+    const maxC = State.globalSettings.maxAICredits || 400;
+    if (State.aiCredits.lastReset !== today) {
+      State.aiCredits = { remaining: maxC, lastReset: today };
+      Storage.save();
+      if (State.user) await FirebaseDB.put('users/' + encodeURIComponent(State.user.username) + '/aiCredits', State.aiCredits);
+    }
+  },
+  async syncFromFirebase() {
+    if (!State.user) return;
+    const remote = await FirebaseDB.get('users/' + encodeURIComponent(State.user.username) + '/aiCredits');
+    const maxC = State.globalSettings.maxAICredits || 400;
+    if (remote && remote.lastReset === Utils.today()) {
+      State.aiCredits = { remaining: remote.remaining != null ? remote.remaining : maxC, lastReset: remote.lastReset };
+    } else {
+      State.aiCredits = { remaining: maxC, lastReset: Utils.today() };
+      await FirebaseDB.put('users/' + encodeURIComponent(State.user.username) + '/aiCredits', State.aiCredits);
+    }
+    Storage.save();
+    this.updateUI();
+  },
+  hasEnough(cost) { return State.aiCredits.remaining >= cost; },
+  async deduct(cost) {
+    await this.checkAndReset();
+    if (!this.hasEnough(cost)) return false;
+    State.aiCredits.remaining -= cost;
+    Storage.save();
+    this.updateUI();
+    if (State.user) await FirebaseDB.put('users/' + encodeURIComponent(State.user.username) + '/aiCredits', State.aiCredits);
+    return true;
+  },
+  updateUI() {
+    const rem = State.aiCredits.remaining;
+    const total = State.globalSettings.maxAICredits || 400;
+    const pct = Math.max(0, Math.round((rem / total) * 100));
+    const badge = $('#aiCreditBadge'), badgeVal = $('#aiCreditValue');
+    const fill = $('#aiCreditsFill'), text = $('#aiCreditsText'), settingsText = $('#aiCreditsSettingsText');
+    if (badge) badge.style.display = State.user ? 'flex' : 'none';
+    if (badgeVal) badgeVal.textContent = rem;
+    if (fill) fill.style.width = pct + '%';
+    if (text) text.textContent = rem + ' / ' + total;
+    if (settingsText) settingsText.textContent = rem + ' / ' + total;
+    $$('.ai-task-card').forEach(card => {
+      const task = card.dataset.aiTask;
+      if (task === 'clear' || task === 'info') return;
+      const cost = GROQ_CONFIG.COSTS[task];
+      if (cost && rem < cost) { card.style.opacity = '0.4'; card.style.pointerEvents = 'none'; }
+      else { card.style.opacity = '1'; card.style.pointerEvents = 'auto'; }
+    });
+  }
+};
+
+const TafsirCacheManager = {
+  isInterpreted(slug, surah, ayah) { return !!State.interpretedAyahs[slug + '_' + surah + '_' + ayah]; },
+  mark(slug, surah, ayah) { State.interpretedAyahs[slug + '_' + surah + '_' + ayah] = { at: Date.now() }; Storage.save(); },
+  isAyahInterpreted(surah, ayah) {
+    const pattern = '_' + surah + '_' + ayah;
+    return Object.keys(State.interpretedAyahs).some(k => k.endsWith(pattern));
+  }
+};
+
+const SessionManager = {
+  create(name) {
+    const id = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+    const session = { id, name: name || ('محادثة ' + new Date().toLocaleString('ar-EG', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })), messages: [], createdAt: Date.now(), updatedAt: Date.now() };
+    State.aiSessions.unshift(session);
+    State.currentSessionId = id;
+    Storage.save();
+    return session;
+  },
+  getCurrent() { return State.aiSessions.find(s => s.id === State.currentSessionId) || null; },
+  switch(id) {
+    const s = State.aiSessions.find(x => x.id === id);
+    if (!s) return;
+    State.currentSessionId = id;
+    Storage.save();
+    this.renderCurrentSession();
+    this.updateSessionLabel();
+    UI.showToast('تم التبديل: ' + s.name, 'success');
+  },
+  rename(id, newName) {
+    const s = State.aiSessions.find(x => x.id === id);
+    if (!s || !newName.trim()) return;
+    s.name = newName.trim();
+    s.updatedAt = Date.now();
+    Storage.save();
+    this.updateSessionLabel();
+    this.renderSessionsList();
+    UI.showToast('تم الحفظ', 'success');
+  },
+  delete(id) {
+    const idx = State.aiSessions.findIndex(s => s.id === id);
+    if (idx < 0) return;
+    State.aiSessions.splice(idx, 1);
+    if (State.currentSessionId === id) State.currentSessionId = State.aiSessions[0] ? State.aiSessions[0].id : null;
+    if (!State.aiSessions.length) this.create();
+    Storage.save();
+    this.renderCurrentSession();
+    this.updateSessionLabel();
+    this.renderSessionsList();
+    UI.showToast('تم الحذف', 'info');
+  },
+  addMessage(role, content) {
+    let current = this.getCurrent();
+    if (!current) current = this.create();
+    current.messages.push({ role, content, timestamp: Date.now() });
+    current.updatedAt = Date.now();
+    if (current.messages.length > 50) current.messages = current.messages.slice(-50);
+    Storage.save();
+  },
+  updateSessionLabel() {
+    const s = this.getCurrent();
+    const el = $('#currentSessionName');
+    if (el) el.textContent = s ? s.name : 'محادثة جديدة';
+  },
+  renderCurrentSession() {
+    const s = this.getCurrent();
+    const container = $('#aiChatContainer');
+    if (!container) return;
+    if (!s || !s.messages.length) {
+      container.innerHTML = '<div class="ai-empty-state" id="aiEmptyState"><i class="fas fa-robot"></i><p>اضغط على آية في شاشة القراءة ثم "اسأل AI" — أو اختر مهمة من الأعلى</p></div>';
+      State.aiChatHistory = [];
+      return;
+    }
+    State.aiChatHistory = s.messages.map(m => ({ role: m.role, content: m.content }));
+    container.innerHTML = s.messages.map(m => {
+      if (m.role === 'assistant') return '<div class="ai-message assistant"><div class="ai-message-text">' + Utils.escapeHTML(m.content) + '</div></div>';
+      if (m.role === 'system') return '<div class="ai-message system"><div class="ai-message-text">' + Utils.escapeHTML(m.content) + '</div></div>';
+      return '<div class="ai-message user"><div class="ai-message-text">' + Utils.escapeHTML(m.content) + '</div></div>';
+    }).join('');
+    container.scrollTop = container.scrollHeight;
+  },
+  renderSessionsList() {
+    const c = $('#sessionsList');
+    if (!c) return;
+    if (!State.aiSessions.length) { c.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>لا توجد محادثات</p></div>'; return; }
+    const self = this;
+    c.innerHTML = State.aiSessions.map(s => {
+      const isActive = s.id === State.currentSessionId;
+      return '<div class="session-item ' + (isActive ? 'active' : '') + '" data-sid="' + s.id + '"><div class="s-info"><div class="s-name">' + Utils.escapeHTML(s.name) + '</div><div class="s-meta">' + s.messages.length + ' رسالة — ' + Utils.timeAgo(s.updatedAt) + '</div></div><div class="s-actions"><button class="s-action-btn ' + (isActive ? 'active' : '') + '" data-action="open" data-sid="' + s.id + '" title="فتح"><i class="fas fa-folder-open"></i></button><button class="s-action-btn" data-action="rename" data-sid="' + s.id + '" title="تسمية"><i class="fas fa-pen"></i></button><button class="s-action-btn danger" data-action="delete" data-sid="' + s.id + '" title="حذف"><i class="fas fa-trash"></i></button></div></div>';
+    }).join('');
+    c.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const action = btn.dataset.action, sid = btn.dataset.sid;
+        if (action === 'open') { self.switch(sid); bootstrap.Modal.getInstance($('#sessionsModal')).hide(); }
+        else if (action === 'rename') {
+          const s = State.aiSessions.find(x => x.id === sid);
+          if (s) {
+            $('#renameSessionInput').value = s.name;
+            $('#renameSessionInput').dataset.sid = sid;
+            bootstrap.Modal.getInstance($('#sessionsModal')).hide();
+            new bootstrap.Modal($('#renameSessionModal')).show();
+          }
+        } else if (action === 'delete') { if (confirm('حذف؟')) self.delete(sid); }
+      });
+    });
+  }
+};
+
+const AIModelPicker = {
+  render(models) {
+    const menu = $('#aiModelMenu'), triggerText = $('#aiModelTriggerText');
+    if (!menu || !triggerText) return;
+    if (!models.length) {
+      menu.innerHTML = '<div class="ai-model-menu-empty"><i class="fas fa-exclamation-triangle"></i> تعذر جلب النماذج</div>';
+      triggerText.textContent = 'لا توجد نماذج';
+      triggerText.classList.add('placeholder');
+      return;
+    }
+    const self = this;
+    menu.innerHTML = models.map(m => '<div class="ai-model-option ' + (m === State.selectedModel ? 'selected' : '') + '" data-model="' + Utils.escapeHTML(m) + '"><i class="fas fa-circle" style="font-size:.4rem;opacity:.3;"></i><span class="opt-name">' + Utils.escapeHTML(m) + '</span><i class="fas fa-check opt-check"></i></div>').join('');
+    menu.querySelectorAll('.ai-model-option').forEach(opt => opt.addEventListener('click', () => self.select(opt.dataset.model)));
+    this.updateTrigger();
+  },
+  updateTrigger() {
+    const triggerText = $('#aiModelTriggerText');
+    if (!triggerText) return;
+    if (State.selectedModel) {
+      triggerText.textContent = State.selectedModel;
+      triggerText.classList.remove('placeholder');
+    } else {
+      triggerText.textContent = 'اختر نموذجاً';
+      triggerText.classList.add('placeholder');
+    }
+    $$('.ai-model-option').forEach(opt => opt.classList.toggle('selected', opt.dataset.model === State.selectedModel));
+  },
+  select(model) { State.selectedModel = model; Storage.save(); this.updateTrigger(); this.close(); UI.showToast('تم: ' + model, 'success'); },
+  open() { const b = $('#aiModelCustom'); if (b) b.classList.add('open'); },
+  close() { const b = $('#aiModelCustom'); if (b) b.classList.remove('open'); },
+  toggle() { const b = $('#aiModelCustom'); if (!b) return; if (b.classList.contains('open')) this.close(); else this.open(); },
+  showLoading() { const m = $('#aiModelMenu'); if (m) m.innerHTML = '<div class="ai-model-menu-loading"><div class="mini-spin"></div> جاري الجلب...</div>'; }
+};
+
+const AIManager = {
+  isAvailable() { return !!State.user && State.settings.aiEnabled && !this.isRestricted(); },
+  isRestricted() {
+    const r = State.restrictions;
+    if (!r.banned) return false;
+    if (r.permanent) return true;
+    if (r.bannedUntil && r.bannedUntil > Date.now()) return true;
+    return false;
+  },
+  async ensureAvailable() {
+    if (!State.user) { UI.showToast('سجّل الدخول أولاً', 'warning'); UI.showScreen('auth'); return false; }
+    if (this.isRestricted()) {
+      const reason = State.restrictions.reason || 'غير محدد';
+      const until = State.restrictions.permanent ? 'دائم' : new Date(State.restrictions.bannedUntil).toLocaleDateString('ar-EG');
+      UI.showToast('أنت محظور من استخدام AI حتى ' + until + ' — السبب: ' + reason, 'error');
+      return false;
+    }
+    if (!State.settings.aiEnabled) { UI.showToast('فعّل AI من الإعدادات', 'warning'); UI.showScreen('settings'); return false; }
+    await AICreditManager.checkAndReset();
+    return true;
+  },
+  async loadModels() {
+    if (State.modelsLoaded && State.aiModels.length) { AIModelPicker.render(State.aiModels); return; }
+    AIModelPicker.showLoading();
+    const models = await GroqAPI.fetchModels();
+    if (models.length) {
+      State.aiModels = models;
+      State.modelsLoaded = true;
+      if (models.indexOf(GROQ_CONFIG.DEFAULT_MODEL) < 0) {
+        const llama = models.find(m => m.indexOf('llama-3.3') >= 0);
+        State.selectedModel = llama || models[0];
+      }
+      AIModelPicker.render(models);
+    } else AIModelPicker.render([]);
+  },
+  computeCost(task, params) {
+    const base = GROQ_CONFIG.COSTS[task];
+    if (!base) return 0;
+    if (task === 'tafsir' && params && params.surahNum && params.ayahNum) {
+      if (TafsirCacheManager.isAyahInterpreted(params.surahNum, params.ayahNum)) {
+        return Math.max(1, Math.ceil(base * GROQ_CONFIG.REPEAT_DISCOUNT));
+      }
+    }
+    return base;
+  },
+  buildPrompt(task, params) {
+    switch (task) {
+      case 'tafsir': return [{ role: 'system', content: AI_SYSTEM_PROMPT }, { role: 'user', content: 'فسّر الآية:\n\n"' + params.ayahText + '"\n\n[' + params.surahName + ': ' + params.ayahNum + ']\n\nاذكر: 1. المعنى الإجمالي 2. التفسير التفصيلي 3. الفوائد والهدايات 4. الربط بالسياق' }];
+      case 'tadabbur': return [{ role: 'system', content: AI_SYSTEM_PROMPT }, { role: 'user', content: 'تدبر في:\n\n"' + params.ayahText + '"\n\n[' + params.surahName + ': ' + params.ayahNum + ']\n\n3-5 نقاط مع إشارات عملية.' }];
+      case 'surah-info': return [{ role: 'system', content: AI_SYSTEM_PROMPT }, { role: 'user', content: 'معلومات عن سورة ' + params.surahName + ':\n\n1. لماذا نزلت؟ 2. متى؟ 3. المحور 4. الموضوعات 5. الفوائد' }];
+      case 'quiz-analysis': return [{ role: 'system', content: AI_SYSTEM_PROMPT }, { role: 'user', content: 'حلّل أدائي:\n\nالسورة: ' + params.surahName + '\nالنتيجة: ' + params.score + '/' + params.total + '\n\nقدّم: 1. تقييم 2. نقاط ضعف 3. خطة مراجعة 4. نصائح' }];
+      default: return [];
+    }
+  },
+  async send(task, params, options) {
+    if (!await this.ensureAvailable()) return null;
+    const messages = this.buildPrompt(task, params);
+    if (!messages.length) return null;
+    const cost = this.computeCost(task, params);
+    if (!AICreditManager.hasEnough(cost)) { UI.showToast('رصيدك غير كافٍ. تحتاج ' + cost, 'error'); return null; }
+    if (!State.selectedModel) { UI.showToast('اختر نموذجاً', 'warning'); return null; }
+    const userMsg = this.getDisplayMessage(task, params, cost);
+    if (userMsg) { SessionManager.addMessage('user', userMsg); this.appendMessageToUI('user', userMsg); }
+    this.showTyping();
+    try {
+      const response = await GroqAPI.chat(messages, options);
+      await AICreditManager.deduct(cost);
+      this.hideTyping();
+      SessionManager.addMessage('assistant', response);
+      this.appendMessageToUI('assistant', response);
+      State.aiChatHistory.push({ role: 'user', content: userMsg || '' }, { role: 'assistant', content: response });
+      if (State.aiChatHistory.length > 20) State.aiChatHistory = State.aiChatHistory.slice(-20);
+      if (task === 'tafsir' && params.surahNum && params.ayahNum) TafsirCacheManager.mark('ai', params.surahNum, params.ayahNum);
+      return response;
+    } catch (e) { this.hideTyping(); this.appendErrorMessage(e); return null; }
+  },
+  getDisplayMessage(task, params, cost) {
+    const t = cost ? ' [' + cost + ' رصيد]' : '';
+    switch (task) {
+      case 'tafsir': return 'تفسير: ' + params.surahName + ' : ' + params.ayahNum + t;
+      case 'tadabbur': return 'تدبر: ' + params.surahName + ' : ' + params.ayahNum + t;
+      case 'surah-info': return 'معلومات سورة ' + params.surahName + t;
+      case 'quiz-analysis': return 'تحليل اختبار ' + params.surahName + ' (' + params.score + '/' + params.total + ')' + t;
+      default: return null;
+    }
+  },
+  appendMessageToUI(role, text) {
+    const c = $('#aiChatContainer'), empty = $('#aiEmptyState');
+    if (empty) empty.style.display = 'none';
+    const m = document.createElement('div');
+    m.className = 'ai-message ' + role;
+    const t = document.createElement('div');
+    t.className = 'ai-message-text';
+    t.textContent = text;
+    m.appendChild(t);
+    c.appendChild(m);
+    c.scrollTop = c.scrollHeight;
+  },
+  appendErrorMessage(err) {
+    const c = $('#aiChatContainer'), empty = $('#aiEmptyState');
+    if (empty) empty.style.display = 'none';
+    const m = document.createElement('div');
+    m.className = 'ai-message error';
+    const title = document.createElement('strong');
+    title.textContent = '❌ ' + (err.message || 'خطأ');
+    m.appendChild(title);
+    if (err.details) {
+      const d = document.createElement('div');
+      d.className = 'ai-error-details';
+      d.textContent = err.details;
+      m.appendChild(d);
+      const b = document.createElement('button');
+      b.className = 'ai-copy-err-btn';
+      b.textContent = 'نسخ';
+      b.addEventListener('click', () => navigator.clipboard.writeText(err.details).then(() => { b.textContent = 'تم!'; setTimeout(() => b.textContent = 'نسخ', 2000); }));
+      m.appendChild(b);
+    }
+    c.appendChild(m);
+    c.scrollTop = c.scrollHeight;
+  },
+  showTyping() {
+    const c = $('#aiChatContainer'), empty = $('#aiEmptyState');
+    if (empty) empty.style.display = 'none';
+    const t = document.createElement('div');
+    t.className = 'ai-message assistant';
+    t.id = 'aiTypingIndicator';
+    t.innerHTML = '<div class="ai-typing"><span></span><span></span><span></span></div>';
+    c.appendChild(t);
+    c.scrollTop = c.scrollHeight;
+  },
+  hideTyping() { const t = $('#aiTypingIndicator'); if (t) t.remove(); },
+  clearCurrent() {
+    const s = SessionManager.getCurrent();
+    if (s) { s.messages = []; s.updatedAt = Date.now(); Storage.save(); }
+    SessionManager.renderCurrentSession();
+    SessionManager.updateSessionLabel();
+    UI.showToast('تم التفريغ', 'info');
+  }
+};
+
+const DataSizeManager = {
+  async update() {
+    const lsSize = Storage.getSize();
+    const idbSize = await CacheDB.getSize();
+    const cacheSize = await AssetCache.getSize();
+    const total = idbSize + cacheSize;
+    const fmt = (b) => b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(1) + ' KB' : (b / 1048576).toFixed(2) + ' MB';
+    const d = $('#dataSizeText'), c = $('#cacheSizeText');
+    if (d) d.textContent = fmt(lsSize);
+    if (c) c.textContent = fmt(total);
+  }
+};
+
+const ReportManager = {
+  MAX_TAGS: 5,
+  open() {
+    const modal = new bootstrap.Modal($('#reportModal'));
+    if (!State.user) { $('#reportLoginWarning').style.display = 'block'; $('#submitReportBtn').disabled = true; }
+    else { $('#reportLoginWarning').style.display = 'none'; $('#submitReportBtn').disabled = false; }
+    $('#reportTitle').value = ''; $('#reportBody').value = ''; $('#reportTagInput').value = '';
+    $('#reportBodyCount').textContent = '0'; $('#reportError').classList.remove('show');
+    State.reportDraft = { type: 'problem', tags: [] };
+    $$('.report-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'problem'));
+    this.renderTags();
+    modal.show();
+  },
+  setType(type) { State.reportDraft.type = type; $$('.report-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type)); },
+  addTag() {
+    const input = $('#reportTagInput');
+    let tag = input.value.trim().replace(/^#/, '').replace(/,/g, '');
+    if (!tag) return;
+    if (State.reportDraft.tags.length >= this.MAX_TAGS) { UI.showToast('الحد ' + this.MAX_TAGS, 'warning'); return; }
+    if (State.reportDraft.tags.indexOf(tag) >= 0) { UI.showToast('مضاف', 'info'); return; }
+    State.reportDraft.tags.push(tag);
+    input.value = '';
+    this.renderTags();
+  },
+  removeTag(tag) { State.reportDraft.tags = State.reportDraft.tags.filter(t => t !== tag); this.renderTags(); },
+  renderTags() {
+    const c = $('#reportTagsList');
+    if (!c) return;
+    const self = this;
+    c.innerHTML = State.reportDraft.tags.map(t => '<span class="report-tag-chip">#' + Utils.escapeHTML(t) + '<button type="button" data-tag="' + Utils.escapeHTML(t) + '"><i class="fas fa-times"></i></button></span>').join('');
+    c.querySelectorAll('button[data-tag]').forEach(b => b.addEventListener('click', () => self.removeTag(b.dataset.tag)));
+    const counter = $('#reportTagsCounter');
+    if (counter) { counter.textContent = State.reportDraft.tags.length + '/' + self.MAX_TAGS; counter.classList.toggle('warn', State.reportDraft.tags.length >= self.MAX_TAGS); }
+  },
+  async submit() {
+    if (!State.user) { UI.showToast('سجّل الدخول', 'warning'); return; }
+    const type = State.reportDraft.type, category = $('#reportCategory').value;
+    const title = $('#reportTitle').value.trim(), body = $('#reportBody').value.trim();
+    const tags = State.reportDraft.tags.slice();
+    const errEl = $('#reportError');
+    errEl.classList.remove('show');
+    if (!title) { errEl.textContent = 'العنوان مطلوب'; errEl.classList.add('show'); return; }
+    if (!body) { errEl.textContent = 'الوصف مطلوب'; errEl.classList.add('show'); return; }
+    if (body.length < 10) { errEl.textContent = 'الوصف قصير'; errEl.classList.add('show'); return; }
+    const btn = $('#submitReportBtn');
+    btn.disabled = true;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> إرسال...';
+    const id = 'report_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+    const report = { id, type, category, title, body, tags: tags.join(','), username: State.user.username, email: State.user.email, status: 'pending', timestamp: Date.now() };
+    try {
+      const res = await fetch(FIREBASE_CONFIG.DB_URL + '/reports/' + id + '.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(report) });
+      if (!res.ok) throw new Error('fail');
+      UI.showToast('تم الإرسال!', 'success');
+      bootstrap.Modal.getInstance($('#reportModal')).hide();
+    } catch (e) { errEl.textContent = 'تعذر الإرسال'; errEl.classList.add('show'); }
+    finally { btn.disabled = false; btn.innerHTML = orig; }
+  },
+  bind() {
+    $('#openReportBtn').addEventListener('click', () => ReportManager.open());
+    $('#submitReportBtn').addEventListener('click', () => ReportManager.submit());
+    $('#reportBody').addEventListener('input', (e) => { $('#reportBodyCount').textContent = e.target.value.length; });
+    $$('.report-type-btn').forEach(btn => btn.addEventListener('click', () => ReportManager.setType(btn.dataset.type)));
+    $('#addTagBtn').addEventListener('click', () => ReportManager.addTag());
+    $('#reportTagInput').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); ReportManager.addTag(); } });
+  }
+};
+
+const AzkarManager = {
+  async load() {
+    try {
+      const data = await Utils.fetchJSON(SOURCES.AZKAR_DATA);
+      const rows = data.rows || [];
+      State.azkarData = rows.map((r, i) => ({ id: i, category: r[0] || 'غير مصنف', text: r[1] || '', description: r[2] || '', count: parseInt(r[3]) || 1, reference: r[4] || '', search: r[5] || '' })).filter(z => z.text.trim());
+      const catMap = {};
+      State.azkarData.forEach(z => { if (!catMap[z.category]) catMap[z.category] = 0; catMap[z.category]++; });
+      State.azkarCategories = Object.keys(catMap).map(name => ({ name, count: catMap[name] }));
+      this.renderCategories();
+    } catch (e) {
+      const c = $('#azkarCategoriesList');
+      if (c) c.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-exclamation-triangle"></i><p>تعذر التحميل</p></div>';
+    }
+  },
+  getCategoryIcon(name) {
+    const icons = { 'أذكار الصباح': 'fa-sun', 'أذكار المساء': 'fa-moon', 'أذكار النوم': 'fa-bed', 'أذكار الاستيقاظ': 'fa-sun', 'أذكار الصلاة': 'fa-mosque', 'أذكار الوضوء': 'fa-tint', 'أذكار الطعام': 'fa-utensils', 'أذكار السفر': 'fa-plane', 'أذكار المنزل': 'fa-home', 'أذكار المسجد': 'fa-mosque', 'الرقية': 'fa-shield-alt', 'أدعية': 'fa-hands-praying', 'أذكار': 'fa-book', 'أذكار الجمعة': 'fa-star' };
+    return icons[name] || 'fa-star';
+  },
+  renderCategories() {
+    const c = $('#azkarCategoriesList');
+    if (!c) return;
+    if (!State.azkarCategories.length) { c.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-hands-praying"></i><p>لا توجد تصنيفات</p></div>'; return; }
+    const self = this;
+    c.innerHTML = State.azkarCategories.map(cat => '<div class="azkar-cat-card" data-category="' + Utils.escapeHTML(cat.name) + '"><i class="fas ' + self.getCategoryIcon(cat.name) + '"></i><div class="cat-name">' + Utils.escapeHTML(cat.name) + '</div><div class="cat-count">' + cat.count + ' ذكر</div></div>').join('');
+    c.querySelectorAll('.azkar-cat-card').forEach(card => card.addEventListener('click', () => self.openCategory(card.dataset.category)));
+  },
+  openCategory(catName) {
+    State.currentAzkarCategory = catName;
+    const azkar = State.azkarData.filter(z => z.category === catName);
+    $('#azkarCategoriesView').style.display = 'none';
+    $('#azkarFavView').style.display = 'none';
+    $('#azkarListView').style.display = 'block';
+    $('#azkarListTitle').textContent = catName;
+    const container = $('#azkarListContainer');
+    if (!azkar.length) { container.innerHTML = '<div class="empty-state"><i class="fas fa-book"></i><p>لا توجد أذكار</p></div>'; return; }
+    const self = this;
+    container.innerHTML = azkar.map(z => self.renderZekrCard(z)).join('');
+    this.bindZekrEvents();
+  },
+  renderZekrCard(z) {
+    const isFav = State.azkarFavorites.indexOf(z.id) >= 0;
+    const counter = State.azkarCounters[z.id] || 0;
+    const isCompleted = counter >= z.count;
+    return '<div class="zekr-card" data-zekr-id="' + z.id + '"><div class="zekr-text">' + Utils.escapeHTML(z.text) + '</div>' +
+      (z.reference ? '<div class="zekr-source"><i class="fas fa-book-open"></i> ' + Utils.escapeHTML(z.reference) + '</div>' : '') +
+      '<div class="zekr-footer"><span class="zekr-count-badge"><i class="fas fa-repeat"></i> ' + z.count + ' ' + (z.count > 1 ? 'مرات' : 'مرة') + '</span>' +
+      '<div class="zekr-actions"><button class="zekr-action-btn fav ' + (isFav ? 'active' : '') + '" data-fav="' + z.id + '"><i class="fas fa-star"></i></button><button class="zekr-action-btn copy" data-copy="' + z.id + '"><i class="fas fa-copy"></i></button></div></div>' +
+      (z.count > 1 ? '<div class="zekr-counter ' + (isCompleted ? 'completed' : '') + '" data-counter-id="' + z.id + '"><span class="counter-display">' + counter + ' / ' + z.count + '</span><div class="counter-btns"><button class="counter-btn reset" data-reset="' + z.id + '"><i class="fas fa-redo"></i></button><button class="counter-btn ' + (isCompleted ? 'done' : '') + '" data-increment="' + z.id + '"><i class="fas fa-' + (isCompleted ? 'check' : 'plus') + '"></i></button></div></div>' : '') + '</div>';
+  },
+  bindZekrEvents() {
+    const self = this;
+    $$('[data-fav]').forEach(btn => btn.addEventListener('click', () => self.toggleFavorite(parseInt(btn.dataset.fav))));
+    $$('[data-copy]').forEach(btn => btn.addEventListener('click', () => {
+      const z = State.azkarData.find(x => x.id === parseInt(btn.dataset.copy));
+      if (z) navigator.clipboard.writeText(z.text + '\n' + (z.reference ? '[' + z.reference + ']' : '')).then(() => UI.showToast('تم النسخ', 'success'));
+    }));
+    $$('[data-increment]').forEach(btn => btn.addEventListener('click', () => self.incrementCounter(parseInt(btn.dataset.increment))));
+    $$('[data-reset]').forEach(btn => btn.addEventListener('click', () => self.resetCounter(parseInt(btn.dataset.reset))));
+  },
+  incrementCounter(id) {
+    const z = State.azkarData.find(x => x.id === id);
+    if (!z) return;
+    const current = State.azkarCounters[id] || 0;
+    if (current >= z.count) return;
+    State.azkarCounters[id] = current + 1;
+    Storage.save();
+    this.refreshCounter(id);
+    if (State.azkarCounters[id] >= z.count) { UI.showToast('أكملت ✅', 'success'); if (navigator.vibrate) navigator.vibrate(100); }
+  },
+  resetCounter(id) { State.azkarCounters[id] = 0; Storage.save(); this.refreshCounter(id); },
+  refreshCounter(id) {
+    const el = $('[data-counter-id="' + id + '"]');
+    if (!el) return;
+    const z = State.azkarData.find(x => x.id === id);
+    const c = State.azkarCounters[id] || 0;
+    const done = c >= z.count;
+    el.querySelector('.counter-display').textContent = c + ' / ' + z.count;
+    el.classList.toggle('completed', done);
+    const b = el.querySelector('[data-increment]');
+    if (b) { b.className = 'counter-btn ' + (done ? 'done' : ''); b.innerHTML = '<i class="fas fa-' + (done ? 'check' : 'plus') + '"></i>'; }
+  },
+  toggleFavorite(id) {
+    const idx = State.azkarFavorites.indexOf(id);
+    if (idx >= 0) { State.azkarFavorites.splice(idx, 1); UI.showToast('تم الإزالة', 'info'); }
+    else { State.azkarFavorites.push(id); UI.showToast('تم الحفظ ⭐', 'success'); }
+    Storage.save();
+    if (State.currentAzkarCategory) this.openCategory(State.currentAzkarCategory);
+    this.renderFavorites();
+  },
+  renderFavorites() {
+    const c = $('#azkarFavContainer');
+    if (!c) return;
+    const favs = State.azkarData.filter(z => State.azkarFavorites.indexOf(z.id) >= 0);
+    if (!favs.length) { c.innerHTML = '<div class="empty-state"><i class="fas fa-star"></i><p>لا توجد مفضلة</p></div>'; return; }
+    const self = this;
+    c.innerHTML = favs.map(z => self.renderZekrCard(z)).join('');
+    this.bindZekrEvents();
+  },
+  search(query) {
+    const q = query.trim();
+    if (!q) { $('#azkarCategoriesView').style.display = 'block'; $('#azkarListView').style.display = 'none'; $('#azkarFavView').style.display = 'none'; return; }
+    const results = State.azkarData.filter(z => z.text.indexOf(q) >= 0 || z.category.indexOf(q) >= 0 || z.search.indexOf(q) >= 0);
+    $('#azkarCategoriesView').style.display = 'none';
+    $('#azkarFavView').style.display = 'none';
+    $('#azkarListView').style.display = 'block';
+    $('#azkarListTitle').textContent = 'نتائج: "' + q + '"';
+    const c = $('#azkarListContainer');
+    if (!results.length) { c.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>لا توجد نتائج</p></div>'; return; }
+    c.innerHTML = results.map(z => '<div class="zekr-card" data-zekr-id="' + z.id + '"><div style="font-size:.6rem;color:var(--primary);margin-bottom:.25rem;"><i class="fas fa-tag"></i> ' + Utils.escapeHTML(z.category) + '</div><div class="zekr-text">' + Utils.highlight(z.text, q) + '</div>' + (z.reference ? '<div class="zekr-source"><i class="fas fa-book-open"></i> ' + Utils.escapeHTML(z.reference) + '</div>' : '') + '<div class="zekr-footer"><span class="zekr-count-badge">' + z.count + ' ' + (z.count > 1 ? 'مرات' : 'مرة') + '</span><div class="zekr-actions"><button class="zekr-action-btn fav ' + (State.azkarFavorites.indexOf(z.id) >= 0 ? 'active' : '') + '" data-fav="' + z.id + '"><i class="fas fa-star"></i></button></div></div></div>').join('');
+    this.bindZekrEvents();
+  }
+};
+
+const App = {
+  async init() {
+    await CacheDB.init();
+    Storage.load();
+    if (!State.aiSessions.length) SessionManager.create();
+    else if (!State.currentSessionId) State.currentSessionId = State.aiSessions[0].id;
+    SessionManager.updateSessionLabel();
+
+    SettingsManager.apply();
+    SettingsManager.bind();
+    Events.bind();
+    ReportManager.bind();
+    QuizManager.init();
+    MaintenanceManager.bindTasbih();
+
+    // فحص الصيانة
+    await MaintenanceManager.check();
+    // فحص دوري كل دقيقة
+    setInterval(() => MaintenanceManager.check(), 60000);
+
+    // فحص القيود من Firebase
+    if (State.user) await this.loadRestrictions();
+
+    await AICreditManager.checkAndReset();
+    this.updateUserUI();
+    this.updateDates();
+    setInterval(() => this.updateDates(), 60000);
+
+    window.addEventListener('online', () => UI.updateOnlineStatus());
+    window.addEventListener('offline', () => UI.updateOnlineStatus());
+    UI.updateOnlineStatus();
+
+    if (State.user) {
+      NotificationsManager.load();
+      await AICreditManager.syncFromFirebase();
+    }
+    if (State.user && State.settings.aiEnabled) AIManager.loadModels();
+
+    try {
+      const data = await Utils.fetchJSON(SOURCES.SURAH_INDEX);
+      State.surahs = data.map(s => ({ id: s.id, name: s.name, transliteration: s.transliteration, type: s.type, total_verses: s.total_verses, verses: [] }));
+      SurahScreen.render(State.surahs);
+      QuizManager.populateSurahs();
+      BookmarkManager.render();
+      ReadingScreen.updateStatsUI();
+    } catch (e) {
+      $('#surahListContainer').innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>تعذر التحميل</p><button class="btn-primary-custom" style="margin-top:.55rem;padding:.35rem .75rem;font-size:.7rem;" onclick="location.reload()"><i class="fas fa-redo"></i> إعادة</button></div>';
+    }
+    AzkarManager.load();
+    DataSizeManager.update();
+
+    // تفعيل SW
+    if ('serviceWorker' in navigator) {
+      try {
+        await navigator.serviceWorker.register('sw.js');
+        await navigator.serviceWorker.ready;
+        AssetCache.trigger();
+      } catch (e) {}
+    }
+  },
+  async loadRestrictions() {
+    if (!State.user) return;
+    try {
+      const r = await FirebaseDB.get('users/' + encodeURIComponent(State.user.username) + '/restrictions');
+      if (r) State.restrictions = Object.assign(State.restrictions, r);
+    } catch (e) {}
+  },
+  updateDates() {
+    $('#gregorianDate').textContent = Utils.getGregorianDate();
+    $('#hijriDate').textContent = Utils.getHijriDate();
+  },
+  updateUserUI() {
+    if (State.user) {
+      $('#headerUserBtn').style.display = 'flex';
+      $('#headerUserBtn').textContent = (State.user.username || '؟').charAt(0).toUpperCase();
+      $('#accountLabel').textContent = State.user.username || State.user.email;
+      $('#accountActionBtn').textContent = 'حسابي';
+      $('#logoutItem').style.display = 'flex';
+      $('#aiCreditBadge').style.display = 'flex';
+    } else {
+      $('#headerUserBtn').style.display = 'none';
+      $('#accountLabel').textContent = 'تسجيل الدخول';
+      $('#accountActionBtn').textContent = 'دخول';
+      $('#logoutItem').style.display = 'none';
+      $('#aiCreditBadge').style.display = 'none';
+    }
+    SettingsManager.updateAIStatus();
+    AICreditManager.updateUI();
+  }
+};
+
+const SurahScreen = {
+  render(surahs) {
+    const c = $('#surahListContainer');
+    if (!surahs.length) { c.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>لا توجد نتائج</p></div>'; return; }
+    const types = { meccan: { t: 'مكية', c: 'type-meccan' }, medinan: { t: 'مدنية', c: 'type-medinan' } };
+    c.innerHTML = surahs.map(s => {
+      const ty = types[s.type] || { t: s.type, c: '' };
+      const p = State.progress[s.id] || 0;
+      const pct = Math.round((p / s.total_verses) * 100);
+      return '<div class="surah-card" data-surah-id="' + s.id + '"><div class="surah-num">' + s.id + '</div><div class="surah-info"><div class="surah-name">' + s.name + '</div><div class="surah-meta"><span class="' + ty.c + ' type-badge">' + ty.t + '</span><span><i class="fas fa-book"></i> ' + s.total_verses + ' آية</span></div></div>' + (pct > 0 ? '<svg class="progress-ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="var(--border-color)" stroke-width="3"/><circle cx="18" cy="18" r="15" fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="' + (pct * 0.94) + ' 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>' : '') + '</div>';
+    }).join('');
+    c.querySelectorAll('.surah-card').forEach(card => card.addEventListener('click', () => ReadingScreen.open(parseInt(card.dataset.surahId))));
+  },
+  filter(q, f) {
+    let list = State.surahs;
+    if (f && f !== 'all') list = list.filter(s => s.type === f);
+    if (q) { const lq = q.trim().toLowerCase(); list = list.filter(s => s.name.indexOf(lq) >= 0 || String(s.id) === lq || (s.transliteration && s.transliteration.toLowerCase().indexOf(lq) >= 0)); }
+    this.render(list);
+  }
+};
+
+const ReadingScreen = {
+  async open(id) {
+    const surah = State.surahs.find(s => s.id === id);
+    if (!surah) return;
+    State.currentSurah = id;
+    UI.showScreen('reading');
+    const ty = { meccan: 'مكية', medinan: 'مدنية' };
+    $('#readingSurahName').textContent = surah.name;
+    $('#readingSurahSubtitle').textContent = surah.transliteration;
+    $('#readingSurahBadges').innerHTML = '<span>' + (ty[surah.type] || surah.type) + '</span><span>' + surah.total_verses + ' آية</span><span>السورة ' + surah.id + '</span>';
+    if (surah.verses && surah.verses.length) {
+      this.renderAyahs(surah, surah.verses);
+      State.lastRead = { surah: id, ayah: 1, timestamp: Date.now() };
+      Storage.save();
+      this.updateStats(id, surah.total_verses);
+      return;
+    }
+    $('#ayahsContainer').innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+    try {
+      const data = await Utils.fetchJSON(SOURCES.QURAN_TEXT);
+      const sd = data.find(s => s.id === id);
+      if (!sd) throw new Error('not found');
+      surah.verses = sd.verses;
+      this.renderAyahs(surah, sd.verses);
+      State.lastRead = { surah: id, ayah: 1, timestamp: Date.now() };
+      Storage.save();
+      this.updateStats(id, surah.total_verses);
+    } catch (e) {
+      $('#ayahsContainer').innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>تعذر التحميل</p></div>';
+    }
+  },
+  renderAyahs(surah, verses) {
+    if (surah.id !== 9 && surah.id !== 1) $('#bismillahContainer').innerHTML = '<div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
+    else $('#bismillahContainer').innerHTML = '';
+    const c = $('#ayahsContainer');
+    c.style.fontFamily = "'" + State.settings.fontFamily + "', var(--font-quran)";
+    c.style.fontSize = State.settings.fontSize + 'rem';
+    c.innerHTML = verses.map(v => {
+      const ws = v.text.split(' ').map((w, i) => '<span class="word" data-wi="' + i + '">' + w + '</span>').join(' ');
+      return '<span class="ayah-span" data-surah="' + surah.id + '" data-ayah="' + v.id + '" id="ayah-' + surah.id + '-' + v.id + '">' + ws + '<span class="ayah-number">' + v.id + '</span></span>';
+    }).join(' ');
+    this.bindAyahEvents();
+    if (State.settings.memorization > 0) this.applyMemorization();
+  },
+  bindAyahEvents() {
+    const self = this;
+    $$('.ayah-span').forEach(sp => {
+      sp.addEventListener('click', (e) => {
+        if (e.target.classList.contains('memo-hidden')) { e.target.classList.add('revealed'); return; }
+        e.stopPropagation();
+        self.selectAyah(sp);
+      });
+    });
+  },
+  selectAyah(sp) {
+    if (State.selectedAyahEl) State.selectedAyahEl.classList.remove('selected');
+    sp.classList.add('selected');
+    State.selectedAyahEl = sp;
+    const sid = parseInt(sp.dataset.surah), aid = parseInt(sp.dataset.ayah);
+    const surah = State.surahs.find(s => s.id === sid);
+    State.currentAyah = { surah: sid, ayah: aid, surahName: surah ? surah.name : '' };
+    $('#popupRef').textContent = surah.name + ' : ' + aid;
+    $('#ayahPopup').classList.add('show');
+    const isBm = State.bookmarks.some(b => b.surah === sid && b.ayah === aid);
+    $('#popupBookmarkBtn').classList.toggle('bookmarked', isBm);
+    $('#popupBookmarkBtn').querySelector('i').className = isBm ? 'fas fa-star' : 'far fa-star';
+  },
+  closePopup() {
+    $('#ayahPopup').classList.remove('show');
+    if (State.selectedAyahEl) { State.selectedAyahEl.classList.remove('selected'); State.selectedAyahEl = null; }
+  },
+  applyMemorization() {
+    const pct = State.settings.memorization;
+    $$('.ayah-span').forEach(sp => {
+      const words = sp.querySelectorAll('.word');
+      words.forEach((w, i) => {
+        w.classList.remove('memo-hidden', 'revealed');
+        if (pct > 0 && i < Math.ceil(words.length * pct / 100)) w.classList.add('memo-hidden');
+      });
+    });
+  },
+  updateStats(sid, total) {
+    const today = Utils.today();
+    if (State.stats.lastReadDate !== today) { State.stats.dailyAyahs = 0; State.stats.lastReadDate = today; State.stats.streak++; }
+    State.stats.ayahsRead += total;
+    State.stats.dailyAyahs += total;
+    State.progress[sid] = total;
+    State.stats.surahsRead = Object.keys(State.progress).length;
+    Storage.save();
+    this.updateStatsUI();
+    if (State.user) { FirebaseDB.patch('users/' + encodeURIComponent(State.user.username) + '/stats', State.stats); FirebaseDB.patch('users/' + encodeURIComponent(State.user.username) + '/progress', State.progress); }
+  },
+  updateStatsUI() {
+    $('#statAyahsRead').textContent = Utils.formatNumber(State.stats.ayahsRead);
+    $('#statStreak').textContent = State.stats.streak;
+    $('#statSurahsRead').textContent = State.stats.surahsRead;
+    $('#statBookmarks').textContent = State.bookmarks.length;
+    const pct = Math.min(100, Math.round((State.stats.dailyAyahs / State.settings.dailyGoal) * 100));
+    $('#dailyGoalFill').style.width = pct + '%';
+    $('#dailyGoalText').textContent = State.stats.dailyAyahs + ' / ' + State.settings.dailyGoal + ' آية';
+  },
+  applySettings() {
+    const c = $('#ayahsContainer');
+    if (c) { c.style.fontSize = State.settings.fontSize + 'rem'; c.style.fontFamily = "'" + State.settings.fontFamily + "', var(--font-quran)"; }
+    document.documentElement.setAttribute('data-theme', State.settings.theme);
+  }
+};
+
+const TafsirManager = {
+  async open(surah, ayah) {
+    const modal = new bootstrap.Modal($('#tafsirModal'));
+    const sname = State.surahs.find(s => s.id === surah);
+    $('#tafsirModalTitle').textContent = 'تفسير ' + (sname ? sname.name : '') + ' : ' + ayah;
+    if (!State.tafsirs.length) {
+      $('#tafsirModalBody').innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+      try { const data = await Utils.fetchJSON(SOURCES.TAFSIR_EDITIONS); State.tafsirs = data.filter(t => t.language_name === 'arabic'); }
+      catch (e) { $('#tafsirModalBody').innerHTML = '<div class="empty-state"><p>تعذر التحميل</p></div>'; modal.show(); return; }
+    }
+    this.renderList(surah, ayah);
+    modal.show();
+  },
+  renderList(surah, ayah) {
+    const self = this;
+    $('#tafsirModalBody').innerHTML = State.tafsirs.map(t => {
+      const cached = TafsirCacheManager.isInterpreted(t.slug, surah, ayah);
+      return '<div class="tafsir-item" data-slug="' + t.slug + '" data-name="' + t.name + '"><div class="tafsir-icon"><i class="fas fa-book"></i></div><div style="flex:1;"><div class="tafsir-name">' + t.name + (cached ? ' <span class="cached-badge"><i class="fas fa-hdd"></i> محفوظ</span>' : '') + '</div><div class="tafsir-author">' + t.author_name + '</div></div></div>';
+    }).join('');
+    $$('.tafsir-item').forEach(item => item.addEventListener('click', () => self.loadTafsir(item.dataset.slug, item.dataset.name, surah, ayah)));
+  },
+  async loadTafsir(slug, name, surah, ayah) {
+    const self = this;
+    $('#tafsirModalBody').innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+    const sname = State.surahs.find(s => s.id === surah);
+    const key = slug + '_' + surah + '_' + ayah;
+    try {
+      let data = await CacheDB.getTafsir(key);
+      if (!data) {
+        const url = SOURCES.TAFSIR_BASE + '/' + slug + '/' + surah + '/' + ayah + '.json';
+        const fetched = await Utils.fetchJSON(url, false);
+        data = { text: fetched.text };
+        await CacheDB.putTafsir(key, { text: fetched.text });
+      }
+      const text = data.text || 'لا يوجد تفسير.';
+      const formatted = text.split('\n').filter(p => p.trim()).map(p => '<p>' + p + '</p>').join('');
+      $('#tafsirModalBody').innerHTML = '<div style="padding:.2rem;"><button class="btn-outline-custom" style="margin-bottom:.55rem;padding:.28rem .55rem;font-size:.65rem;" id="backToTafsirList"><i class="fas fa-arrow-right"></i> العودة</button><div class="tafsir-text"><div class="ayah-ref">' + (sname ? sname.name : '') + ' : ' + ayah + '</div><div style="font-size:.62rem;color:var(--text-muted);margin-bottom:.4rem;"><i class="fas fa-user-edit"></i> ' + name + '</div>' + formatted + '</div></div>';
+      $('#backToTafsirList').addEventListener('click', () => self.renderList(surah, ayah));
+      TafsirCacheManager.mark(slug, surah, ayah);
+      DataSizeManager.update();
+    } catch (e) {
+      $('#tafsirModalBody').innerHTML = '<div class="empty-state"><p>تعذر التحميل</p><button class="btn-primary-custom" style="margin-top:.55rem;padding:.35rem .75rem;font-size:.7rem;" id="backToTafsirList"><i class="fas fa-arrow-right"></i> العودة</button></div>';
+      $('#backToTafsirList').addEventListener('click', () => self.renderList(surah, ayah));
+    }
+  }
+};
+
+const WordManager = {
+  async show(surah, ayah) {
+    const modal = new bootstrap.Modal($('#wordModal'));
+    $('#wordModalBody').innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+    modal.show();
+    try {
+      const url = SOURCES.WORD_API + '/' + surah + ':' + ayah + '?words=true&word_fields=text_uthmani,root,grammar';
+      const data = await Utils.fetchJSON(url, false);
+      const words = (data.verse && data.verse.words) || [];
+      if (!words.length) { $('#wordModalBody').innerHTML = '<div class="empty-state"><p>لا توجد بيانات</p></div>'; return; }
+      $('#wordModalBody').innerHTML = words.map(w => '<div style="padding:.5rem;border-bottom:1px solid var(--border-color);"><div style="font-family:var(--font-quran);font-size:1.05rem;margin-bottom:.15rem;">' + (w.text_uthmani || w.text) + '</div><div style="font-size:.68rem;color:var(--text-muted);">' + (w.root ? '<span><i class="fas fa-seedling"></i> الجذر: ' + w.root + '</span>' : '') + (w.grammar ? '<span style="margin-right:.55rem;"><i class="fas fa-sitemap"></i> ' + w.grammar + '</span>' : '') + '</div></div>').join('');
+    } catch (e) { $('#wordModalBody').innerHTML = '<div class="empty-state"><p>تعذر التحميل</p></div>'; }
+  }
+};
+
+const BookmarkManager = {
+  toggle(surah, ayah) {
+    const i = State.bookmarks.findIndex(b => b.surah === surah && b.ayah === ayah);
+    if (i >= 0) { State.bookmarks.splice(i, 1); UI.showToast('تم الإزالة', 'info'); }
+    else {
+      const sd = State.surahs.find(s => s.id === surah);
+      const v = (sd && sd.verses) ? sd.verses.find(v => v.id === ayah) : null;
+      State.bookmarks.push({ surah, ayah, surahName: sd ? sd.name : '', text: v ? v.text : '', timestamp: Date.now() });
+      UI.showToast('تم الحفظ', 'success');
+    }
+    Storage.save();
+    this.render();
+    ReadingScreen.updateStatsUI();
+    if (State.user) FirebaseDB.put('users/' + encodeURIComponent(State.user.username) + '/bookmarks', State.bookmarks);
+  },
+  render() {
+    const c = $('#bookmarksList');
+    if (!State.bookmarks.length) { c.innerHTML = '<div class="empty-state"><i class="fas fa-star"></i><p>لا توجد إشارات</p></div>'; return; }
+    const self = this;
+    c.innerHTML = State.bookmarks.map(b => '<div class="bookmark-card" data-surah="' + b.surah + '" data-ayah="' + b.ayah + '"><div class="bookmark-ref"><span>' + b.surahName + ' : ' + b.ayah + '</span><button class="popup-close" style="width:20px;height:20px;font-size:.58rem;" data-remove="' + b.surah + '-' + b.ayah + '"><i class="fas fa-times"></i></button></div><div class="bookmark-text">' + (b.text || '') + '</div><div class="bookmark-date">' + new Date(b.timestamp).toLocaleDateString('ar-EG') + '</div></div>').join('');
+    c.querySelectorAll('.bookmark-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('[data-remove]')) return;
+        const s = parseInt(card.dataset.surah), a = parseInt(card.dataset.ayah);
+        ReadingScreen.open(s).then(() => setTimeout(() => { const el = $('#ayah-' + s + '-' + a); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('selected'); State.selectedAyahEl = el; } }, 500));
+      });
+    });
+    c.querySelectorAll('[data-remove]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const parts = btn.dataset.remove.split('-'); self.toggle(parseInt(parts[0]), parseInt(parts[1])); }));
+  }
+};
+
+const SearchManager = {
+  async search(q) {
+    if (!q.trim()) { $('#searchResults').innerHTML = '<div class="empty-state"><p>اكتب كلمة</p></div>'; return; }
+    $('#searchResults').innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+    try {
+      const url = SOURCES.SEARCH_API + '/' + encodeURIComponent(q) + '/all/ar';
+      const data = await Utils.fetchJSON(url, false);
+      const matches = (data.data && data.data.matches) || [];
+      if (!matches.length) { $('#searchResults').innerHTML = '<div class="empty-state"><p>لا توجد نتائج</p></div>'; return; }
+      $('#searchResults').innerHTML = matches.slice(0, 50).map(m => '<div class="search-result" data-surah="' + m.surah.number + '" data-ayah="' + m.numberInSurah + '" style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:.55rem;margin-bottom:.35rem;cursor:pointer;"><div style="font-weight:700;color:var(--primary);font-size:.68rem;margin-bottom:.12rem;">' + m.surah.name + ' : ' + m.numberInSurah + '</div><div style="font-family:var(--font-quran);font-size:.92rem;line-height:1.65;">' + Utils.highlight(m.text, q) + '</div></div>').join('');
+      $$('#searchResults .search-result').forEach(el => el.addEventListener('click', () => {
+        const s = parseInt(el.dataset.surah), a = parseInt(el.dataset.ayah);
+        ReadingScreen.open(s).then(() => setTimeout(() => { const t = $('#ayah-' + s + '-' + a); if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'center' }); t.classList.add('selected'); State.selectedAyahEl = t; } }, 500));
+      }));
+    } catch (e) { $('#searchResults').innerHTML = '<div class="empty-state"><p>تعذر البحث</p></div>'; }
+  }
+};
+
+const ShareManager = {
+  show(surah, ayah) {
+    const sd = State.surahs.find(s => s.id === surah);
+    const ad = (sd && sd.verses) ? sd.verses.find(v => v.id === ayah) : null;
+    if (!ad) { UI.showToast('لم يتم التحميل', 'warning'); return; }
+    $('#shareAyahText').textContent = ad.text;
+    $('#shareAyahRef').textContent = sd.name + ' : ' + ayah;
+    new bootstrap.Modal($('#shareModal')).show();
+  },
+  async download() {
+    try {
+      const canvas = await html2canvas($('#sharePreviewCard'), { backgroundColor: null, scale: 2, useCORS: true });
+      const a = document.createElement('a');
+      a.download = 'ayah-' + Date.now() + '.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      UI.showToast('تم التحميل', 'success');
+    } catch (e) { UI.showToast('تعذر التحميل', 'error'); }
+  },
+  async native() {
+    try {
+      const canvas = await html2canvas($('#sharePreviewCard'), { backgroundColor: null, scale: 2, useCORS: true });
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'ayah.png', { type: 'image/png' });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: 'آية', text: $('#shareAyahText').textContent });
+        else ShareManager.download();
+      });
+    } catch (e) { UI.showToast('تعذر', 'error'); }
+  }
+};
+
+const QuizManager = {
+  init() { $('#startQuizBtn').addEventListener('click', () => QuizManager.start()); $('#nextQuestionBtn').addEventListener('click', () => QuizManager.nextQuestion()); $('#restartQuizBtn').addEventListener('click', () => QuizManager.start()); },
+  populateSurahs() { $('#quizSurahSelect').innerHTML = '<option value="">اختر السورة</option>' + State.surahs.map(s => '<option value="' + s.id + '">' + s.name + '</option>').join(''); },
+  async start() {
+    const sid = parseInt($('#quizSurahSelect').value);
+    if (!sid) { UI.showToast('اختر سورة', 'warning'); return; }
+    const surah = State.surahs.find(s => s.id === sid);
+    if (!surah) return;
+    if (!surah.verses || !surah.verses.length) {
+      $('#quizContent').innerHTML = '<div class="loading-container"><div class="spinner"></div></div>';
+      try { const data = await Utils.fetchJSON(SOURCES.QURAN_TEXT); const sd = data.find(s => s.id === sid); if (sd) surah.verses = sd.verses; }
+      catch (e) { UI.showToast('تعذر التحميل', 'error'); return; }
+    }
+    State.quiz = { active: true, questions: [], currentIndex: 0, score: 0, surahId: sid, mode: $('#quizModeSelect').value, lastResult: null };
+    this.generateQuestions(surah);
+    if (!State.quiz.questions.length) return;
+    this.renderQuestion();
+    $('#quizProgress').style.display = 'block';
+    $('#quizScore').style.display = 'block';
+    $('#nextQuestionBtn').style.display = 'inline-flex';
+    $('#restartQuizBtn').style.display = 'none';
+  },
+  generateQuestions(surah) {
+    const verses = surah.verses;
+    const qs = [];
+    const count = Math.min(10, verses.length - 1);
+    if (count < 1) { UI.showToast('السورة قصيرة', 'warning'); return; }
+    for (let i = 0; i < count; i++) {
+      const idx = Math.floor(Math.random() * (verses.length - 1));
+      const correct = verses[idx + 1];
+      const options = [correct];
+      let s = 0;
+      while (options.length < 4 && options.length < verses.length && s < 50) {
+        const r = verses[Math.floor(Math.random() * verses.length)];
+        if (!options.some(o => o.id === r.id) && r.id !== verses[idx].id) options.push(r);
+        s++;
+      }
+      options.sort(() => Math.random() - 0.5);
+      qs.push({ question: verses[idx].text, questionNum: verses[idx].id, correct: correct.text, correctNum: correct.id, options: options.map(o => o.text) });
+    }
+    State.quiz.questions = qs;
+  },
+  renderQuestion() {
+    const q = State.quiz.questions[State.quiz.currentIndex];
+    if (!q) { this.finish(); return; }
+    $('#quizProgressFill').style.width = ((State.quiz.currentIndex / State.quiz.questions.length) * 100) + '%';
+    $('#quizContent').innerHTML = '<div class="quiz-question"><div style="font-size:.62rem;color:var(--text-muted);margin-bottom:.25rem;">الآية ' + q.questionNum + '</div><div class="question-text">' + q.question + '</div><div class="quiz-options">' + q.options.map((o, i) => '<button class="quiz-option" data-index="' + i + '">' + o + '</button>').join('') + '</div></div>';
+    $$('.quiz-option').forEach(btn => btn.addEventListener('click', () => {
+      const isCorrect = btn.textContent === q.correct;
+      if (isCorrect) { btn.classList.add('correct'); State.quiz.score++; }
+      else { btn.classList.add('wrong'); $$('.quiz-option').forEach(b => { if (b.textContent === q.correct) b.classList.add('correct'); }); }
+      $$('.quiz-option').forEach(b => b.disabled = true);
+      $('#quizScoreValue').textContent = State.quiz.score;
+      $('#quizTotalValue').textContent = State.quiz.questions.length;
+    }));
+    $('#quizScoreValue').textContent = State.quiz.score;
+    $('#quizTotalValue').textContent = State.quiz.questions.length;
+  },
+  nextQuestion() { State.quiz.currentIndex++; if (State.quiz.currentIndex >= State.quiz.questions.length) this.finish(); else this.renderQuestion(); },
+  finish() {
+    const pct = Math.round((State.quiz.score / State.quiz.questions.length) * 100);
+    $('#quizProgressFill').style.width = '100%';
+    const surah = State.surahs.find(s => s.id === State.quiz.surahId);
+    State.quiz.lastResult = { surahId: State.quiz.surahId, surahName: surah ? surah.name : '', score: State.quiz.score, total: State.quiz.questions.length };
+    const canUseAI = AIManager.isAvailable() && AICreditManager.hasEnough(GROQ_CONFIG.COSTS['quiz-analysis']);
+    $('#quizContent').innerHTML = '<div class="empty-state"><i class="fas fa-trophy" style="color:var(--gold);font-size:2.5rem;opacity:1;"></i><h3 style="margin:.35rem 0;font-size:.95rem;">انتهى!</h3><p style="font-size:.95rem;">' + State.quiz.score + ' / ' + State.quiz.questions.length + '</p><p style="font-size:.75rem;">' + (pct >= 80 ? 'ممتاز 🌟' : pct >= 50 ? 'جيد 💪' : 'راجع 📖') + '</p>' + (canUseAI ? '<button class="quiz-ai-btn" id="quizAiAnalysisBtn"><i class="fas fa-robot"></i> حلّل أدائي (' + GROQ_CONFIG.COSTS['quiz-analysis'] + ' رصيد)</button>' : '') + '</div>';
+    const aiBtn = $('#quizAiAnalysisBtn');
+    if (aiBtn) aiBtn.addEventListener('click', async () => { UI.showScreen('ai'); await AIManager.send('quiz-analysis', State.quiz.lastResult); });
+    $('#nextQuestionBtn').style.display = 'none';
+    $('#restartQuizBtn').style.display = 'inline-flex';
+    if (State.user) FirebaseDB.post('users/' + encodeURIComponent(State.user.username) + '/quizResults', { surahId: State.quiz.surahId, score: State.quiz.score, total: State.quiz.questions.length, timestamp: Date.now() });
+  }
+};
+
+const NotificationsManager = {
+  async load() {
+    if (!State.user) { State.notifications = []; State.unreadCount = 0; this.render(); this.updateBadge(); return; }
+    try {
+      const data = await FirebaseDB.get('notifications');
+      if (!data) { State.notifications = []; State.unreadCount = 0; this.render(); this.updateBadge(); return; }
+      const self = this;
+      const all = Object.keys(data).map(id => Object.assign({}, data[id], { id: data[id].id || id })).filter(n => {
+        if (n.target === 'all') return true;
+        if (n.target === 'user' && n.targetUser === State.user.username) return true;
+        return false;
+      }).sort((a, b) => b.timestamp - a.timestamp);
+      State.notifications = all;
+      State.unreadCount = all.filter(n => !self.isRead(n.id)).length;
+      this.render();
+      this.updateBadge();
+    } catch (e) { State.notifications = []; State.unreadCount = 0; this.render(); this.updateBadge(); }
+  },
+  isRead(id) { try { const r = JSON.parse(localStorage.getItem('quran_notif_read') || '[]'); return r.indexOf(id) >= 0; } catch (e) { return false; } },
+  markRead(id) { try { const r = JSON.parse(localStorage.getItem('quran_notif_read') || '[]'); if (r.indexOf(id) < 0) { r.push(id); localStorage.setItem('quran_notif_read', JSON.stringify(r)); } } catch (e) {} const self = this; State.unreadCount = State.notifications.filter(n => !self.isRead(n.id)).length; this.updateBadge(); },
+  updateBadge() { const b = $('#notifBadge'); if (State.unreadCount > 0) { b.textContent = State.unreadCount; b.style.display = 'block'; } else b.style.display = 'none'; },
+  render() {
+    const self = this;
+    const c = $('#notificationsList');
+    if (!State.notifications.length) { c.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>لا توجد إشعارات</p></div>'; return; }
+    c.innerHTML = State.notifications.map(n => {
+      const unread = !self.isRead(n.id);
+      const tags = (n.tags || '').split(',').filter(t => t.trim());
+      return '<div class="notification-card ' + (unread ? 'unread' : '') + '" data-id="' + n.id + '"><div class="notif-header"><div class="notif-title">' + Utils.escapeHTML(n.title) + '</div><div class="notif-time">' + Utils.timeAgo(n.timestamp) + '</div></div><div class="notif-text">' + Utils.escapeHTML((n.body || '').substring(0, 100)) + ((n.body || '').length > 100 ? '...' : '') + '</div>' + (tags.length ? '<div class="notif-tags">' + tags.map(t => '<span class="notif-tag">' + Utils.escapeHTML(t.trim()) + '</span>').join('') + '</div>' : '') + '</div>';
+    }).join('');
+    c.querySelectorAll('.notification-card').forEach(card => card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      const n = State.notifications.find(x => x.id === id);
+      if (!n) return;
+      self.markRead(id);
+      card.classList.remove('unread');
+      $('#notifDetailTitle').textContent = n.title;
+      const tags = (n.tags || '').split(',').filter(t => t.trim());
+      $('#notifDetailBody').innerHTML = '<div style="font-size:.7rem;color:var(--text-muted);margin-bottom:.4rem;">' + new Date(n.timestamp).toLocaleString('ar-EG') + '</div><div style="line-height:1.8;font-size:.82rem;">' + Utils.escapeHTML(n.body) + '</div>' + (tags.length ? '<div style="margin-top:.55rem;display:flex;gap:.2rem;flex-wrap:wrap;">' + tags.map(t => '<span class="notif-tag">' + Utils.escapeHTML(t.trim()) + '</span>').join('') + '</div>' : '');
+      new bootstrap.Modal($('#notifDetailModal')).show();
+    }));
+  }
+};
+
+const AuthManager = {
+  async register(username, email, password) {
+    if (!username || !email || !password) throw new Error('جميع الحقول مطلوبة');
+    if (password.length < 6) throw new Error('كلمة المرور 6 أحرف على الأقل');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('البريد غير صالح');
+    if (!/^[a-zA-Z0-9_\u0600-\u06FF]{3,20}$/.test(username)) throw new Error('اسم المستخدم 3-20 حرفاً');
+    const usernameKey = encodeURIComponent(username);
+    const existing = await FirebaseDB.get('users/' + usernameKey);
+    if (existing) throw new Error('اسم المستخدم موجود');
+    const emailKey = Utils.encodeEmail(email.toLowerCase());
+    const ec = await FirebaseDB.get('emails/' + emailKey);
+    if (ec) throw new Error('البريد مسجل');
+    const userData = { username, email: email.toLowerCase(), password: Utils.encodePassword(password), createdAt: Date.now(), stats: { ayahsRead: 0, streak: 0, surahsRead: 0, dailyAyahs: 0, lastReadDate: null }, progress: {}, bookmarks: [], notes: {}, aiCredits: { remaining: State.globalSettings.maxAICredits, lastReset: Utils.today() } };
+    const ok1 = await FirebaseDB.put('users/' + usernameKey, userData);
+    const ok2 = await FirebaseDB.put('emails/' + emailKey, username);
+    if (!ok1 || !ok2) throw new Error('تعذر الإنشاء');
+    State.user = { username, email: userData.email, createdAt: userData.createdAt };
+    State.aiCredits = Object.assign({}, userData.aiCredits);
+    Storage.save();
+    return State.user;
+  },
+  async login(email, password) {
+    if (!email || !password) throw new Error('الحقول مطلوبة');
+    const emailKey = Utils.encodeEmail(email.toLowerCase());
+    const username = await FirebaseDB.get('emails/' + emailKey);
+    if (!username) throw new Error('البريد غير مسجل');
+    const userData = await FirebaseDB.get('users/' + encodeURIComponent(username));
+    if (!userData) throw new Error('المستخدم غير موجود');
+    if (userData.password !== Utils.encodePassword(password)) throw new Error('كلمة المرور غير صحيحة');
+    State.user = { username: userData.username, email: userData.email, createdAt: userData.createdAt };
+    Storage.save();
+    if (userData.stats) State.stats = Object.assign({}, State.stats, userData.stats);
+    if (userData.progress) State.progress = userData.progress;
+    if (userData.bookmarks) State.bookmarks = userData.bookmarks;
+    if (userData.notes) State.notes = userData.notes;
+    if (userData.aiCredits) State.aiCredits = userData.aiCredits;
+    if (userData.restrictions) State.restrictions = Object.assign(State.restrictions, userData.restrictions);
+    Storage.save();
+    return State.user;
+  },
+  logout() {
+    State.user = null;
+    State.notifications = [];
+    State.unreadCount = 0;
+    State.settings.aiEnabled = false;
+    State.aiChatHistory = [];
+    State.restrictions = { banned: false, bannedUntil: null, permanent: false, reason: '' };
+    Storage.save();
+    App.updateUserUI();
+    NotificationsManager.updateBadge();
+    NotificationsManager.render();
+  }
+};
+
+const SettingsManager = {
+  apply() {
+    document.documentElement.setAttribute('data-theme', State.settings.theme);
+    ReadingScreen.applySettings();
+    $('#settingDarkMode').checked = State.settings.theme === 'dark';
+    $('#settingSepiaMode').checked = State.settings.theme === 'sepia';
+    $('#settingFontSizeLabel').textContent = State.settings.fontSize;
+    $('#settingDailyGoal').value = State.settings.dailyGoal;
+    $$('.font-option').forEach(b => b.classList.toggle('active', b.dataset.font === State.settings.fontFamily));
+    this.updateAIStatus();
+  },
+  updateAIStatus() {
+    const badge = $('#aiStatusBadge'), toggle = $('#aiFeatureToggle');
+    const hint = $('#aiSettingsHint'), creditsItem = $('#aiCreditsSettingsItem');
+    if (!badge || !toggle) return;
+    if (!State.user) {
+      badge.textContent = 'يحتاج دخول';
+      badge.className = 'ai-badge locked';
+      toggle.disabled = true;
+      toggle.checked = false;
+      State.settings.aiEnabled = false;
+      hint.textContent = 'سجّل الدخول';
+      creditsItem.style.display = 'none';
+    } else if (AIManager.isRestricted()) {
+      badge.textContent = 'محظور';
+      badge.className = 'ai-badge locked';
+      toggle.disabled = true;
+      toggle.checked = false;
+      State.settings.aiEnabled = false;
+      const until = State.restrictions.permanent ? 'دائم' : new Date(State.restrictions.bannedUntil).toLocaleDateString('ar-EG');
+      hint.textContent = 'محظور حتى: ' + until + ' — ' + (State.restrictions.reason || '');
+      creditsItem.style.display = 'none';
+    } else {
+      toggle.disabled = false;
+      toggle.checked = State.settings.aiEnabled;
+      if (State.settings.aiEnabled) { badge.textContent = 'مُفعّل'; badge.className = 'ai-badge active'; hint.textContent = 'الرصيد يتجدد يومياً'; creditsItem.style.display = 'flex'; }
+      else { badge.textContent = 'معطّل'; badge.className = 'ai-badge locked'; hint.textContent = 'فعّل المفتاح'; creditsItem.style.display = 'none'; }
+    }
+    AICreditManager.updateUI();
+  },
+  bind() {
+    $('#settingDarkMode').addEventListener('change', (e) => { State.settings.theme = e.target.checked ? 'dark' : 'light'; if (e.target.checked) $('#settingSepiaMode').checked = false; SettingsManager.apply(); Storage.save(); });
+    $('#settingSepiaMode').addEventListener('change', (e) => { State.settings.theme = e.target.checked ? 'sepia' : 'light'; if (e.target.checked) $('#settingDarkMode').checked = false; SettingsManager.apply(); Storage.save(); });
+    $('#settingFontUp').addEventListener('click', () => { State.settings.fontSize = Math.min(2.5, State.settings.fontSize + 0.1); $('#settingFontSizeLabel').textContent = State.settings.fontSize.toFixed(1); ReadingScreen.applySettings(); Storage.save(); });
+    $('#settingFontDown').addEventListener('click', () => { State.settings.fontSize = Math.max(1.0, State.settings.fontSize - 0.1); $('#settingFontSizeLabel').textContent = State.settings.fontSize.toFixed(1); ReadingScreen.applySettings(); Storage.save(); });
+    $$('.font-option').forEach(btn => btn.addEventListener('click', () => { State.settings.fontFamily = btn.dataset.font; $$('.font-option').forEach(b => b.classList.remove('active')); btn.classList.add('active'); ReadingScreen.applySettings(); Storage.save(); }));
+    $('#settingDailyGoal').addEventListener('change', (e) => { State.settings.dailyGoal = parseInt(e.target.value) || 20; Storage.save(); ReadingScreen.updateStatsUI(); });
+    $('#aiFeatureToggle').addEventListener('change', (e) => {
+      if (!State.user) { e.target.checked = false; return; }
+      if (AIManager.isRestricted()) { e.target.checked = false; return; }
+      State.settings.aiEnabled = e.target.checked;
+      Storage.save();
+      SettingsManager.updateAIStatus();
+      if (e.target.checked) { UI.showToast('تم التفعيل ✨', 'success'); AIManager.loadModels(); AICreditManager.syncFromFirebase(); }
+      else UI.showToast('تم التعطيل', 'info');
+    });
+    $('#clearDataBtn').addEventListener('click', async () => {
+      const size = Storage.getSize();
+      const sizeText = size < 1024 ? size + ' B' : (size / 1024).toFixed(1) + ' KB';
+      if (confirm('مسح البيانات (' + sizeText + ')؟')) {
+        Storage.clear();
+        State.bookmarks = []; State.notes = {}; State.progress = {};
+        State.stats = { ayahsRead: 0, streak: 0, surahsRead: 0, lastReadDate: null, dailyAyahs: 0 };
+        State.azkarFavorites = []; State.azkarCounters = {};
+        State.aiChatHistory = []; State.aiSessions = []; SessionManager.create();
+        State.interpretedAyahs = {};
+        BookmarkManager.render(); ReadingScreen.updateStatsUI();
+        AzkarManager.renderCategories();
+        SessionManager.renderCurrentSession();
+        await DataSizeManager.update();
+        UI.showToast('تم المسح', 'info');
+      }
+    });
+    $('#clearCacheBtn').addEventListener('click', async () => {
+      if (!confirm('مسح الكاش؟')) return;
+      await CacheDB.clearAllDB();
+      await AssetCache.clear();
+      await DataSizeManager.update();
+      UI.showToast('تم المسح', 'info');
+    });
+    $('#downloadAllBtn').addEventListener('click', async () => {
+      const btn = $('#downloadAllBtn');
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = 'جاري...';
+      try {
+        await Utils.fetchJSON(SOURCES.QURAN_TEXT, true);
+        await Utils.fetchJSON(SOURCES.SURAH_INDEX, true);
+        await Utils.fetchJSON(SOURCES.AZKAR_DATA, true);
+        await Utils.fetchJSON(SOURCES.TAFSIR_EDITIONS, true);
+        await AssetCache.trigger();
+        await DataSizeManager.update();
+        UI.showToast('تم التحميل!', 'success');
+      } catch (e) { UI.showToast('تعذر التحميل', 'error'); }
+      finally { btn.disabled = false; btn.textContent = orig; }
+    });
+  }
+};
+
+const UI = {
+  showScreen(name) {
+    $$('.screen').forEach(s => s.classList.remove('active'));
+    const s = $('#screen-' + name);
+    if (s) s.classList.add('active');
+    $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screen === name));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  },
+  showToast(msg, type) {
+    type = type || 'info';
+    const c = $('#toastContainer');
+    const t = document.createElement('div');
+    t.className = 'toast-custom ' + (type === 'error' ? 'error' : type === 'warning' ? 'warning' : '');
+    const icons = { info: 'fa-info-circle', success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle' };
+    t.innerHTML = '<i class="fas ' + (icons[type] || icons.info) + '"></i> ' + msg;
+    c.appendChild(t);
+    requestAnimationFrame(() => t.classList.add('show'));
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+  },
+  updateOnlineStatus() { const ind = $('#offlineIndicator'); if (!ind) return; if (navigator.onLine) ind.classList.remove('show'); else ind.classList.add('show'); },
+  showSheet(title, html) { $('#sheetTitle').textContent = title; $('#sheetBody').innerHTML = html; $('#sheetOverlay').classList.add('show'); $('#bottomSheet').classList.add('show'); },
+  hideSheet() { $('#sheetOverlay').classList.remove('show'); $('#bottomSheet').classList.remove('show'); }
+};
+
+const Events = {
+  bind() {
+    $('#themeToggle').addEventListener('click', () => { const themes = ['light', 'dark', 'sepia']; State.settings.theme = themes[(themes.indexOf(State.settings.theme) + 1) % themes.length]; SettingsManager.apply(); Storage.save(); });
+    $('#headerSearchBtn').addEventListener('click', () => { UI.showScreen('search'); setTimeout(() => $('#advancedSearchInput').focus(), 300); });
+    $('#headerUserBtn').addEventListener('click', () => { if (State.user) UI.showScreen('settings'); else UI.showScreen('auth'); });
+    $('#aiCreditBadge').addEventListener('click', () => {
+      if (!State.user) return;
+      if (!State.settings.aiEnabled) { UI.showToast('فعّل AI', 'warning'); UI.showScreen('settings'); return; }
+      UI.showScreen('ai');
+      AIManager.loadModels();
+    });
+    $$('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const s = item.dataset.screen;
+        if (s === 'home') SurahScreen.render(State.surahs);
+        else if (s === 'azkar') AzkarManager.renderCategories();
+        else if (s === 'ai') {
+          if (!State.user) { UI.showToast('سجّل الدخول', 'warning'); UI.showScreen('auth'); return; }
+          if (!State.settings.aiEnabled) { UI.showToast('فعّل AI', 'warning'); UI.showScreen('settings'); return; }
+          AIManager.loadModels();
+        }
+        else if (s === 'notifications') NotificationsManager.load();
+        else if (s === 'settings') DataSizeManager.update();
+        UI.showScreen(s);
+      });
+    });
+    document.querySelectorAll('[data-nav]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const n = btn.dataset.nav;
+        if (n === 'last-read' && State.lastRead) ReadingScreen.open(State.lastRead.surah);
+        else if (n === 'last-read') UI.showToast('لا يوجد قراءة سابقة', 'info');
+        else if (n === 'bookmarks') { BookmarkManager.render(); UI.showScreen('bookmarks'); }
+        else if (n === 'stats') { ReadingScreen.updateStatsUI(); UI.showScreen('stats'); }
+        else if (n === 'quiz') UI.showScreen('quiz');
+        else if (n === 'azkar') { AzkarManager.renderCategories(); UI.showScreen('azkar'); }
+        else if (n === 'ai') {
+          if (!State.user) { UI.showToast('سجّل الدخول', 'warning'); UI.showScreen('auth'); return; }
+          if (!State.settings.aiEnabled) { UI.showToast('فعّل AI', 'warning'); UI.showScreen('settings'); return; }
+          UI.showScreen('ai');
+          AIManager.loadModels();
+        }
+      });
+    });
+    const ss = Utils.debounce((q) => { const f = $('.surah-filters .filter-chip.active'); SurahScreen.filter(q, f ? f.dataset.filter : 'all'); }, 250);
+    $('#surahSearchInput').addEventListener('input', (e) => ss(e.target.value));
+    $$('.surah-filters .filter-chip').forEach(chip => chip.addEventListener('click', () => { $$('.surah-filters .filter-chip').forEach(c => c.classList.remove('active')); chip.classList.add('active'); SurahScreen.filter($('#surahSearchInput').value, chip.dataset.filter); }));
+    $$('#azkarMainTabs .filter-chip').forEach(chip => chip.addEventListener('click', () => {
+      $$('#azkarMainTabs .filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const tab = chip.dataset.azkarTab;
+      if (tab === 'categories') { $('#azkarCategoriesView').style.display = 'block'; $('#azkarFavView').style.display = 'none'; $('#azkarListView').style.display = 'none'; AzkarManager.renderCategories(); }
+      else if (tab === 'favorites') { $('#azkarCategoriesView').style.display = 'none'; $('#azkarFavView').style.display = 'block'; $('#azkarListView').style.display = 'none'; AzkarManager.renderFavorites(); }
+    }));
+    $('#backToAzkarCats').addEventListener('click', () => { State.currentAzkarCategory = null; $('#azkarCategoriesView').style.display = 'block'; $('#azkarListView').style.display = 'none'; $('#azkarFavView').style.display = 'none'; AzkarManager.renderCategories(); });
+    const as = Utils.debounce((q) => AzkarManager.search(q), 300);
+    $('#azkarSearchInput').addEventListener('input', (e) => as(e.target.value));
+    $('#aiModelTrigger').addEventListener('click', (e) => { e.stopPropagation(); AIModelPicker.toggle(); });
+    document.addEventListener('click', (e) => { const box = $('#aiModelCustom'); if (box && !box.contains(e.target)) AIModelPicker.close(); });
+    $('#openSessionsBtn').addEventListener('click', () => { SessionManager.renderSessionsList(); new bootstrap.Modal($('#sessionsModal')).show(); });
+    $('#newSessionBtn').addEventListener('click', () => { SessionManager.create(); SessionManager.renderCurrentSession(); SessionManager.updateSessionLabel(); UI.showToast('محادثة جديدة', 'success'); });
+    $('#newSessionFromModal').addEventListener('click', () => { SessionManager.create(); SessionManager.renderCurrentSession(); SessionManager.updateSessionLabel(); bootstrap.Modal.getInstance($('#sessionsModal')).hide(); UI.showToast('محادثة جديدة', 'success'); });
+    $('#saveRenameBtn').addEventListener('click', () => { const input = $('#renameSessionInput'); SessionManager.rename(input.dataset.sid, input.value); bootstrap.Modal.getInstance($('#renameSessionModal')).hide(); });
+    $('#aiInfoBtn').addEventListener('click', () => new bootstrap.Modal($('#aiInfoModal')).show());
+    $$('.ai-task-card').forEach(card => {
+      card.addEventListener('click', async () => {
+        const task = card.dataset.aiTask;
+        if (task === 'clear') AIManager.clearCurrent();
+        else if (task === 'info') new bootstrap.Modal($('#aiInfoModal')).show();
+        else if (task === 'tafsir' || task === 'tadabbur') UI.showToast('اضغط على آية ثم "اسأل AI"', 'info');
+        else if (task === 'surah-info') {
+          if (State.currentSurah) { const s = State.surahs.find(x => x.id === State.currentSurah); if (s) await AIManager.send('surah-info', { surahName: s.name }); }
+          else UI.showToast('افتح سورة', 'warning');
+        } else if (task === 'quiz-analysis') {
+          if (State.quiz.lastResult) await AIManager.send('quiz-analysis', State.quiz.lastResult);
+          else UI.showToast('أكمل اختبار', 'warning');
+        }
+      });
+    });
+    $('#readingAiBtn').addEventListener('click', async () => {
+      if (!State.currentSurah) return;
+      const surah = State.surahs.find(s => s.id === State.currentSurah);
+      if (!surah) return;
+      if (!await AIManager.ensureAvailable()) return;
+      UI.showScreen('ai');
+      await AIManager.loadModels();
+      await AIManager.send('surah-info', { surahName: surah.name });
+    });
+    $('#popupCloseBtn').addEventListener('click', () => ReadingScreen.closePopup());
+    $('#popupCopyBtn').addEventListener('click', () => {
+      if (!State.currentAyah) return;
+      const s = State.surahs.find(x => x.id === State.currentAyah.surah);
+      const a = (s && s.verses) ? s.verses.find(v => v.id === State.currentAyah.ayah) : null;
+      navigator.clipboard.writeText((a ? a.text : '') + '\n[' + (s ? s.name : '') + ' : ' + State.currentAyah.ayah + ']').then(() => UI.showToast('تم النسخ', 'success'));
+    });
+    $('#popupTafsirBtn').addEventListener('click', () => { if (State.currentAyah) TafsirManager.open(State.currentAyah.surah, State.currentAyah.ayah); });
+    $('#popupAiBtn').addEventListener('click', async () => {
+      if (!State.currentAyah) return;
+      if (!await AIManager.ensureAvailable()) return;
+      const s = State.surahs.find(x => x.id === State.currentAyah.surah);
+      const a = (s && s.verses) ? s.verses.find(v => v.id === State.currentAyah.ayah) : null;
+      ReadingScreen.closePopup();
+      UI.showScreen('ai');
+      await AIManager.loadModels();
+      await AIManager.send('tafsir', { ayahText: a ? a.text : '', surahName: s ? s.name : '', surahNum: State.currentAyah.surah, ayahNum: State.currentAyah.ayah });
+    });
+    $('#popupBookmarkBtn').addEventListener('click', () => { if (State.currentAyah) { BookmarkManager.toggle(State.currentAyah.surah, State.currentAyah.ayah); if (State.selectedAyahEl) ReadingScreen.selectAyah(State.selectedAyahEl); } });
+    $('#popupShareBtn').addEventListener('click', () => { if (State.currentAyah) ShareManager.show(State.currentAyah.surah, State.currentAyah.ayah); });
+    $('#popupWordBtn').addEventListener('click', () => { if (State.currentAyah) WordManager.show(State.currentAyah.surah, State.currentAyah.ayah); });
+    document.addEventListener('click', (e) => {
+      if ($('#ayahPopup').classList.contains('show') && !$('#ayahPopup').contains(e.target) && !e.target.closest('.ayah-span') && !e.target.closest('.popup-action')) ReadingScreen.closePopup();
+    });
+    const advSearch = Utils.debounce((q) => SearchManager.search(q), 500);
+    $('#advancedSearchInput').addEventListener('input', (e) => advSearch(e.target.value));
+    $('#downloadImageBtn').addEventListener('click', () => ShareManager.download());
+    $('#nativeShareBtn').addEventListener('click', () => ShareManager.native());
+    $('#sheetOverlay').addEventListener('click', () => UI.hideSheet());
+    $('#fontIncrease').addEventListener('click', () => { State.settings.fontSize = Math.min(2.5, State.settings.fontSize + 0.1); ReadingScreen.applySettings(); Storage.save(); });
+    $('#fontDecrease').addEventListener('click', () => { State.settings.fontSize = Math.max(1.0, State.settings.fontSize - 0.1); ReadingScreen.applySettings(); Storage.save(); });
+    $('#toggleMemorization').addEventListener('click', () => {
+      UI.showSheet('وضع الحفظ', '<div style="display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;">' + [0, 25, 50, 75, 100].map(v => '<button class="filter-chip ' + (State.settings.memorization === v ? 'active' : '') + '" data-memo="' + v + '">' + (v === 0 ? 'إظهار الكل' : 'إخفاء ' + v + '%') + '</button>').join('') + '</div>');
+      $$('[data-memo]').forEach(b => b.addEventListener('click', () => { State.settings.memorization = parseInt(b.dataset.memo); ReadingScreen.applyMemorization(); UI.hideSheet(); }));
+    });
+    $('#shareAyahBtn').addEventListener('click', () => { if (State.currentAyah) ShareManager.show(State.currentAyah.surah, State.currentAyah.ayah); else UI.showToast('اضغط على آية', 'warning'); });
+    $('#goToQuizBtn').addEventListener('click', () => UI.showScreen('quiz'));
+    $$('.auth-tab').forEach(tab => tab.addEventListener('click', () => {
+      $$('.auth-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const isLogin = tab.dataset.authTab === 'login';
+      $('#loginForm').style.display = isLogin ? 'block' : 'none';
+      $('#registerForm').style.display = isLogin ? 'none' : 'block';
+      $('#authTitle').textContent = isLogin ? 'تسجيل الدخول' : 'حساب جديد';
+      $('#authSwitchText').innerHTML = isLogin ? 'ليس لديك حساب؟ <a data-auth-switch="register">أنشئ حساباً</a>' : 'لديك حساب؟ <a data-auth-switch="login">سجل الدخول</a>';
+      bindAuthSwitch();
+    }));
+    function bindAuthSwitch() { const link = document.querySelector('[data-auth-switch]'); if (link) link.addEventListener('click', (e) => { e.preventDefault(); const t = $('.auth-tab[data-auth-tab="' + link.dataset.authSwitch + '"]'); if (t) t.click(); }); }
+    bindAuthSwitch();
+    $('#loginSubmitBtn').addEventListener('click', async () => {
+      const email = $('#loginEmail').value.trim();
+      const pass = $('#loginPassword').value;
+      const err = $('#loginError');
+      err.classList.remove('show');
+      const btn = $('#loginSubmitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> دخول...';
+      try {
+        await AuthManager.login(email, pass);
+        UI.showToast('مرحباً ' + State.user.username + '!', 'success');
+        App.updateUserUI();
+        await App.loadRestrictions();
+        await AICreditManager.syncFromFirebase();
+        NotificationsManager.load();
+        $('#loginEmail').value = '';
+        $('#loginPassword').value = '';
+        UI.showScreen('home');
+      } catch (e) { err.textContent = e.message; err.classList.add('show'); }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول'; }
+    });
+    $('#registerSubmitBtn').addEventListener('click', async () => {
+      const u = $('#registerUsername').value.trim();
+      const e = $('#registerEmail').value.trim();
+      const p = $('#registerPassword').value;
+      const err = $('#registerError');
+      err.classList.remove('show');
+      const btn = $('#registerSubmitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> إنشاء...';
+      try {
+        await AuthManager.register(u, e, p);
+        UI.showToast('تم إنشاء الحساب!', 'success');
+        App.updateUserUI();
+        AICreditManager.updateUI();
+        NotificationsManager.load();
+        $('#registerUsername').value = '';
+        $('#registerEmail').value = '';
+        $('#registerPassword').value = '';
+        UI.showScreen('home');
+      } catch (e2) { err.textContent = e2.message; err.classList.add('show'); }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء'; }
+    });
+    $('#accountActionBtn').addEventListener('click', () => { if (State.user) UI.showScreen('settings'); else UI.showScreen('auth'); });
+    $('#logoutBtn').addEventListener('click', () => { AuthManager.logout(); UI.showToast('خرجت', 'info'); UI.showScreen('home'); });
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => App.init().catch(e => console.error(e)));
+</script>
+
+</body>
+</html>
